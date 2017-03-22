@@ -6,7 +6,6 @@ import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
 import service.UserFacade;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +32,7 @@ public class UserController implements Serializable {
     private HistoriqueFacade historiqueFacade;
     private List<User> items = null;
     private User selected = new User();
+    private User connectedUser;
 
     public String reset() {
         User loadedUser = ejbFacade.find(selected);
@@ -69,7 +69,7 @@ public class UserController implements Serializable {
         int res1 = ejbFacade.seConnecter(selected);
         if (res1 == 1) {
             SessionUtil.registerUser(selected);
-            historiqueFacade.create(new Historique(new Date(),1,selected));
+            historiqueFacade.create(new Historique(new Date(), 1, selected));
             return "/user/Home";
         }
         return "/index";
@@ -85,7 +85,6 @@ public class UserController implements Serializable {
     public void setSelected(User selected) {
         this.selected = selected;
     }
-    
 
     protected void setEmbeddableKeys() {
     }
@@ -218,6 +217,17 @@ public class UserController implements Serializable {
             }
         }
 
+    }
+
+    public User getConnectedUser() {
+        if (connectedUser == null) {
+            connectedUser = ejbFacade.find(SessionUtil.getConnectedUser().getLogin());
+        }
+        return connectedUser;
+    }
+
+    public void setConnectedUser(User connectedUser) {
+        this.connectedUser = connectedUser;
     }
 
 }

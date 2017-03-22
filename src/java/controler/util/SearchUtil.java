@@ -7,6 +7,8 @@ package controler.util;
  */
 
 
+import static controler.util.SearchUtil.decimalFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -113,4 +115,8 @@ public class SearchUtil {
         alert.setContentText(content);
         return alert.showAndWait();
     }
+     public static Double decimalFormat(Double number){
+         DecimalFormat format=new DecimalFormat("#.##");
+         return new Double(format.format(number));
+     } 
 }

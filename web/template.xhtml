@@ -28,35 +28,33 @@
                     <p:menubar>
                         <p:menuitem value="#{bundle.Home}" style="width:100px" outcome="/user/Home" icon="ui-icon-home"/>
                         <p:submenu label="Systeme d'adressage" style="width: 150px">
-                            <p:menuitem value="Adressage" outcome="/search/Adrressage"  rendered="#{rueController.user.createAdresse==true}"/>
-                            <p:menuitem value="AnnexeAdministratif" outcome="/annexeAdministratif/List.xhtml" />
-                            <p:menuitem value="Quartier" outcome="/quartier/List.xhtml" />
-                            <p:menuitem value="Redevable" outcome="/redevable/List.xhtml" />
-                            <p:menuitem value="Rue" outcome="/rue/List.xhtml" />
-                            <p:menuitem value="Secteur" outcome="/secteur/List.xhtml" />
+                            <p:menuitem value="Adressage" outcome="/search/Adrressage"  rendered="#{userController.connectedUser.createAdresse==true}"/>
+                            <p:menuitem value="Redevable" outcome="/redevable/List.xhtml" rendered="#{userController.connectedUser.createRedevable==true}" />
+                            <p:menuitem value="Locale" outcome="/locale/List.xhtml" rendered="#{userController.connectedUser.createLocale==true}" />
                         </p:submenu>
 
-                        <p:submenu label="Service de taxe" style="width: 150px;">
-                            <p:menuitem value="TauxTaxe" outcome="/tauxTaxe/List.xhtml" />
-                            <p:menuitem value="TauxTaxeRetard" outcome="/tauxTaxeRetard/List.xhtml" />
-                            <p:menuitem value="TaxeAnnuel" outcome="/taxeAnnuel/List.xhtml" />
-                            <p:menuitem value="TaxeTrim" outcome="/taxeTrim/List.xhtml" />
-                            <p:menuitem value="Categorie" outcome="/categorie/List.xhtml" />
+                        <p:submenu label="Service de taxe" style="width: 150px;" >
+                            <p:menuitem value="TauxTaxe" outcome="/tauxTaxe/List.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"/>
+                            <p:menuitem value="TauxTaxeRetard" outcome="/tauxTaxeRetard/List.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"/>
+                            <p:menuitem value="TaxeAnnuel" outcome="/taxeAnnuel/List.xhtml" rendered="#{userController.connectedUser.createTaxes==true}"/>
+                            <p:menuitem value="TaxeTrim" outcome="/taxeTrim/List.xhtml" rendered="#{userController.connectedUser.createTaxes==true}" />
+                            <p:menuitem value="Categorie" outcome="/categorie/List.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}" />
 
                         </p:submenu>
-                        <p:submenu label="Admin Manager" style="width: 150px;" rendered="#{rueController.user.createUser==true}">
+                        <p:submenu label="Admin Manager" style="width: 150px;" rendered="#{userController.connectedUser.createUser==true}">
                             <p:menuitem value="User" outcome="/user/AdminAccess.xhtml" />
-                            <p:menuitem value="Journal des actions" outcome="/journal/AdminAccess.xhtml" rendered="#{rueController.user.admin==true}"/>
-                            <p:menuitem value="Historique des connections" outcome="/historique/AdminAccess.xhtml" rendered="#{rueController.user.admin==true}" />
-                            <p:menuitem value="Devices" outcome="/device/AdminAccess.xhtml" rendered="#{rueController.user.admin==true}" />
+                            <p:menuitem value="Journal des actions" outcome="/journal/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}"/>
+                            <p:menuitem value="Historique des connections" outcome="/historique/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}" />
+                            <p:menuitem value="Devices" outcome="/device/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}" />
                         </p:submenu>
-                        <p:submenu label="Recherchers :" icon="ui-icon-search" style="width: 150px">
+                        <p:submenu label="Recherchers" icon="ui-icon-search" style="width: 150px">
                             <p:menuitem value="redevable" action="/search/SearchRedevable" />
                             <p:menuitem value="locale" outcome="/search/SearchLocale" />
                             <p:menuitem value=" taxeTrim " outcome="/search/SearchTaxeTrim.xhtml" />
-                            <p:menuitem value="Locale" outcome="/locale/List.xhtml"  />
-
                         </p:submenu>
+                        <p:menuitem value="Statistiques" style="width:100px" outcome="/charts/grapheCritere" >
+                        </p:menuitem>
+
 
                     </p:menubar>
                 </h:form>

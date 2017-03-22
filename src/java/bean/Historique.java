@@ -26,9 +26,10 @@ public class Historique implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateConnection;
-    private LocalDateTime dateDeconnection;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateDeconnection;
     private int type;//1 cnx 2 decnx
     @OneToOne
     private User user;
@@ -41,7 +42,7 @@ public class Historique implements Serializable {
         this.user = user;
     }
 
-    public Historique(int type, LocalDateTime dateDeconnection, User user) {
+    public Historique(int type, Date dateDeconnection, User user) {
         this.dateDeconnection = dateDeconnection;
         this.type = type;
         this.user = user;
@@ -66,11 +67,11 @@ public class Historique implements Serializable {
         this.dateConnection = dateConnection;
     }
 
-    public LocalDateTime getDateDeconnection() {
+    public Date getDateDeconnection() {
         return dateDeconnection;
     }
 
-    public void setDateDeconnection(LocalDateTime dateDeconnection) {
+    public void setDateDeconnection(Date dateDeconnection) {
         this.dateDeconnection = dateDeconnection;
     }
 

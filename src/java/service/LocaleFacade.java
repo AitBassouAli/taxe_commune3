@@ -36,9 +36,10 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
-     public List<String> findAllActivities(){
+    public List<String> findAllActivities() {
         return em.createQuery("SELECT distinct(l.activite) FROM Locale l").getResultList();
     }
+
     public List<Locale> findByRedevableCin(String redevable) {
         return em.createQuery("SELECT l FROM Locale l WHERE l.proprietaire.cin='" + redevable + "' OR l.gerant.cin='" + redevable + "'").getResultList();
     }
@@ -51,10 +52,18 @@ public class LocaleFacade extends AbstractFacade<Locale> {
         String requette = "SELECT l FROM Locale l WHERE 1=1";
 
         if (proprietaire != null) {
-            requette += " AND l.proprietaire.id="+proprietaire.getId();
+            if (!proprietaire.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "proprietaire.cin", "=", proprietaire.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "proprietaire.id", "=", proprietaire.getId());
+            }
         }
         if (gerant != null) {
-            requette += " AND l.gerant.id=" + gerant.getId();
+            if (!gerant.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "gerant.cin", "=", gerant.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "gerant.id", "=", gerant.getId());
+            }
         }
         if (categorie != null) {
             requette += SearchUtil.addConstraint("l", "categorie.id", "=", categorie.getId());
@@ -62,6 +71,34 @@ public class LocaleFacade extends AbstractFacade<Locale> {
         if (!activite.equals("")) {
             requette += SearchUtil.addConstraint("l", "activite", "=", activite);
         }
+        if (!reference.equals("")) {
+            requette += SearchUtil.addConstraint("l", "reference", "=", reference);
+        }
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+    }
+
+    public List<Locale> findByGerantOrProprietaire2(Categorie categorie, Redevable proprietaire, String reference, Redevable gerant) {
+        String requette = "SELECT l FROM Locale l WHERE 1=1";
+
+        if (proprietaire != null) {
+            if (!proprietaire.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "proprietaire.cin", "=", proprietaire.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "proprietaire.id", "=", proprietaire.getId());
+            }
+        }
+        if (gerant != null) {
+            if (!gerant.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "gerant.cin", "=", gerant.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "gerant.id", "=", gerant.getId());
+            }
+        }
+        if (categorie != null) {
+            requette += SearchUtil.addConstraint("l", "categorie.id", "=", categorie.getId());
+        }
+
         if (!reference.equals("")) {
             requette += SearchUtil.addConstraint("l", "reference", "=", reference);
         }

@@ -86,9 +86,12 @@
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >
-
-
-
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.montantTotal}"/>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
@@ -103,11 +106,35 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.locale.reference}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.redevable.nom}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
                             </f:facet>
                             <h:outputText value="#{item.datePaiement}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.taxeAnnuel.annee}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="nbrMoisRetard"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nbrMoisRetard}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -125,45 +152,11 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_user}"/>
                             </f:facet>
-                            <h:outputText value="#{item.user}"/>
+                            <h:outputText value="#{item.user.login}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montantTotal}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.locale}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.redevable}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.taxeAnnuel}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-
                     </p:dataTable>
                 </p:panel>
             </h:form>
-
         </ui:define>
-
-
     </ui:composition>
 </html>
