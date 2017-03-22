@@ -29,16 +29,17 @@ public class RedevableController implements Serializable {
     private List<Redevable> items = null;
     private List<Redevable> itemsAvaible;
     private Redevable selected;
-    public void findByRCorCIN(){
-        itemsAvaible=ejbFacade.findByCinOrRc(selected);       
+
+    public void findByRCorCIN() {
+        itemsAvaible = ejbFacade.findByCinOrRc(selected);
     }
 
     public RedevableController() {
     }
 
     public Redevable getSelected() {
-        if(selected==null){
-            selected=new Redevable();
+        if (selected == null) {
+            selected = new Redevable();
         }
         return selected;
     }
@@ -58,8 +59,8 @@ public class RedevableController implements Serializable {
     }
 
     public List<Redevable> getItemsAvaible() {
-        if(itemsAvaible==null){
-            itemsAvaible=new ArrayList();
+        if (itemsAvaible == null) {
+            itemsAvaible = new ArrayList();
         }
         return itemsAvaible;
     }
@@ -68,7 +69,6 @@ public class RedevableController implements Serializable {
         this.itemsAvaible = itemsAvaible;
     }
 
-    
     public Redevable prepareCreate() {
         selected = new Redevable();
         initializeEmbeddableKey();
@@ -105,24 +105,27 @@ public class RedevableController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) switch (persistAction) {
-                    case CREATE:
-                        if(getFacade().findByCinOrRc(selected).isEmpty()){
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            if (getFacade().findByCinOrRc(selected).isEmpty()) {
+                                getFacade().edit(selected);
+                                JsfUtil.addSuccessMessage("Redevable bien crée");
+                            } else {
+                                JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
+                            }
+                            break;
+                        case UPDATE:
                             getFacade().edit(selected);
-                            JsfUtil.addSuccessMessage("Redevable bien crée");
-                        }else{
-                            JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
-                        }   break;
-                    case UPDATE:
-                        getFacade().edit(selected);
-                        JsfUtil.addSuccessMessage(successMessage);
-                        break;
-                    default:
-                        getFacade().remove(selected);
-                        JsfUtil.addSuccessMessage(successMessage);
-                        break;
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

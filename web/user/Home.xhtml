@@ -35,8 +35,8 @@
                                 </li>
                                 <li><p:commandLink action="/search/Adrressage" value="Adresses"></p:commandLink>                           
                                 </li>
-                               
-                                <li><p:commandLink action="#{historiqueController.deconnection()}" value="Se deconnecter"></p:commandLink>                           
+
+                                <li><p:commandLink class="btn btn-danger" action="#{historiqueController.deconnection()}" value="Se deconnecter"></p:commandLink>                           
                                 </li>                           
                             </ul>
                         </div>
@@ -61,14 +61,15 @@
                     <p:commandLink action="/locale/List" value="link"></p:commandLink>
                 </div>
                 <div class="col-lg-6" style="margin-top: 4%;">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#">ADMIN ACCESS</a> </li>
-                        <li><p:commandLink class="btn-block" oncomplete="PF('AccessDialog').show()" value="users"></p:commandLink></li>
-                        <li><p:commandLink class="btn-block btn-warning" value="Journal"  oncomplete="PF('AccessDialog').show()" ></p:commandLink></li>
-                    <li><p:commandLink class="btn-block"  value="Historique" oncomplete="PF('AccessDialog').show()"></p:commandLink></li>
-                    <li><p:commandLink class="btn-block btn-warning"  value="Device" oncomplete="PF('AccessDialog').show()"></p:commandLink></li>                     
-                    </ul>
-                
+                    <p:panel rendered="#{userController.connectedUser.admin==true}" >
+                             <ul class="nav nav-pills nav-stacked">
+                            <li class="active"><a href="#">ADMIN ACCESS</a> </li>
+                            <li><p:commandLink class="btn-block" oncomplete="PF('AccessDialog').show()" value="users"></p:commandLink></li>
+                            <li><p:commandLink class="btn-block btn-warning" value="Journal"  oncomplete="PF('AccessDialog').show()" ></p:commandLink></li>
+                            <li><p:commandLink class="btn-block"  value="Historique" oncomplete="PF('AccessDialog').show()"></p:commandLink></li>
+                            <li><p:commandLink class="btn-block btn-warning"  value="Device" oncomplete="PF('AccessDialog').show()"></p:commandLink></li>                     
+                        </ul>
+                    </p:panel>
                 </div>
 
                 <!--nav bar-->       

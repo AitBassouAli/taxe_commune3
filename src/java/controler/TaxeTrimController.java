@@ -7,10 +7,13 @@ import bean.Redevable;
 import bean.Rue;
 import bean.Secteur;
 import bean.TaxeTrim;
+import bean.User;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
+import controler.util.SessionUtil;
 import service.TaxeTrimFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,6 +39,7 @@ import service.QuartierFacade;
 import service.RedevableFacade;
 import service.RueFacade;
 import service.SecteurFacade;
+import service.UserFacade;
 
 @Named("taxeTrimController")
 @SessionScoped
@@ -55,6 +59,9 @@ public class TaxeTrimController implements Serializable {
     private QuartierFacade quartierFacade;
     @EJB
     private AnnexeAdministratifFacade annexeAdministratifFacade;
+    @EJB
+    private UserFacade userFacade;
+    private User connectedUser;
 
     private Quartier quartier;
     private AnnexeAdministratif annexeAdministratif;
@@ -68,6 +75,7 @@ public class TaxeTrimController implements Serializable {
     private String rc;
     private Redevable redevable;
     private int annee;
+    private boolean rendred;
     //attribut de recherche taxeTrim souhail
     private Date dateMin;
     private Date dateMax;
@@ -89,6 +97,10 @@ public class TaxeTrimController implements Serializable {
     private List<TaxeTrim> taxes;
     private int typeGraphe;
 
+    public void itemSelect() {
+        rendred = false;
+    }
+
     //apl au methode de recherches destaxTrm par criter pour construire un graphe
     public void createBarModel() {
         taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
@@ -106,7 +118,6 @@ public class TaxeTrimController implements Serializable {
     // bar de graphe
     public void createModel() {
         taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
-
         switch (typeGraphe) {
             case 3:
                 donutChartModel = ejbFacade.initDonuModel(taxes, firstYear, secondYear);
@@ -127,7 +138,7 @@ public class TaxeTrimController implements Serializable {
                 Axis yAxis = modele.getAxis(AxisType.Y);
                 yAxis.setLabel("Montant");
                 yAxis.setMin(0);
-                yAxis.setMax(ejbFacade.maxY(taxes, firstYear, secondYear) + 1000);
+                yAxis.setMax(ejbFacade.maxY(taxes, firstYear, secondYear) * 1.1);
                 break;
             }
             case 2: {
@@ -156,15 +167,28 @@ public class TaxeTrimController implements Serializable {
     }
 
     public void findAnnexs() {
-        secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        if (secteur == null) {
+            getSecteur().setAnnexeAdministratifs(new ArrayList<>());
+        } else {
+            secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        }
     }
 
     public void findQuartiers() {
-        annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        if (annexeAdministratif == null) {
+            getAnnexeAdministratif().setQuartiers(new ArrayList<>());
+        } else {
+            annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        }
+
     }
 
     public void findRues() {
-        quartier.setRues(rueFacade.findByQuartier(quartier));
+        if (quartier == null) {
+            getQuartier().setRues(new ArrayList<>());
+        } else {
+            quartier.setRues(rueFacade.findByQuartier(quartier));
+        }
     }
 
     public void findRedevableByCin() {
@@ -172,6 +196,7 @@ public class TaxeTrimController implements Serializable {
         redevable.setLocales(localeFacade.findByRedevableCin(cin));
         rc = "";
         redevable = findRedevable();
+        rendred = false;
     }
 
     public void findRedevableByRc() {
@@ -179,6 +204,7 @@ public class TaxeTrimController implements Serializable {
         redevable.setLocales(localeFacade.findByRedevableRc(rc));
         cin = "";
         redevable = findRedevable();
+        rendred = false;
     }
 
     public Redevable findRedevable() {
@@ -221,16 +247,23 @@ public class TaxeTrimController implements Serializable {
     }
 
     public TaxeTrim prepareCreate() {
+        rendred = false;
         selected = new TaxeTrim();
         initializeEmbeddableKey();
         return selected;
     }
 
     public void simuler() {
+        rendred = true;
         Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, true);
         if ((int) res[0] == 1) {
             System.out.println("simulation ...");
             selected = ejbFacade.clone((TaxeTrim) res[1]);
+        } else {
+            switch ((int) res[0]) {
+                case -1:
+                    JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
+            }
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -243,7 +276,13 @@ public class TaxeTrimController implements Serializable {
             System.out.println("persiting...");
             selected = ejbFacade.clone((TaxeTrim) res[1]);
             selected.setRedevable(redevable);
+            selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
+        } else {
+            switch ((int) res[0]) {
+                case -1:
+                    JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
+            }
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -509,6 +548,9 @@ public class TaxeTrimController implements Serializable {
     }
 
     public Quartier getQuartier() {
+        if (quartier == null) {
+            quartier = new Quartier();
+        }
         return quartier;
     }
 
@@ -517,6 +559,9 @@ public class TaxeTrimController implements Serializable {
     }
 
     public AnnexeAdministratif getAnnexeAdministratif() {
+        if (annexeAdministratif == null) {
+            annexeAdministratif = new AnnexeAdministratif();
+        }
         return annexeAdministratif;
     }
 
@@ -525,6 +570,9 @@ public class TaxeTrimController implements Serializable {
     }
 
     public Secteur getSecteur() {
+        if (secteur == null) {
+            secteur = new Secteur();
+        }
         return secteur;
     }
 
@@ -627,6 +675,26 @@ public class TaxeTrimController implements Serializable {
 
     public void setDonutChartModel(DonutChartModel donutChartModel) {
         this.donutChartModel = donutChartModel;
+    }
+
+    public User getConnectedUser() {
+        if (connectedUser == null) {
+            connectedUser = userFacade.find(SessionUtil.getConnectedUser().getLogin());
+        }
+        return connectedUser;
+    }
+
+    public void setConnectedUser(User connectedUser) {
+        this.connectedUser = connectedUser;
+    }
+
+    public boolean isRendred() {
+        return rendred;
+    }
+    
+
+    public void setRendred(boolean rendred) {
+        this.rendred = rendred;
     }
 
 }

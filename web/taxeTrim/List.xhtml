@@ -27,6 +27,30 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
+                         <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.montantTotal}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.locale.reference}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.taxeAnnuel.annee}"/>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>

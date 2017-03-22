@@ -74,7 +74,7 @@ public class RedevableFacade extends AbstractFacade<Redevable> {
                 if (list != null && !list.isEmpty()) {
                     return list.get(0);
                 } else {
-                    return new Redevable();
+                    return new Redevable(redevable);
                 }
             }
 

@@ -4,8 +4,8 @@ import bean.AnnexeAdministratif;
 import bean.Categorie;
 import bean.Locale;
 import bean.Quartier;
-import bean.Redevable;
 import bean.Secteur;
+import bean.TaxeTrim;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import service.LocaleFacade;
@@ -28,6 +28,7 @@ import service.AnnexeAdministratifFacade;
 import service.QuartierFacade;
 import service.RedevableFacade;
 import service.RueFacade;
+import service.TaxeTrimFacade;
 
 @Named("localeController")
 @SessionScoped
@@ -38,6 +39,8 @@ public class LocaleController implements Serializable {
     @EJB
     private RueFacade rueFacade;
     @EJB
+    private TaxeTrimFacade taxeTrimFacade;
+    @EJB
     private QuartierFacade quartierFacade;
     @EJB
     private AnnexeAdministratifFacade annexeAdministratifFacade;
@@ -46,6 +49,8 @@ public class LocaleController implements Serializable {
     private List<Locale> items = null;
     private List<Locale> itemsRecherche;
     private Locale selected;
+    //pour list des taxe pour une locale search
+    private List<TaxeTrim> taxeTrims = null;
     //create
     private Quartier quartier;
     private AnnexeAdministratif annexeAdministratif;
@@ -77,22 +82,41 @@ public class LocaleController implements Serializable {
 //        }
 //
 //    }
-
     //la recherche des locale avec plusieurs criteres
     public void findByCreteria() {
         itemsRecherche = ejbFacade.findByGerantOrProprietaire(categorie, redevableFacade.findByCinRc(proprietaireCinRc), selected.getActivite(), selected.getReference(), redevableFacade.findByCinRc(gerantCinRc));
     }
 
+    public void findByCreteria2() {
+        itemsRecherche = ejbFacade.findByGerantOrProprietaire2(categorie, redevableFacade.findByCinRc(proprietaireCinRc), selected.getReference(), redevableFacade.findByCinRc(gerantCinRc));
+    }
+
+    public void findtaxes(Locale locale) {
+        setTaxeTrims(taxeTrimFacade.findTaxesByLocale(locale));
+    }
+
     public void findAnnexs() {
-        secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        if (secteur == null) {
+            getSecteur().setAnnexeAdministratifs(new ArrayList<>());
+        } else {
+            secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        }
     }
 
     public void findQuartiers() {
-        annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        if (annexeAdministratif == null) {
+            getAnnexeAdministratif().setQuartiers(new ArrayList<>());
+        } else {
+            annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        }
     }
 
     public void findRues() {
-        quartier.setRues(rueFacade.findByQuartier(quartier));
+        if (quartier == null) {
+            getQuartier().setRues(new ArrayList<>());
+        } else {
+            quartier.setRues(rueFacade.findByQuartier(quartier));
+        }
     }
 
     public LocaleController() {
@@ -128,6 +152,25 @@ public class LocaleController implements Serializable {
 
     private LocaleFacade getFacade() {
         return ejbFacade;
+    }
+
+    public RedevableFacade getRedevableFacade() {
+        return redevableFacade;
+    }
+
+    public void setRedevableFacade(RedevableFacade redevableFacade) {
+        this.redevableFacade = redevableFacade;
+    }
+
+    public List<TaxeTrim> getTaxeTrims() {
+        if (taxeTrims == null) {
+            taxeTrims = new ArrayList<>();
+        }
+        return taxeTrims;
+    }
+
+    public void setTaxeTrims(List<TaxeTrim> taxeTrims) {
+        this.taxeTrims = taxeTrims;
     }
 
     public LocaleFacade getEjbFacade() {
@@ -274,33 +317,14 @@ public class LocaleController implements Serializable {
     }
 
     public Quartier getQuartier() {
+        if (quartier == null) {
+            quartier = new Quartier();
+        }
         return quartier;
     }
 
     public void setQuartier(Quartier quartier) {
         this.quartier = quartier;
-    }
-
-    public QuartierFacade getQuartierFacade() {
-        if (quartierFacade == null) {
-            quartierFacade = new QuartierFacade();
-        }
-        return quartierFacade;
-    }
-
-    public void setQuartierFacade(QuartierFacade quartierFacade) {
-        this.quartierFacade = quartierFacade;
-    }
-
-    public AnnexeAdministratifFacade getAnnexeAdministratifFacade() {
-        if (annexeAdministratifFacade == null) {
-            annexeAdministratifFacade = new AnnexeAdministratifFacade();
-        }
-        return annexeAdministratifFacade;
-    }
-
-    public void setAnnexeAdministratifFacade(AnnexeAdministratifFacade annexeAdministratifFacade) {
-        this.annexeAdministratifFacade = annexeAdministratifFacade;
     }
 
     public AnnexeAdministratif getAnnexeAdministratif() {

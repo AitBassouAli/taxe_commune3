@@ -11,6 +11,7 @@ import controler.util.SessionUtil;
 import service.RueFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -69,16 +70,28 @@ public class RueController implements Serializable {
     }
 
     public void findAnnexs() {
-        secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        if (secteur == null) {
+            getSecteur().setAnnexeAdministratifs(new ArrayList<>());
+        } else {
+            secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        }
     }
 
     public void findQuartiers() {
-        annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        if (annexeAdministratif == null) {
+            getAnnexeAdministratif().setQuartiers(new ArrayList<>());
+        } else {
+            annexeAdministratif.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratif));
+        }
         showAllQuartiers();
     }
 
     public void findRues() {
-        quartier.setRues(ejbFacade.findByQuartier(quartier));
+        if (quartier == null) {
+            getQuartier().setRues(new ArrayList<>());
+        } else {
+            quartier.setRues(ejbFacade.findByQuartier(quartier));
+        }
     }
 
     public void findAnnexs(Secteur secteur1) {

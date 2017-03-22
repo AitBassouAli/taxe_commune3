@@ -102,7 +102,7 @@
 
 
                         <f:facet name="footer">
-                            <p:commandButton class="btn btn-primary" id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{localeController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{localeController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" disabled="#{empty localeController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":LocaleEditForm" oncomplete="PF('LocaleEditDialog').show()" disabled="#{empty localeController.selected}"/>
 

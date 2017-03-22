@@ -5,7 +5,9 @@
  */
 package service;
 
+import bean.Categorie;
 import bean.TauxTaxeRetard;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +30,18 @@ public class TauxTaxeRetardFacade extends AbstractFacade<TauxTaxeRetard> {
     public TauxTaxeRetardFacade() {
         super(TauxTaxeRetard.class);
     }
-     public void clone(TauxTaxeRetard tauxTaxeRetardSource, TauxTaxeRetard tauxTaxeRetardDestaination) {
+
+    public TauxTaxeRetard findByCategorie(Categorie categorie) {
+        String reqette = "SELECT t FROM TauxTaxeRetard t WHERE t.categorie.id=" + categorie.getId();
+        List<TauxTaxeRetard> lst = em.createQuery(reqette).getResultList();
+        if (lst != null && !lst.isEmpty()) {
+            return lst.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public void clone(TauxTaxeRetard tauxTaxeRetardSource, TauxTaxeRetard tauxTaxeRetardDestaination) {
         tauxTaxeRetardDestaination.setId(tauxTaxeRetardSource.getId());
         tauxTaxeRetardDestaination.setCategorie(tauxTaxeRetardSource.getCategorie());
         tauxTaxeRetardDestaination.setTauxAutreRetard(tauxTaxeRetardSource.getTauxAutreRetard());
@@ -41,5 +54,5 @@ public class TauxTaxeRetardFacade extends AbstractFacade<TauxTaxeRetard> {
         clone(tauxTaxeRetard, cloned);
         return cloned;
     }
-    
+
 }

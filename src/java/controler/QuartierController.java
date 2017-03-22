@@ -8,6 +8,7 @@ import controler.util.JsfUtil.PersistAction;
 import service.QuartierFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -44,15 +45,12 @@ public class QuartierController implements Serializable {
     }
 
     public void findAnnexs() {
-        secteur.setAnnexeAdministratifs(annexAdministratifFacade.findBySecteur(secteur));
-        showAllAnnexes();
-    }
-
-    public AnnexeAdministratifFacade getAnnexAdministratifFacade() {
-        if (annexAdministratifFacade == null) {
-            annexAdministratifFacade = new AnnexeAdministratifFacade();
+        if (secteur == null) {
+            getSecteur().setAnnexeAdministratifs(new ArrayList<>());
+        } else {
+            secteur.setAnnexeAdministratifs(annexAdministratifFacade.findBySecteur(secteur));
         }
-        return annexAdministratifFacade;
+        showAllAnnexes();
     }
 
     public void detail() {
@@ -218,6 +216,9 @@ public class QuartierController implements Serializable {
     }
 
     public Secteur getSecteur() {
+        if (secteur == null) {
+            secteur = new Secteur();
+        }
         return secteur;
     }
 

@@ -40,13 +40,16 @@ public class Redevable implements Serializable {
     public Redevable() {
     }
 
+    public Redevable(String cin) {
+        this.cin = cin;
+    }
+
     public Redevable(String rc, String cin) {
         this.rc = rc;
         this.cin = cin;
     }
-    
-    
 
+    
     public String getNom() {
         return nom;
     }
@@ -157,7 +160,7 @@ public class Redevable implements Serializable {
 
     @Override
     public String toString() {
-        return nom +" "+prenom;
+        return nom + " " + prenom;
     }
 
 }

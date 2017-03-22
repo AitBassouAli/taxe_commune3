@@ -5,6 +5,7 @@
  */
 package controler.util;
 
+import bean.TaxeTrim;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,30 @@ import java.util.logging.Logger;
  */
 public class DateUtil {
 
+    
+    public  static int calculerMois(TaxeTrim taxeTrim,int annee){
+        int mois=getMonthsBetweenTwoDates(getFinTrimestre(taxeTrim.getNumeroTrim(), annee),new Date());
+        if(mois <0 ){
+            mois=0;
+        }
+        return mois;
+    }
+    
+    
+       public  static  int getMonthsBetweenTwoDates(Date d1,Date d2){
+        Calendar startCalendar = new GregorianCalendar();
+        startCalendar.setTime(d1);
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(d2);
+
+        int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+        int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+        return diffMonth;
+
+    }
+    
+    
+    
     public static List<int[]> nextTrim(Date dateEnvoi, int dernierTrimestre, int dernierAnnee) {
         List<int[]> res = new ArrayList<>();
         int trim = getTrimestre(dateEnvoi);
@@ -48,7 +73,7 @@ public class DateUtil {
     }
     
     public static Long getDifferenceDate(Date dateDebut, Date dateFin) {
-        final Long millisecParAnnee = (1000l * 60l * 60l * 24l * 365l);
+        final Long millisecParAnnee = (1000l * 60l * 60l * 24l * 12l);
         int duree = 0;
         if (dateDebut == null) {
             return -1l;
