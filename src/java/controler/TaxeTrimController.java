@@ -97,6 +97,7 @@ public class TaxeTrimController implements Serializable {
     private List<TaxeTrim> taxes;
     private int typeGraphe;
 
+    
     public void itemSelect() {
         rendred = false;
     }
@@ -691,7 +692,6 @@ public class TaxeTrimController implements Serializable {
     public boolean isRendred() {
         return rendred;
     }
-    
 
     public void setRendred(boolean rendred) {
         this.rendred = rendred;
