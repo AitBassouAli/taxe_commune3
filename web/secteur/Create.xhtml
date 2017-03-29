@@ -10,14 +10,13 @@
         <p:dialog id="SecteurCreateDlg" widgetVar="SecteurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSecteurTitle}">
             <h:form id="SecteurCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{secteurController.selected != null}">
-                        
+                    <p:panelGrid columns="2" rendered="#{rueController.secteur != null}">
                         <p:outputLabel value="#{bundle.CreateSecteurLabel_nomSecteur}" for="nomSecteur" />
-                        <p:inputText id="nomSecteur" value="#{secteurController.selected.nomSecteur}" title="#{bundle.CreateSecteurTitle_nomSecteur}" />
+                        <p:inputText id="nomSecteur" value="#{rueController.secteur.nomSecteur}"  />
                         <p:outputLabel value="#{bundle.CreateSecteurLabel_abreviation}" for="abreviation" />
-                        <p:inputText id="abreviation" value="#{secteurController.selected.abreviation}" title="#{bundle.CreateSecteurTitle_abreviation}" />
+                        <p:inputText id="abreviation" value="#{rueController.secteur.abreviation}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{secteurController.create}" value="#{bundle.Save}" update="display,:SecteurListForm:datalist,:growl" oncomplete="handleSubmit(args,'SecteurCreateDialog');"/>
+                    <p:commandButton actionListener="#{rueController.saveSecteur()}" value="#{bundle.Save}" update="display,:SecteurListForm:datalist" oncomplete="handleSubmit(args,'SecteurCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="SecteurCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

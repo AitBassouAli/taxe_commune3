@@ -23,7 +23,7 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="65" header="#{bundle.AppName}">
+            <p:layoutUnit position="north" size="65" >
                 <h:form id="menuForm">
                     <p:menubar>
                         <p:menuitem value="#{bundle.Home}" style="width:100px" outcome="/user/Home" icon="ui-icon-home"/>
@@ -43,9 +43,9 @@
                         </p:submenu>
                         <p:submenu label="Admin Manager" style="width: 150px;" rendered="#{userController.connectedUser.createUser==true}">
                             <p:menuitem value="User" outcome="/user/AdminAccess.xhtml" />
-                            <p:menuitem value="Journal des actions" outcome="/journal/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}"/>
-                            <p:menuitem value="Historique des connections" outcome="/historique/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}" />
-                            <p:menuitem value="Devices" outcome="/device/AdminAccess.xhtml" rendered="#{userController.connectedUser.admin==true}" />
+                            <p:menuitem value="Journal des actions" outcome="/journal/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}"/>
+                            <p:menuitem value="Historique des connections" outcome="/historique/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}" />
+                            <p:menuitem value="Devices" outcome="/device/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}" />
                         </p:submenu>
                         <p:submenu label="Recherchers" icon="ui-icon-search" style="width: 150px">
                             <p:menuitem value="redevable" action="/search/SearchRedevable" />

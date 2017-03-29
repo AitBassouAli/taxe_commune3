@@ -3,28 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/LocaleFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/SearchTaxeTrim.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeTrimFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/locale_taxes.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/RedevableFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/LocaleController.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/annexeAdministratif/Edit.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/RueController.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/annexeAdministratif/Create.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/Adrressage.xhtml</file>
         </group>
         <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/LocaleFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeAnnuelFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeTrimFacade.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/quartier/Create.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/locale/List.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/secteur/Edit.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/annexeAdministratif/Edit.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/quartier/Edit.xhtml</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/rue/Create.xhtml</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/RueController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/bean/Redevable.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/SearchTaxeTrim.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/SearchLocale.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/charts/grapheCritere.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/locale_taxes.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/RedevableFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/LocaleController.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/rue/View.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/rue/Edit.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/template.xhtml</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/search/Adrressage.xhtml</file>
         </group>
     </open-files>

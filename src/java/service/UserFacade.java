@@ -5,12 +5,14 @@
  */
 package service;
 
+import bean.Device;
 import bean.User;
 import controler.util.HashageUtil;
 import controler.util.JsfUtil;
 import controler.util.SessionUtil;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +31,8 @@ public class UserFacade extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    @EJB
+    DeviceFacade deviceFacade;
 
     public UserFacade() {
         super(User.class);
@@ -143,6 +147,48 @@ public class UserFacade extends AbstractFacade<User> {
         userDestination.setEmail(userSource.getEmail());
     }
 
+//    public Object[] seConnecter1(User user, Device device) {
+//        if (user == null || user.getLogin() == null) {
+//            JsfUtil.addErrorMessage("Veuilliez saisir votre login");
+//            return new Object[]{-5, null};
+//        } else {
+//            User loadedUser = find(user.getLogin());
+//            if (loadedUser == null) {
+//                return new Object[]{-4, null};
+//            } else if (!loadedUser.getPassword().equals(HashageUtil.sha256(user.getPassword()))) {
+//                if (loadedUser.getNbrCnx() < 3) {
+//                    System.out.println("hana loadedUser.getNbrCnx() < 3 ::: " + loadedUser.getNbrCnx());
+//                    loadedUser.setNbrCnx(loadedUser.getNbrCnx() + 1);
+//                    edit(loadedUser);
+//                    return new Object[]{-7, null};
+//                } else {//(loadedUser.getNbrCnx() >= 3)
+//                    System.out.println("hana loadedUser.getNbrCnx() >= 3::: " + loadedUser.getNbrCnx());
+//                    loadedUser.setBlocked(1);
+//                    edit(loadedUser);
+//                    return new Object[]{-3, null};
+//                }
+//            } else if (loadedUser.getBlocked() == 1) {
+//                JsfUtil.addErrorMessage("Cet utilisateur est bloqué");
+//                return new Object[]{-2, null};
+//            } else {
+//                loadedUser.setNbrCnx(0);
+//                edit(loadedUser);
+//                user = clone(loadedUser);
+//                user.setPassword(null);
+//                int resDevice = deviceFacade.checkDevice(loadedUser, device);
+//                switch (resDevice) {
+//                    case -1:
+//                        return new Object[]{-1, null};
+//                    case 1:
+//                        deviceFacade.save(device, loadedUser);
+//                        return new Object[]{1, loadedUser};
+//                    default:
+//                        return new Object[]{2, loadedUser};
+//                }
+//            }
+//        }
+//    }
+
     public int seConnecter(User user) {
         if (user == null || user.getLogin() == null) {
             JsfUtil.addErrorMessage("Veuilliez saisir votre login");
@@ -198,7 +244,7 @@ public class UserFacade extends AbstractFacade<User> {
         clone.setPassword(user.getPassword());
         clone.setPrenom(user.getPrenom());
         clone.setTel(user.getTel());
-        clone.setAdmin(user.isAdmin());
+        clone.setAdmine(user.isAdmine());
         return clone;
     }
 

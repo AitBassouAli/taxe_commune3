@@ -2,6 +2,7 @@ package controler;
 
 import bean.Historique;
 import bean.User;
+import controler.util.DeviceUtil;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
@@ -25,7 +26,7 @@ import service.HistoriqueFacade;
 @Named("userController")
 @SessionScoped
 public class UserController implements Serializable {
-
+    
     @EJB
     private service.UserFacade ejbFacade;
     @EJB
@@ -33,10 +34,10 @@ public class UserController implements Serializable {
     private List<User> items = null;
     private User selected = new User();
     private User connectedUser;
-
+    
     public String reset() {
         User loadedUser = ejbFacade.find(selected);
-
+        
         if (loadedUser.getEmail().equals(selected.getEmail()) && loadedUser.getTel().equals(selected.getTel())) {
             if (loadedUser.getNom().equals(selected.getTel()) && loadedUser.getPrenom().equals(selected.getPrenom())) {
                 return loadedUser.getPassword();
@@ -44,11 +45,11 @@ public class UserController implements Serializable {
         }
         return "/faces/index";
     }
-
+    
     public String connectAsAdmin() {
         User loadedUser = ejbFacade.find(selected);
         if (loadedUser != null) {
-            if (loadedUser.isAdmin()) {
+            if (loadedUser.isAdmine()) {
                 String seConnecter = seConnecter();
                 if ("/user/Home".equals(seConnecter)) {
                     JsfUtil.addSuccessMessage("Bienvenue admin");
@@ -65,6 +66,19 @@ public class UserController implements Serializable {
     }
     // int tentatives = 3;
 
+//    public String seConnecter1() {
+//        Object[] res = ejbFacade.seConnecter1(selected, DeviceUtil.getDevice());
+//        int res1 = (int) res[0];
+//        if (res1 < 0) {
+//            JsfUtil.addErrorMessage("le code de l'erreur " + res1);
+//            return "/index";
+//        } else {
+//            SessionUtil.registerUser(ejbFacade.clone(selected));
+//            historiqueFacade.create(new Historique(new Date(), 1, ejbFacade.clone(selected)));
+//            return "/user/Home";
+//        }
+//        
+//    }
     public String seConnecter() {
         int res1 = ejbFacade.seConnecter(selected);
         if (res1 == 1) {
@@ -74,45 +88,57 @@ public class UserController implements Serializable {
         }
         return "/index";
     }
-
+    
+    public void adminCheaked() {
+        selected.setCreateAdresse(true);
+        selected.setCreateCtegorieTaux(true);
+        selected.setCreateLocale(true);
+        selected.setCreateRedevable(true);
+        selected.setCreateTaxes(true);
+        selected.setCreateUser(true);
+    }
+    
     public User getSelected() {
         if (selected == null) {
             selected = new User();
         }
         return selected;
     }
-
+    
     public void setSelected(User selected) {
         this.selected = selected;
     }
-
+    
     protected void setEmbeddableKeys() {
     }
-
+    
     protected void initializeEmbeddableKey() {
     }
-
+    
     private UserFacade getFacade() {
         return ejbFacade;
     }
-
+    
     public User prepareCreate() {
         selected = new User();
         initializeEmbeddableKey();
         return selected;
     }
-
+    
     public void create() {
+        if (selected.isAdmine() == true) {
+            adminCheaked();
+        }
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("UserUpdated"));
     }
-
+    
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("UserDeleted"));
         if (!JsfUtil.isValidationFailed()) {
@@ -120,14 +146,14 @@ public class UserController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
     public List<User> getItems() {
         if (items == null) {
             items = getFacade().findAll();
         }
         return items;
     }
-
+    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -165,22 +191,22 @@ public class UserController implements Serializable {
             }
         }
     }
-
+    
     public User getUser(java.lang.String id) {
         return getFacade().find(id);
     }
-
+    
     public List<User> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
-
+    
     public List<User> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-
+    
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {
-
+        
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -190,19 +216,19 @@ public class UserController implements Serializable {
                     getValue(facesContext.getELContext(), null, "userController");
             return controller.getUser(getKey(value));
         }
-
+        
         java.lang.String getKey(String value) {
             java.lang.String key;
             key = value;
             return key;
         }
-
+        
         String getStringKey(java.lang.String value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
-
+        
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -216,18 +242,18 @@ public class UserController implements Serializable {
                 return null;
             }
         }
-
+        
     }
-
+    
     public User getConnectedUser() {
         if (connectedUser == null) {
             connectedUser = ejbFacade.find(SessionUtil.getConnectedUser().getLogin());
         }
         return connectedUser;
     }
-
+    
     public void setConnectedUser(User connectedUser) {
         this.connectedUser = connectedUser;
     }
-
+    
 }

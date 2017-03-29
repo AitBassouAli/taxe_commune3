@@ -34,7 +34,7 @@ public class AnnexeAdministratifFacade extends AbstractFacade<AnnexeAdministrati
     public List<AnnexeAdministratif> findByName(String nom) {
         return em.createQuery("SELECT a FROM AnnexeAdministratif a WHERE a.nom='" + nom + "'").getResultList();
     }
-
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;

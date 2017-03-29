@@ -11,16 +11,16 @@
         <p:dialog id="SecteurEditDlg" widgetVar="SecteurEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditSecteurTitle}">
             <h:form id="SecteurEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{secteurController.selected != null}">
-                        
-                         <p:outputLabel value="#{bundle.EditSecteurLabel_nomSecteur}" for="nomSecteur" />
-                        <p:inputText id="nomSecteur" value="#{secteurController.selected.nomSecteur}" title="#{bundle.EditSecteurTitle_nomSecteur}" />
-                       
+                    <p:panelGrid columns="2" rendered="#{rueController.secteur != null}">
+
+                        <p:outputLabel value="#{bundle.EditSecteurLabel_nomSecteur}" for="nomSecteur" />
+                        <p:inputText id="nomSecteur" value="#{rueController.secteurCombo.nomSecteur}"  />
+
                         <p:outputLabel value="#{bundle.EditSecteurLabel_abreviation}" for="abreviation" />
-                        <p:inputText id="abreviation" value="#{secteurController.selected.abreviation}" title="#{bundle.EditSecteurTitle_abreviation}" />
-                       
+                        <p:inputText id="abreviation" value="#{rueController.secteurCombo.abreviation}"  />
+
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{secteurController.update}" value="#{bundle.Save}" update="display,:SecteurListForm:datalist,:growl" oncomplete="handleSubmit(args, 'SecteurEditDialog');"/>
+                    <p:commandButton actionListener="#{rueController.editSecteur()}" value="#{bundle.Save}" update="display,:SecteurListForm:datalist,:growl" oncomplete="handleSubmit(args, 'SecteurEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="SecteurEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

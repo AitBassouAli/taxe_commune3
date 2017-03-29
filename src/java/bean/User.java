@@ -30,10 +30,10 @@ public class User implements Serializable {
     private String tel;
     private int blocked;
     private int nbrCnx;
-    private boolean admin;
+    private boolean admine;
     private boolean createUser;  //12/03/2017
     private boolean createTaxes;
-    private boolean createRedevable;  
+    private boolean createRedevable;
     private boolean createLocale;
     private boolean createAdresse;
     private boolean createCtegorieTaux;
@@ -41,14 +41,13 @@ public class User implements Serializable {
     private List<Device> devices;
     @ManyToOne
     private AnnexeAdministratif annexeAdministratif;
-    
 
-    public boolean isAdmin() {
-        return admin;
+    public boolean isAdmine() {
+        return admine;
     }
 
-    public void setAdmin(boolean admiin) {
-        this.admin = admiin;
+    public void setAdmine(boolean admiine) {
+        this.admine = admiine;
     }
 
     public User(String login) {
@@ -58,7 +57,6 @@ public class User implements Serializable {
     public User() {
 
     }
-    
 
     public String getLogin() {
         return login;
@@ -124,11 +122,6 @@ public class User implements Serializable {
         this.nbrCnx = nbrCnx;
     }
 
-    
-    public void setAdmiin(boolean admiin) {
-        this.admin = admiin;
-    }
-
     public boolean isCreateUser() {
         return createUser;
     }
@@ -177,7 +170,6 @@ public class User implements Serializable {
         this.createCtegorieTaux = createCtegorieTaux;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -219,8 +211,6 @@ public class User implements Serializable {
         this.annexeAdministratif = annexeAdministratif;
     }
 
-    
-    
     @Override
     public String toString() {
         return login;

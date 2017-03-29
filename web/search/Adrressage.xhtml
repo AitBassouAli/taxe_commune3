@@ -14,11 +14,11 @@
 
         <ui:define name="body">
             <div class="container" >
-                <div class="col-lg-3" style="margin-top: 4%;padding: -2%;">
+                <div class="col-lg-3" style="margin-top: 4%;">
                     <h:form id="SecteurListForm">
-                        <p:panel header="#{bundle.ListSecteurTitle}">
-                            <p:dataTable id="datalist" value="#{secteurController.items}" var="item"
-                                         selectionMode="single" selection="#{annexeAdministratifController.secteur}"
+                        <p:panel >
+                            <p:dataTable id="datalist" value="#{rueController.secteurs}" var="item"
+                                         selectionMode="single" 
                                          paginator="true"
                                          rowKey="#{item.id}"
                                          rows="10"
@@ -43,11 +43,11 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findAnnexs(item)}" icon="ui-icon-search" update=":AnnexeAdministratifListForm:datalist,:AnnexeAdministratifCreateForm"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{secteurController.destroy}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroySecteur(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="editButton"   icon="ui-icon-pencil" actionListener="#{rueController.prepareEditSecteur(item)}" update=":SecteurEditForm" oncomplete="PF('SecteurEditDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{SecteurController.prepareCreate}" update=":SecteurCreateForm" oncomplete="PF('SecteurCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
-                                    <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":SecteurEditForm" oncomplete="PF('SecteurEditDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreateSecteur()}" update=":SecteurCreateForm" oncomplete="PF('SecteurCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:panel>
@@ -56,12 +56,12 @@
                 <div class="col-lg-3" style="margin-top: 4%;">
 
                     <h:form id="AnnexeAdministratifListForm">
-                        <p:panel header="#{bundle.ListAnnexeAdministratifTitle}">
+                        <p:panel >
                             <p:outputLabel value="Nom Annex : "/>
                             <p:inputText id="nomAnnex" value="#{rueController.nomAnnex}" style="width:115px;"></p:inputText>
                             <p:commandButton actionListener="#{rueController.findAnnexByName()}" update="datalist" icon="ui-icon-search" />
                             <p:dataTable id="datalist" value="#{rueController.secteur.annexeAdministratifs}" var="item"
-                                         selectionMode="single"  selection="#{quartierController.annexe}"
+                                         selectionMode="single" 
                                          paginator="true"
                                          rowKey="#{item.id}"
                                          rows="10"
@@ -84,13 +84,13 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findQuartiers(item)}" icon="ui-icon-search" update=":QuartierListForm:datalist"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{annexeAdministratifController.destroy}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroyAnnexe(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="editButton"   icon="ui-icon-pencil"  update=":AnnexeAdministratifEditForm" oncomplete="PF('AnnexeAdministratifEditDialog').show()"
+                                                     actionListener="#{rueController.prepareEditAnnexe(item)}" disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{annexeAdministratifController.prepareCreate}" update=":AnnexeAdministratifCreateForm"
+                                    <p:commandButton id="createButton" icon="ui-icon-plus" actionListener="#{rueController.prepareCreateAnnexe()}"  value="#{bundle.Create}"  update=":AnnexeAdministratifCreateForm"
                                                      oncomplete="PF('AnnexeAdministratifCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
-                                    <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":AnnexeAdministratifEditForm" oncomplete="PF('AnnexeAdministratifEditDialog').show()"
-                                                     disabled="#{rueController.user.createAdresse==false}"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:panel>
@@ -99,18 +99,17 @@
                 </div>
                 <div class="col-lg-3" style="margin-top: 4%;">
                     <h:form id="QuartierListForm">
-                        <p:panel header="#{bundle.ListQuartierTitle}">
+                        <p:panel >
                             <p:outputLabel value="Nom Quartier : "/>
                             <p:inputText id="nomQuartier" value="#{rueController.nomQuartier}"  style="width:110px;"></p:inputText>
                             <p:commandButton actionListener="#{rueController.findQuartierByName()}" update="datalist" icon="ui-icon-search" />
                             <p:dataTable id="datalist" value="#{rueController.annexeAdministratif.quartiers}" var="item"
-                                         selectionMode="single" selection="#{rueController.quartier}"
+                                         selectionMode="single" 
                                          paginator="true"
                                          rowKey="#{item.id}"
                                          rows="10"
                                          rowsPerPageTemplate="10,20,30,40,50"
                                          >
-                                <p:ajax event="rowSelect" listener="#{quartierController.initialise(item)}"/>
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="#{bundle.ListQuartierTitle_numAbreviation}"/>
@@ -128,13 +127,13 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findRues(item)}" icon="ui-icon-search" update=":RueListForm:datalist" />
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{quartierController.destroy}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroyQuartier(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="editButton" icon="ui-icon-pencil"  update=":QuartierEditForm" oncomplete="PF('QuartierEditDialog').show()"
+                                                     actionListener="#{rueController.PrepareEditQuartier(item)}" disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{quartierController.prepareCreate}" 
+                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreateQuartier()}" 
                                                      update=":QuartierCreateForm" oncomplete="PF('QuartierCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
-                                    <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update=":QuartierEditForm" oncomplete="PF('QuartierEditDialog').show()"
-                                                     disabled="#{rueController.user.createAdresse==false}"/>
                                 </f:facet>
 
                             </p:dataTable>
@@ -144,12 +143,12 @@
                 <div class="col-lg-3" style="margin-top: 4%;">
 
                     <h:form id="RueListForm">
-                        <p:panel header="#{bundle.ListRueTitle}">
+                        <p:panel >
                             <p:outputLabel value="Nom Rue : "/>
                             <p:inputText id="nomRue" value="#{rueController.nomRue}"  style="width:115px;"></p:inputText>
                             <p:commandButton actionListener="#{rueController.findRueByName()}" update="datalist" icon="ui-icon-search" />
                             <p:dataTable id="datalist" value="#{rueController.quartier.rues}" var="item"
-                                         selectionMode="single" selection="#{rueController.selected}"
+                                         selectionMode="single" 
                                          paginator="true"
                                          rowKey="#{item.id}"
                                          rows="10"
@@ -171,14 +170,14 @@
                                     <f:facet name="header">
                                         <h:outputText value="Action"/>
                                     </f:facet>
-                                    <p:commandButton id="viewButton"   icon="ui-icon-search"  update=":RueViewForm"  oncomplete="PF('RueViewDialog').show()"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"   actionListener="#{rueController.destroy}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="viewButton"   icon="ui-icon-search" actionListener="#{rueController.prepareEditRue(item)}" update=":RueViewForm"  oncomplete="PF('RueViewDialog').show()"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"   actionListener="#{rueController.destroy(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="editButton" icon="ui-icon-pencil" actionListener="#{rueController.prepareEditRue(item)}"  update=":RueEditForm" oncomplete="PF('RueEditDialog').show()"
+                                                     disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
                                     <p:commandButton id="createButton" icon="ui-icon-extlink"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreate}" 
                                                      update=":RueCreateForm" oncomplete="PF('RueCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
-                                    <p:commandButton id="editButton" icon="ui-icon-gear" value="#{bundle.Edit}" update=":RueEditForm" oncomplete="PF('RueEditDialog').show()"
-                                                     disabled="#{rueController.user.createAdresse==false}"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:panel>
@@ -186,15 +185,12 @@
                 </div>
                 <ui:include src="/secteur/Create.xhtml"/>
                 <ui:include src="/secteur/Edit.xhtml"/>
-                <ui:include src="/secteur/View.xhtml"/>
 
                 <ui:include src="/annexeAdministratif/Create.xhtml"/>
                 <ui:include src="/annexeAdministratif/Edit.xhtml"/>
-                <ui:include src="/annexeAdministratif/View.xhtml"/>
 
                 <ui:include src="/quartier/Create.xhtml"/>
                 <ui:include src="/quartier/Edit.xhtml"/>
-                <ui:include src="/quartier/View.xhtml"/>
 
                 <ui:include src="/rue/Create.xhtml"/>
                 <ui:include src="/rue/Edit.xhtml"/>

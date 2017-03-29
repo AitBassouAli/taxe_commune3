@@ -32,7 +32,7 @@ public class TaxeTrim implements Serializable {
     private Double autresMoisRetard;
     private Double montant;
     private int nbrMoisRetard;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date datePaiement=new Date();
     private int numeroTrim;
     private int nombreNuit;

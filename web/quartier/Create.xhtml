@@ -11,41 +11,41 @@
         <p:dialog id="QuartierCreateDlg" widgetVar="QuartierCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateQuartierTitle}">
             <h:form id="QuartierCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{quartierController.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{rueController.quartier != null}">
 
-                        <p:outputLabel value="secteur" rendered="#{quartierController.annexe.id==null or quartierController.allBtnClicked==true}" />
-                        <p:selectOneMenu id="secteur"  value="#{quartierController.secteur}" rendered="#{quartierController.annexe.id==null or quartierController.allBtnClicked==true}" >
+                        <p:outputLabel value="secteur" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" />
+                        <p:selectOneMenu id="secteur"  value="#{rueController.secteurCombo}" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
                                            var="secteurItem" 
                                            itemValue="#{secteurItem}"/>
-                            <p:ajax process="secteur" listener="#{quartierController.findAnnexs()}" update="annexeAdministratif,save" />
+                            <p:ajax process="secteur" listener="#{rueController.findAnnexs()}" update="annexeAdministratif,save" />
                         </p:selectOneMenu>
 
                         <p:outputLabel value="#{bundle.CreateQuartierLabel_annexeAdministratif}" for="annexeAdministratif" />
-                        <p:selectOneMenu id="annexeAdministratif"  value="#{quartierController.annexe}" rendered="#{quartierController.annexe.id==null or quartierController.allBtnClicked==true}" >
+                        <p:selectOneMenu id="annexeAdministratif"  value="#{rueController.annexeAdministratifCombo}" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                            <f:selectItems value="#{quartierController.secteur.annexeAdministratifs}"
+                            <f:selectItems value="#{rueController.secteurCombo.annexeAdministratifs}"
                                            var="annexAdministratifItem" 
                                            itemValue="#{annexAdministratifItem}"/>
-                            <p:ajax update="save"/>
+                            <p:ajax update="save" listener="#{rueController.annexSelect}"/>
                         </p:selectOneMenu>
-                        <p:commandButton icon="ui-icon-refresh" actionListener="#{quartierController.showAllAnnexes()}" update="QuartierCreateForm" rendered="#{quartierController.annexe.id!=null}" style="left: 85px">
-                            <h:outputText value="#{quartierController.annexe.nom}" rendered="#{quartierController.annexe.id!=null}" ></h:outputText>
+                        <p:commandButton icon="ui-icon-refresh" actionListener="#{rueController.showAllAnnexes()}" update="QuartierCreateForm" rendered="#{rueController.annexeAdministratifCombo.id!=null}" style="float:right">
+                            <h:outputText value="#{rueController.annexeAdministratifCombo.nom}" rendered="#{rueController.annexeAdministratifCombo.id!=null}" ></h:outputText>
                         </p:commandButton>
 
                         <p:outputLabel value="#{bundle.CreateQuartierLabel_nom}" for="nom" />
-                        <p:inputText id="nom" value="#{quartierController.selected.nom}" title="#{bundle.CreateQuartierTitle_nom}" />
+                        <p:inputText id="nom" value="#{rueController.quartier.nom}"  />
 
 
                         <p:outputLabel value="#{bundle.CreateQuartierLabel_numAbreviation}" for="numAbreviation" />
-                        <p:inputText id="numAbreviation" value="#{quartierController.selected.numAbreviation}" title="#{bundle.CreateQuartierTitle_numAbreviation}" />
+                        <p:inputText id="numAbreviation" value="#{rueController.quartier.numAbreviation}"  />
 
 
 
                     </p:panelGrid>
-                    <p:commandButton id="save" actionListener="#{quartierController.create}" value="#{bundle.Save}" update="display,:QuartierListForm:datalist,:growl" 
-                                     disabled="#{empty quartierController.annexe.id}"  oncomplete="handleSubmit(args,'QuartierCreateDialog');"/>
+                    <p:commandButton id="save" actionListener="#{rueController.saveQuartier()}" value="#{bundle.Save}" update="display,:QuartierListForm:datalist,:growl" 
+                                     disabled="#{empty rueController.annexeAdministratifCombo.id}"  oncomplete="handleSubmit(args,'QuartierCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="QuartierCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

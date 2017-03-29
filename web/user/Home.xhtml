@@ -61,7 +61,7 @@
                     <p:commandLink action="/locale/List" value="link"></p:commandLink>
                 </div>
                 <div class="col-lg-6" style="margin-top: 4%;">
-                    <p:panel rendered="#{userController.connectedUser.admin==true}" >
+                    <p:panel rendered="#{userController.connectedUser.admine==true}" >
                              <ul class="nav nav-pills nav-stacked">
                             <li class="active"><a href="#">ADMIN ACCESS</a> </li>
                             <li><p:commandLink class="btn-block" oncomplete="PF('AccessDialog').show()" value="users"></p:commandLink></li>

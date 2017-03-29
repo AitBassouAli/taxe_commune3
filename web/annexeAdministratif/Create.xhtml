@@ -11,26 +11,26 @@
         <p:dialog id="AnnexeAdministratifCreateDlg" widgetVar="AnnexeAdministratifCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateAnnexeAdministratifTitle}">
             <h:form id="AnnexeAdministratifCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{annexeAdministratifController.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{rueController.annexeAdministratif != null}">
                         <p:outputLabel value="#{bundle.CreateAnnexeAdministratifLabel_secteur}" for="secteur" />
-                        <p:selectOneMenu id="secteur" value="#{annexeAdministratifController.secteur}" rendered="#{annexeAdministratifController.secteur.id==null or annexeAdministratifController.allBtnClicked==true}" >
+                        <p:selectOneMenu id="secteur" value="#{rueController.secteurCombo}" rendered="#{rueController.secteurCombo.id==null or rueController.allSecteursClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.itemsAvailableSelectOne}"  
                                            var="secteurItem"
                                            itemValue="#{secteurItem}"/>
-                            <p:ajax update="save" listener="#{annexeAdministratifController.itemSelect()}" />
+                            <p:ajax update="save" listener="#{rueController.secteurSelect()}"/>
                         </p:selectOneMenu>
-                        <p:commandButton icon="ui-icon-refresh" actionListener="#{annexeAdministratifController.showAllSecteurs()}" update="AnnexeAdministratifCreateForm" rendered="#{annexeAdministratifController.secteur.id!=null }" style="left: 85px">
-                            <h:outputText value="#{annexeAdministratifController.secteur.nomSecteur}" rendered="#{annexeAdministratifController.secteur.id!=null}" ></h:outputText>
+                        <p:commandButton icon="ui-icon-refresh" actionListener="#{rueController.showAllSecteurs()}" update="AnnexeAdministratifCreateForm" rendered="#{rueController.secteurCombo.id!=null }" style="float:right">
+                            <h:outputText value="#{rueController.secteurCombo.nomSecteur}" rendered="#{rueController.secteurCombo.id!=null}" ></h:outputText>
                         </p:commandButton>
                         <p:outputLabel value="#{bundle.CreateAnnexeAdministratifLabel_nom}" for="nom" />
-                        <p:inputText id="nom" value="#{annexeAdministratifController.selected.nom}" title="#{bundle.CreateAnnexeAdministratifTitle_nom}" />
+                        <p:inputText id="nom" value="#{rueController.annexeAdministratif.nom}" title="#{bundle.CreateAnnexeAdministratifTitle_nom}" />
                         <p:outputLabel value="#{bundle.CreateAnnexeAdministratifLabel_abreviation}" for="abreviation" />
-                        <p:inputText id="abreviation" value="#{annexeAdministratifController.selected.abreviation}" title="#{bundle.CreateAnnexeAdministratifTitle_abreviation}" />
+                        <p:inputText id="abreviation" value="#{rueController.annexeAdministratif.abreviation}" title="#{bundle.CreateAnnexeAdministratifTitle_abreviation}" />
 
                     </p:panelGrid>
-                    <p:commandButton id="save" actionListener="#{annexeAdministratifController.create}" value="#{bundle.Save}" update="display,:AnnexeAdministratifListForm:datalist,:growl" oncomplete="handleSubmit(args,'AnnexeAdministratifCreateDialog');"
-                                     disabled="#{empty annexeAdministratifController.secteur.id}"/>
+                    <p:commandButton id="save" actionListener="#{rueController.saveAnnex}" value="#{bundle.Save}" update="display,:AnnexeAdministratifListForm:datalist,:growl" 
+                                     disabled="#{empty rueController.secteurCombo.id}" oncomplete="handleSubmit(args,'AnnexeAdministratifCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="AnnexeAdministratifCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
