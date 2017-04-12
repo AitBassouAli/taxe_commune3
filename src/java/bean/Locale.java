@@ -24,7 +24,6 @@ public class Locale implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   
     @ManyToOne
     private Rue rue;
     private String complementAdresse;
@@ -35,6 +34,7 @@ public class Locale implements Serializable {
     private Redevable gerant;
     private String reference;
     private String activite;
+    private String nom;
     private int dernierTrimestrePaiement;
     private int dernierAnneePaiement;
     @ManyToOne
@@ -138,6 +138,14 @@ public class Locale implements Serializable {
         this.reference = reference;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -153,7 +161,7 @@ public class Locale implements Serializable {
 
     @Override
     public String toString() {
-        return reference +" "+complementAdresse;
+        return reference + " " + complementAdresse;
     }
 
 }

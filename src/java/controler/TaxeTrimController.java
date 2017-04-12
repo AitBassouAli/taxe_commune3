@@ -11,6 +11,7 @@ import bean.User;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
+import java.io.IOException;
 import service.TaxeTrimFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import net.sf.jasperreports.engine.JRException;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -39,6 +41,7 @@ import service.QuartierFacade;
 import service.RedevableFacade;
 import service.RueFacade;
 import service.SecteurFacade;
+import service.TaxeAnnuelFacade;
 import service.UserFacade;
 
 @Named("taxeTrimController")
@@ -60,7 +63,11 @@ public class TaxeTrimController implements Serializable {
     @EJB
     private AnnexeAdministratifFacade annexeAdministratifFacade;
     @EJB
+    private TaxeAnnuelFacade taxeAnnuelFacade;
+    @EJB
     private UserFacade userFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private User connectedUser;
 
     private Quartier quartier;
@@ -96,6 +103,44 @@ public class TaxeTrimController implements Serializable {
     private DonutChartModel donutChartModel;
     private List<TaxeTrim> taxes;
     private int typeGraphe;
+    private boolean editRedevableBtn;
+
+    // jasper
+    public void generatPdf() throws JRException, IOException {
+        ejbFacade.printPdf(selected);
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+
+    public void editRedevableBtnClicked() {
+        editRedevableBtn = true;
+    }
+
+    public void prepareEdit() {
+        editRedevableBtn = false;
+        cin = "";
+        rc = "";
+        redevable = new Redevable();
+    }
+
+    public void editRedevableCinjOfTaxe() {
+        redevable = getRedevable();
+        findRedevableByCin();
+        if (redevable != null) {
+            selected.setRedevable(redevable);
+        } else {
+            selected.setRedevable(new Redevable());
+        }
+    }
+
+    public void editRedevableRcjOfTaxe() {
+        redevable = getRedevable();
+        findRedevableByRc();
+        if (redevable != null) {
+            selected.setRedevable(redevable);
+        } else {
+            selected.setRedevable(new Redevable());
+        }
+    }
 
     public void itemSelect() {
         rendred = false;
@@ -270,7 +315,7 @@ public class TaxeTrimController implements Serializable {
         }
     }
 
-    public void create() {
+    public void create() throws JRException, IOException {
         Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, false);
         if ((int) res[0] == 1) {
             System.out.println("persiting...");
@@ -278,6 +323,9 @@ public class TaxeTrimController implements Serializable {
             selected.setRedevable(redevable);
             selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
+            selected.setId(ejbFacade.generateId("TaxeTrim", "id")); //pour ne pas avoir un null lors du remplissage du PDF
+            System.out.println("id de ce dernier selected qui a été creé==> " + selected.getId());
+            generatPdf();
         } else {
             switch ((int) res[0]) {
                 case -1:
@@ -290,7 +338,17 @@ public class TaxeTrimController implements Serializable {
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimUpdated"));
+        selected = ejbFacade.update(ejbFacade.clone(selected));
+        if (selected != null) {
+            TaxeTrim oldTaxeTrim = ejbFacade.find(selected.getId());
+            persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimUpdated"));
+            if (oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() == 0 && oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() == 0.0) {
+                taxeAnnuelFacade.delete(oldTaxeTrim.getTaxeAnnuel());
+            }
+            items = null;
+        } else {
+            JsfUtil.addErrorMessage("TaxeTrim erroor !!");
+        }
     }
 
     public void destroy() {
@@ -312,12 +370,27 @@ public class TaxeTrimController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("TaxeTrim", 1);
+                            JsfUtil.addSuccessMessage("TaxeTrim bien crée");
+                            break;
+                        case UPDATE:
+                            TaxeTrim oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("TaxeTrim", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("TaxeTrim", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
@@ -691,10 +764,17 @@ public class TaxeTrimController implements Serializable {
     public boolean isRendred() {
         return rendred;
     }
-    
 
     public void setRendred(boolean rendred) {
         this.rendred = rendred;
+    }
+
+    public boolean isEditRedevableBtn() {
+        return editRedevableBtn;
+    }
+
+    public void setEditRedevableBtn(boolean editRedevableBtn) {
+        this.editRedevableBtn = editRedevableBtn;
     }
 
 }

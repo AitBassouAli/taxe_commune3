@@ -53,7 +53,7 @@
                         <p:inputText id="activite" value="#{localeController.selected.activite}" title="#{bundle.CreateLocaleTitle_activite}" />
 
                         <p:outputLabel value="secteur" />
-                        <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" >
+                        <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
                                            var="secteurItem" 
@@ -62,7 +62,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="annexAdministratif" />
-                        <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" >
+                        <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
                                            var="annexAdministratifItem" 
@@ -71,7 +71,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="quartier" />
-                        <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" >
+                        <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
                                            var="quartierItem" 
@@ -80,7 +80,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
-                        <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" >
+                        <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{localeController.quartier.rues}"
                                            var="rueItem"

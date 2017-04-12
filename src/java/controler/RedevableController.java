@@ -26,12 +26,20 @@ public class RedevableController implements Serializable {
 
     @EJB
     private service.RedevableFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Redevable> items = null;
     private List<Redevable> itemsAvaible;
     private Redevable selected;
 
     public void findByRCorCIN() {
         itemsAvaible = ejbFacade.findByCinOrRc(selected);
+    }
+    public void findByCin(){
+        selected=ejbFacade.findOnebyCin(selected.getCin());
+    }
+     public void findByRc(){
+        selected=ejbFacade.findOnebyRc(selected.getRc());
     }
 
     public RedevableController() {
@@ -110,17 +118,21 @@ public class RedevableController implements Serializable {
                         case CREATE:
                             if (getFacade().findByCinOrRc(selected).isEmpty()) {
                                 getFacade().edit(selected);
+                                journalFacade.journalCreatorDelet("Redevable", 1);
                                 JsfUtil.addSuccessMessage("Redevable bien crée");
                             } else {
                                 JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
                             }
                             break;
                         case UPDATE:
+                            Redevable oldvalue = getFacade().find(selected.getId());
                             getFacade().edit(selected);
+                            journalFacade.journalUpdate("Redevable", 2, oldvalue, selected);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                         default:
                             getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Redevable", 3);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                     }

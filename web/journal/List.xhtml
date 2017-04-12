@@ -15,6 +15,27 @@
 
         <ui:define name="body">
             <h:form id="JournalListForm">
+                <p:fieldset legend="Rechercher des taxeTrime par différents critères:">
+
+                    <p:panelGrid columns="10" >
+                        
+                        <p:selectOneMenu id="numeroTrim" value="#{journalController.typee}" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                            <f:selectItem itemLabel="Create" itemValue="1"/>
+                            <f:selectItem itemLabel="Update" itemValue="2"/>
+                            <f:selectItem itemLabel="Delete" itemValue="3"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="beanName:" for="beanName" />
+                        <p:inputText id="beanName" value="#{journalController.beanName}"  />
+                        <p:outputLabel value="DateMin:" for="dateMin" />
+                        <p:calendar id="dateMin" pattern="MM/dd/yyyy" value="#{journalController.dateMin}"  showOn="button" />
+                        <p:outputLabel value="DateMin:" for="dateMax"  />
+                        <p:calendar id="dateMax" pattern="MM/dd/yyyy" value="#{journalController.dateMax}" showOn="button"/>
+                    </p:panelGrid>
+                    <div align="center">
+                        <p:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{journalController.searche()}" update="datalist"></p:commandButton>
+                    </div>
+                </p:fieldset>
                 <p:panel header="#{bundle.ListJournalTitle}">
                     <p:dataTable id="datalist" value="#{journalController.items}" var="item"
                                  selectionMode="single" selection="#{journalController.selected}"

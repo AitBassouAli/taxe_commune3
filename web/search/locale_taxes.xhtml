@@ -22,7 +22,7 @@
                                     <p:outputLabel value="Gerant:" />
                                     <p:inputText id="gerant" value="#{localeController.gerantCinRc}" />
                                     <p:outputLabel value="Categorie:"  />
-                                    <p:selectOneMenu id="categorie" value="#{localeController.categorie}" >
+                                    <p:selectOneMenu id="categorie" value="#{localeController.categorie}" filter="true" >
                                         <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                         <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
                                     </p:selectOneMenu>

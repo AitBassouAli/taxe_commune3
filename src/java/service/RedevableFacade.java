@@ -60,8 +60,16 @@ public class RedevableFacade extends AbstractFacade<Redevable> {
         return em.createQuery("SELECT r FROM Redevable r WHERE r.cin= '" + redevable + "'").getResultList();
     }
 
+    public Redevable findOnebyCin(String redevable) {
+        return (Redevable) em.createQuery("SELECT r FROM Redevable r WHERE r.cin= '" + redevable + "'").getSingleResult();
+    }
+
     public List<Redevable> findByRc(String redevable) {
         return em.createQuery("SELECT r FROM Redevable r WHERE r.rc='" + redevable + "'").getResultList();
+    }
+
+    public Redevable findOnebyRc(String redevable) {
+        return (Redevable) em.createQuery("SELECT r FROM Redevable r WHERE r.rc='" + redevable + "'").getSingleResult();
     }
 
     public Redevable findByCinRc(String redevable) {

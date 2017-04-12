@@ -6,7 +6,6 @@
 package bean;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -30,18 +29,40 @@ public class Journal implements Serializable {
     private Long id;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateAction;
-    private int type;   //1 delete 2 upate
+    private int type;   //1 delete 2 upate 3 create
     private String ancienValeur;
     private String nouvelleValeur;
+    private String beanName;
     @ManyToOne
     private User user;
     @OneToOne
     private Device device;
 
+    public Journal() {
+    }
+
     public int getType() {
         return type;
     }
 
+    public Journal(Date dateAction, int type, String beanName, User user) {
+        this.dateAction = dateAction;
+        this.type = type;
+        this.beanName = beanName;
+        this.user = user;
+    }
+
+   
+
+    public Journal(Date dateAction, int type, String ancienValeur, String nouvelleValeur, String beanName, User user) {
+        this.dateAction = dateAction;
+        this.type = type;
+        this.ancienValeur = ancienValeur;
+        this.nouvelleValeur = nouvelleValeur;
+        this.beanName = beanName;
+        this.user = user;
+    }
+ 
     public void setType(int type) {
         this.type = type;
     }
@@ -61,7 +82,14 @@ public class Journal implements Serializable {
     public void setNouvelleValeur(String nouvelleValeur) {
         this.nouvelleValeur = nouvelleValeur;
     }
-    
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
 
     public Long getId() {
         return id;
@@ -78,7 +106,6 @@ public class Journal implements Serializable {
     public void setDateAction(Date dateAction) {
         this.dateAction = dateAction;
     }
-
 
     public User getUser() {
         return user;

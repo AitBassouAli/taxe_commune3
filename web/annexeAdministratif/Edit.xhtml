@@ -16,7 +16,7 @@
                         <p:commandButton icon="ui-icon-refresh" actionListener="#{rueController.showAllSecteurs()}" update="AnnexeAdministratifEditForm" rendered="#{rueController.secteurCombo.id!=null }" style="float:right">
                             <h:outputText value="#{rueController.secteurCombo.nomSecteur}" rendered="#{rueController.secteurCombo.id!=null}" ></h:outputText>
                         </p:commandButton>
-                        <p:selectOneMenu id="secteur" value="#{rueController.secteurCombo}"  rendered="#{rueController.secteurCombo.id==null or rueController.allSecteursClicked==true}">
+                        <p:selectOneMenu id="secteur" value="#{rueController.secteurCombo}" filter="true" rendered="#{rueController.secteurCombo.id==null or rueController.allSecteursClicked==true}">
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{rueController.secteurs}"
                                            var="secteurItem"

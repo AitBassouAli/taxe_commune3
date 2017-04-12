@@ -14,7 +14,7 @@
                     <p:panelGrid columns="2" rendered="#{rueController.quartier != null}">
 
                         <p:outputLabel value="secteur" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" />
-                        <p:selectOneMenu id="secteur"  value="#{rueController.secteurCombo}" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
+                        <p:selectOneMenu id="secteur"  value="#{rueController.secteurCombo}" filter="true" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
                                            var="secteurItem" 
@@ -23,7 +23,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="#{bundle.CreateQuartierLabel_annexeAdministratif}" for="annexeAdministratif" />
-                        <p:selectOneMenu id="annexeAdministratif"  value="#{rueController.annexeAdministratifCombo}" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
+                        <p:selectOneMenu id="annexeAdministratif"  value="#{rueController.annexeAdministratifCombo}" filter="true" rendered="#{rueController.annexeAdministratifCombo.id==null or rueController.allAnnexesClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{rueController.secteurCombo.annexeAdministratifs}"
                                            var="annexAdministratifItem" 

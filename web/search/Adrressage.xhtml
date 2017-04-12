@@ -43,7 +43,13 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findAnnexs(item)}" icon="ui-icon-search" update=":AnnexeAdministratifListForm:datalist,:AnnexeAdministratifCreateForm"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroySecteur(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" style="border:1px;background: red" actionListener="#{rueController.destroySecteur(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}">
+                                         <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                     <p:confirmDialog global="true">
+                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                                </p:confirmDialog> 
                                     <p:commandButton id="editButton"   icon="ui-icon-pencil" actionListener="#{rueController.prepareEditSecteur(item)}" update=":SecteurEditForm" oncomplete="PF('SecteurEditDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
@@ -84,7 +90,7 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findQuartiers(item)}" icon="ui-icon-search" update=":QuartierListForm:datalist"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroyAnnexe(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" style="background: red"  actionListener="#{rueController.destroyAnnexe(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
                                     <p:commandButton id="editButton"   icon="ui-icon-pencil"  update=":AnnexeAdministratifEditForm" oncomplete="PF('AnnexeAdministratifEditDialog').show()"
                                                      actionListener="#{rueController.prepareEditAnnexe(item)}" disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
@@ -127,12 +133,12 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton actionListener="#{rueController.findRues(item)}" icon="ui-icon-search" update=":RueListForm:datalist" />
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroyQuartier(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" style="border:1px;background: red" actionListener="#{rueController.destroyQuartier(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
                                     <p:commandButton id="editButton" icon="ui-icon-pencil"  update=":QuartierEditForm" oncomplete="PF('QuartierEditDialog').show()"
                                                      actionListener="#{rueController.PrepareEditQuartier(item)}" disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreateQuartier()}" 
+                                    <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}" actionListener="#{rueController.prepareCreateQuartier()}" 
                                                      update=":QuartierCreateForm" oncomplete="PF('QuartierCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
                                 </f:facet>
 
@@ -171,7 +177,7 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton id="viewButton"   icon="ui-icon-search" actionListener="#{rueController.prepareEditRue(item)}" update=":RueViewForm"  oncomplete="PF('RueViewDialog').show()"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"   actionListener="#{rueController.destroy(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" style="border:1px;background: red" icon="ui-icon-trash"   actionListener="#{rueController.destroy(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}"/>
                                     <p:commandButton id="editButton" icon="ui-icon-pencil" actionListener="#{rueController.prepareEditRue(item)}"  update=":RueEditForm" oncomplete="PF('RueEditDialog').show()"
                                                      disabled="#{rueController.user.createAdresse==false}"/>
                                 </p:column>

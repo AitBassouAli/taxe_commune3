@@ -45,7 +45,13 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     }
 
     public List<Locale> findByRedevableRc(String redevable) {
-        return em.createQuery("SELECT l FROM Locale l WHERE l.proprietaire.rc= '" + redevable + "' OR l.gerant.rc='" + redevable + "'").getResultList();
+        if (!redevable.equals("")) {
+            String rqt = "SELECT l FROM Locale l WHERE l.proprietaire.rc= '" + redevable + "' OR l.gerant.rc='" + redevable + "'";
+            System.out.println(rqt);
+            return em.createQuery(rqt).getResultList();
+        } else {
+            return null;
+        }
     }
 
     public List<Locale> findByGerantOrProprietaire(Categorie categorie, Redevable proprietaire, String activite, String reference, Redevable gerant) {

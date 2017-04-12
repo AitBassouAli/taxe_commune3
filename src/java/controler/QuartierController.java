@@ -32,6 +32,8 @@ public class QuartierController implements Serializable {
     private service.QuartierFacade ejbFacade;
     @EJB
     private service.AnnexeAdministratifFacade annexAdministratifFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Quartier> items = null;
     private Quartier selected;
     private Secteur secteur;
@@ -127,12 +129,27 @@ public class QuartierController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Quartier", 1);
+                            JsfUtil.addSuccessMessage("Quartier bien crée");
+                            break;
+                        case UPDATE:
+                            Quartier oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Quartier", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Quartier", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

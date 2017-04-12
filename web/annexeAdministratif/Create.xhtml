@@ -13,7 +13,7 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{rueController.annexeAdministratif != null}">
                         <p:outputLabel value="#{bundle.CreateAnnexeAdministratifLabel_secteur}" for="secteur" />
-                        <p:selectOneMenu id="secteur" value="#{rueController.secteurCombo}" rendered="#{rueController.secteurCombo.id==null or rueController.allSecteursClicked==true}" >
+                        <p:selectOneMenu id="secteur" value="#{rueController.secteurCombo}" filter="true" rendered="#{rueController.secteurCombo.id==null or rueController.allSecteursClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.itemsAvailableSelectOne}"  
                                            var="secteurItem"

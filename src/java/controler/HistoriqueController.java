@@ -28,6 +28,8 @@ public class HistoriqueController implements Serializable {
 
     @EJB
     private service.HistoriqueFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Historique> items = null;
     private Historique selected;
     
@@ -39,7 +41,7 @@ public class HistoriqueController implements Serializable {
         SessionUtil.unSetUser(user);
         selected=new Historique(new Date(),2,user);
         ejbFacade.create(selected);
-        return "/faces/index";
+        return "/index?faces-redirect=true";
     }
 
     public HistoriqueController() {
@@ -99,12 +101,27 @@ public class HistoriqueController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Historique", 1);
+                            JsfUtil.addSuccessMessage("Historique bien crée");
+                            break;
+                        case UPDATE:
+                            Historique oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Historique", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

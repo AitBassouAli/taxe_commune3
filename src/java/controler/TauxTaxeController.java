@@ -25,6 +25,8 @@ public class TauxTaxeController implements Serializable {
 
     @EJB
     private service.TauxTaxeFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<TauxTaxe> items = null;
     private TauxTaxe selected;
 
@@ -87,13 +89,28 @@ public class TauxTaxeController implements Serializable {
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+             try {
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("TauxTaxe", 1);
+                            JsfUtil.addSuccessMessage("TauxTaxe bien crée");
+                            break;
+                        case UPDATE:
+                            TauxTaxe oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("TauxTaxe", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("TauxTaxe", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

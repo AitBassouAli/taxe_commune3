@@ -22,13 +22,13 @@
                         <p:inputText id="nombreNuitMax" value="#{taxeTrimController.nombreNuitMax}"  />
 
                         <p:outputLabel value="Categorie:" for="categorie" />
-                        <p:selectOneMenu id="categorie" value="#{taxeTrimController.categorie}" >
+                        <p:selectOneMenu id="categorie" value="#{taxeTrimController.categorie}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="----------SELECT---------"/>
                             <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
 
                         </p:selectOneMenu>
                         <p:outputLabel value="secteur" />
-                        <p:selectOneMenu id="secteur"  value="#{taxeTrimController.secteur}" >
+                        <p:selectOneMenu id="secteur"  value="#{taxeTrimController.secteur}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
                                            var="secteurItem" 
@@ -37,7 +37,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="annexAdministratif" />
-                        <p:selectOneMenu id="annexAdministratif"  value="#{taxeTrimController.annexeAdministratif}" >
+                        <p:selectOneMenu id="annexAdministratif"  value="#{taxeTrimController.annexeAdministratif}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.secteur.annexeAdministratifs}"
                                            var="annexAdministratifItem" 
@@ -46,7 +46,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="quartier" />
-                        <p:selectOneMenu id="quartier"  value="#{taxeTrimController.quartier}" >
+                        <p:selectOneMenu id="quartier"  value="#{taxeTrimController.quartier}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.annexeAdministratif.quartiers}"
                                            var="quartierItem" 
@@ -55,7 +55,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
-                        <p:selectOneMenu id="rue" value="#{taxeTrimController.rue}" >
+                        <p:selectOneMenu id="rue" value="#{taxeTrimController.rue}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.quartier.rues}"
                                            var="rueItem"

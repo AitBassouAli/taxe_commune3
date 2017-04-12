@@ -25,6 +25,8 @@ public class TauxTaxeRetardController implements Serializable {
 
     @EJB
     private service.TauxTaxeRetardFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<TauxTaxeRetard> items = null;
     private TauxTaxeRetard selected;
 
@@ -32,10 +34,10 @@ public class TauxTaxeRetardController implements Serializable {
     }
 
     public TauxTaxeRetard getSelected() {
-        if(selected==null){
-            selected=new TauxTaxeRetard();
+        if (selected == null) {
+            selected = new TauxTaxeRetard();
         }
-                
+
         return selected;
     }
 
@@ -89,12 +91,27 @@ public class TauxTaxeRetardController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("TauxTaxeRetard", 1);
+                            JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
+                            break;
+                        case UPDATE:
+                            TauxTaxeRetard oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("TauxTaxeRetard", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("TauxTaxeRetard", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

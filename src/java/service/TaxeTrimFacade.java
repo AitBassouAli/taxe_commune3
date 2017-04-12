@@ -15,15 +15,21 @@ import bean.Secteur;
 import bean.TaxeAnnuel;
 import bean.TaxeTrim;
 import controler.util.DateUtil;
+import controler.util.PdfUtil;
 import controler.util.SearchUtil;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import net.sf.jasperreports.engine.JRException;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DonutChartModel;
@@ -53,6 +59,67 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     private TauxTaxeFacade tauxTaxeFacade;
     @EJB
     private TauxTaxeRetardFacade tauxTaxeRetardFacade;
+
+    //update taxeTrim   ali
+    public TaxeTrim update(TaxeTrim taxeTrim) {
+        System.out.println("updating...");
+        TaxeTrim loadedTaxe = findTaxeByTaxeAnnuel(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
+        if (loadedTaxe != null) {
+            if (!Objects.equals(loadedTaxe.getId(), taxeTrim.getId())) {
+                System.out.println("nulll  2");
+                return null;
+            }
+        } else {
+            System.out.println("switch ...");
+            int mois = DateUtil.calculerMois(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
+            switch (mois) {
+                case 0: {
+                    System.out.println("la trimester nest pas encore terminee olla mazal mawslnaha  !!");
+                    return null;//impossible de payer trimester nest pas encore terminee!!
+                }
+                default: {
+                    System.out.println("montant   mois  " + mois);
+                    taxeTrim.setMontant(tauxTaxeFacade.findByCategorie(taxeTrim.getLocale().getCategorie()).getTaux() * taxeTrim.getNombreNuit() / 1D);
+                    taxeTrim.setMontantRetard(0D);
+                    if (mois > 1) {
+                        System.out.println("reatardddddd");
+                        taxeTrim.setPremierMoisRetard(tauxTaxeRetardFacade.findByCategorie(taxeTrim.getLocale().getCategorie()).getTauxPremierRetard() * taxeTrim.getNombreNuit() / 1D);
+                        taxeTrim.setAutresMoisRetard(tauxTaxeRetardFacade.findByCategorie(taxeTrim.getLocale().getCategorie()).getTauxAutreRetard() * taxeTrim.getNombreNuit() * (mois - 2) / 1D);
+                        taxeTrim.setMontantRetard((taxeTrim.getAutresMoisRetard() + taxeTrim.getPremierMoisRetard()) / 1D);
+                    }
+                }
+            }
+            System.out.println("setters ...");
+            taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
+            taxeTrim.setNbrMoisRetard(mois - 1);
+            TaxeTrim oldTaxeTrim = find(taxeTrim.getId());
+
+            taxeAnnuelFacade.create(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//si il n'existe une taxeAnnuel avec ce locale et l'annee il va le creer 
+            TaxeAnnuel taxeAnnuel = taxeAnnuelFacade.findByLocaleAndAnnee(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//100% taxeTrim existe dans la base de donnees
+            if (!Objects.equals(taxeAnnuel.getId(), oldTaxeTrim.getTaxeAnnuel().getId())) {
+                if (taxeAnnuel.getNbrTrimesterPaye() >= 4) {//tous les taxeTrim sont paye pour cette annee e ce locale
+                    System.out.println("3ndha kter mn 3 deja mkhlsinn");
+                    return null;
+                } else {
+                    System.out.println("incrementation");
+                    taxeAnnuel.setNbrTrimesterPaye(taxeAnnuel.getNbrTrimesterPaye() + 1);
+                    taxeAnnuel.setTaxeTotale(taxeAnnuel.getTaxeTotale() + taxeTrim.getMontantTotal());
+                    oldTaxeTrim.getTaxeAnnuel().setNbrTrimesterPaye(oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() - 1);
+                    oldTaxeTrim.getTaxeAnnuel().setTaxeTotale(oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() - oldTaxeTrim.getMontantTotal());
+                    taxeAnnuelFacade.edit(oldTaxeTrim.getTaxeAnnuel());
+                    taxeAnnuelFacade.edit(taxeAnnuel);
+                }
+                taxeTrim.setTaxeAnnuel(taxeAnnuel);
+            } else {
+                System.out.println(" meme taxe Anuull ");
+                TaxeAnnuel taxeAnuel = taxeTrim.getTaxeAnnuel();
+                taxeAnuel.setTaxeTotale(taxeAnuel.getTaxeTotale() + (taxeTrim.getMontantTotal() - oldTaxeTrim.getMontantTotal()));
+                taxeAnnuelFacade.edit(taxeAnuel);
+                //2 b7ql b7qll
+            }
+        }
+        return taxeTrim;
+    }
 
     //creation d'une taxeTrim  ali
     public Object[] create(TaxeTrim taxeTrim, int annee, boolean simuler) {//false=save;true=simuler
@@ -105,6 +172,29 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         }
         System.out.println("kolchi howa hadak");
         return new Object[]{1, taxeTrim};
+    }
+
+    public void printPdf(TaxeTrim t) throws JRException, IOException {
+        List myList = new ArrayList();
+        myList.add(t);
+        Quartier q = t.getLocale().getRue().getQuartier();
+        String nature;
+        if (t.getRedevable().getNature() == 1) {
+            nature = "Gerant";
+        } else {
+            nature = "proprietaire";
+        }
+        Map<String, Object> params = new HashMap();
+        params.put("nomLocale", t.getLocale().getNom());
+        params.put("adresse", t.getLocale().getRue() + " " + q + " " + q.getAnnexeAdministratif() + " " + q.getAnnexeAdministratif().getSecteur());
+        params.put("cinRc", t.getRedevable().getCin());
+        params.put("exploitant", nature);
+        params.put("annee", t.getTaxeAnnuel().getAnnee());
+        params.put("numTrim", t.getNumeroTrim());
+        params.put("datePaiement", t.getDatePaiement());
+        System.out.println(params);
+        System.out.println(t);
+        PdfUtil.generatePdf(myList, params, "recu" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");
     }
 
 //la recherche d'une taxeTrim avec TaxeAnnuel,locale,numero

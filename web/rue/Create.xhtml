@@ -15,7 +15,7 @@
 
 
                         <p:outputLabel value="secteur" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" />
-                        <p:selectOneMenu id="secteur"  value="#{rueController.secteurCombo}" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
+                        <p:selectOneMenu id="secteur"  value="#{rueController.secteurCombo}" filter="true" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
                                            var="secteurItem" 
@@ -24,7 +24,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="annexAdministratif" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" />
-                        <p:selectOneMenu id="annexAdministratif"  value="#{rueController.annexeAdministratifCombo}" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
+                        <p:selectOneMenu id="annexAdministratif"  value="#{rueController.annexeAdministratifCombo}" filter="true" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{rueController.secteurCombo.annexeAdministratifs}"
                                            var="annexAdministratifItem" 
@@ -32,7 +32,7 @@
                             <p:ajax process="annexAdministratif" listener="#{rueController.findQuartiers()}" update="quartier,save" />
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.CreateRueLabel_quartier}" for="quartier" />
-                        <p:selectOneMenu id="quartier" value="#{rueController.quartierCombo}" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
+                        <p:selectOneMenu id="quartier" value="#{rueController.quartierCombo}" filter="true" rendered="#{rueController.quartierCombo.id==null or rueController.allQuartiersClicked==true}" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{rueController.annexeAdministratifCombo.quartiers}"
                                            var="quartierItem"

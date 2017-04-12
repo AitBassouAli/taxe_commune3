@@ -6,6 +6,7 @@ import controler.util.JsfUtil.PersistAction;
 import service.JournalFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -24,9 +25,19 @@ import javax.faces.convert.FacesConverter;
 public class JournalController implements Serializable {
 
     @EJB
+    private service.JournalFacade journalFacade;
+    @EJB
     private service.JournalFacade ejbFacade;
     private List<Journal> items = null;
     private Journal selected;
+    private Date dateMin;
+    private Date dateMax;
+    private int typee;
+    private String beanName;
+    
+    public void searche() {
+        items = ejbFacade.journaleSearch(dateMin, dateMax, typee, beanName);
+    }
 
     public JournalController() {
     }
@@ -85,12 +96,27 @@ public class JournalController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Journal", 1);
+                            JsfUtil.addSuccessMessage("Journal bien crée");
+                            break;
+                        case UPDATE:
+                            Journal oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Journal", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Journal", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
@@ -111,6 +137,38 @@ public class JournalController implements Serializable {
 
     public Journal getJournal(java.lang.Long id) {
         return getFacade().find(id);
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public int getTypee() {
+        return typee;
+    }
+
+    public void setTypee(int typee) {
+        this.typee = typee;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 
     public List<Journal> getItemsAvailableSelectMany() {

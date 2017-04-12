@@ -58,15 +58,11 @@ public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
             return null;
         }
     }
-
-    public void calculer(TaxeAnnuel taxeAnnuel) {
-        List<TaxeTrim> list = taxeAnnuel.getTaxeTrims();
-        double t = 0;
-        for (TaxeTrim ta : list) {
-            t += ta.getMontantTotal();
+    
+    public void delete(TaxeAnnuel taxeAnnuel) {
+        if (taxeAnnuel != null && taxeAnnuel.getId() != null) {
+            remove(taxeAnnuel);
         }
-        taxeAnnuel.setTaxeTotale(t);
-        edit(taxeAnnuel);
     }
     
     public void clone(TaxeAnnuel taxeAnnuelSource, TaxeAnnuel taxeAnnuelDestaination) {

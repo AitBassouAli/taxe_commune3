@@ -27,6 +27,8 @@ public class CategorieController implements Serializable {
 
     @EJB
     private service.CategorieFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Categorie> items = null;
     private Categorie selected;
 
@@ -86,16 +88,31 @@ public class CategorieController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+   private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Categorie", 1);
+                            JsfUtil.addSuccessMessage("Categorie bien crée");
+                            break;
+                        case UPDATE:
+                            Categorie oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Categorie", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Categorie", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

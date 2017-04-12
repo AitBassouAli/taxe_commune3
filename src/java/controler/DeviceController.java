@@ -25,6 +25,8 @@ public class DeviceController implements Serializable {
 
     @EJB
     private service.DeviceFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Device> items = null;
     private Device selected;
 
@@ -81,16 +83,31 @@ public class DeviceController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Device", 1);
+                            JsfUtil.addSuccessMessage("Device bien crée");
+                            break;
+                        case UPDATE:
+                            Device oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Device", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Device", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

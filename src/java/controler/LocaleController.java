@@ -46,6 +46,8 @@ public class LocaleController implements Serializable {
     private AnnexeAdministratifFacade annexeAdministratifFacade;
     @EJB
     private RedevableFacade redevableFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Locale> items = null;
     private List<Locale> itemsRecherche;
     private Locale selected;
@@ -229,18 +231,19 @@ public class LocaleController implements Serializable {
                 if (null != persistAction) {
                     switch (persistAction) {
                         case CREATE:
-//                        if(getFacade().findByReference(selected).get(0)==null){
                             getFacade().edit(selected);
-//                        }else{
+                            journalFacade.journalCreatorDelet("Locale", 1);
                             JsfUtil.addSuccessMessage("Locale bien crée");
-//                        }
                             break;
                         case UPDATE:
+                            Locale oldvalue = getFacade().find(selected.getId());
                             getFacade().edit(selected);
+                            journalFacade.journalUpdate("Locale", 2, oldvalue, selected);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                         default:
                             getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Locale", 3);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                     }

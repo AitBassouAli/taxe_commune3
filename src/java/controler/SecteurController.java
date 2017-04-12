@@ -25,6 +25,8 @@ public class SecteurController implements Serializable {
 
     @EJB
     private service.SecteurFacade ejbFacade;
+    @EJB
+    private service.JournalFacade journalFacade;
     private List<Secteur> items = null;
     private Secteur selected;
 
@@ -32,8 +34,8 @@ public class SecteurController implements Serializable {
     }
 
     public Secteur getSelected() {
-        if(selected==null){
-            selected=new Secteur();
+        if (selected == null) {
+            selected = new Secteur();
         }
         return selected;
     }
@@ -88,12 +90,27 @@ public class SecteurController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                if (null != persistAction) {
+                    switch (persistAction) {
+                        case CREATE:
+                            getFacade().edit(selected);
+                            journalFacade.journalCreatorDelet("Secteur", 1);
+                            JsfUtil.addSuccessMessage("Secteur bien crée");
+                            break;
+                        case UPDATE:
+                            Secteur oldvalue = getFacade().find(selected.getId());
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Secteur", 2, oldvalue, selected);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                        default:
+                            getFacade().remove(selected);
+                            journalFacade.journalCreatorDelet("Secteur", 3);
+                            JsfUtil.addSuccessMessage(successMessage);
+                            break;
+                    }
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
