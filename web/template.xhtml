@@ -20,12 +20,12 @@
     <h:body>
         <style >
             .menuitem{
-              text-align: center ;font-size: 12pt;margin-left:10px ;
+                text-align: center ;font-size: 12pt;margin-left:10px ;
             }
             .submenu{
-              text-align: center ;font-size: 12pt;padding-left:20px; 
+                text-align: center ;font-size: 12pt;padding-left:20px; 
             }
-            
+
         </style>
         <p:growl id="growl" life="3000" />
 
@@ -50,10 +50,10 @@
 
                         </p:submenu>
                         <p:submenu class="submenu" label="Admin Manager" style="width: 150px;" rendered="#{userController.connectedUser.createUser==true}">
-                            <p:menuitem value="User" outcome="/user/AdminAccess.xhtml" />
-                            <p:menuitem value="Journal des actions" outcome="/journal/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}"/>
-                            <p:menuitem value="Historique des connections" outcome="/historique/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}" />
-                            <p:menuitem value="Devices" outcome="/device/AdminAccess.xhtml" rendered="#{userController.connectedUser.admine==true}" />
+                            <p:menuitem value="User" outcome="/user/List.xhtml" />
+                            <p:menuitem value="Journal des actions" outcome="/journal/List.xhtml" rendered="#{userController.connectedUser.admine==true}"/>
+                            <p:menuitem value="Historique des connections" outcome="/historique/List.xhtml" rendered="#{userController.connectedUser.admine==true}" />
+                            <p:menuitem value="Devices" outcome="/device/List.xhtml" rendered="#{userController.connectedUser.admine==true}" />
                         </p:submenu>
                         <p:submenu class="submenu" label="Recherchers" icon="ui-icon-search" style="width: 150px">
                             <p:menuitem value="redevable" action="/search/SearchRedevable" />
