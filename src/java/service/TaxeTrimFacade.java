@@ -184,10 +184,16 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         } else {
             nature = "proprietaire";
         }
+        String redevable;
+        if (!t.getRedevable().getCin().equals("")) {
+            redevable = t.getRedevable().getCin();
+        } else {
+            redevable = t.getRedevable().getRc();
+        }
         Map<String, Object> params = new HashMap();
         params.put("nomLocale", t.getLocale().getNom());
         params.put("adresse", t.getLocale().getRue() + " " + q + " " + q.getAnnexeAdministratif() + " " + q.getAnnexeAdministratif().getSecteur());
-        params.put("cinRc", t.getRedevable().getCin());
+        params.put("cinRc", redevable);
         params.put("exploitant", nature);
         params.put("annee", t.getTaxeAnnuel().getAnnee());
         params.put("numTrim", t.getNumeroTrim());

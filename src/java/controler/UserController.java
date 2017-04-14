@@ -1,7 +1,9 @@
 package controler;
 
+import bean.Device;
 import bean.Historique;
 import bean.User;
+import controler.util.DeviceUtil;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
@@ -20,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.DeviceFacade;
 import service.HistoriqueFacade;
 
 @Named("userController")
@@ -32,6 +35,8 @@ public class UserController implements Serializable {
     private HistoriqueFacade historiqueFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private DeviceFacade deviceFacade;
     private List<User> items = null;
     private User selected = new User();
     private User connectedUser;
@@ -67,28 +72,27 @@ public class UserController implements Serializable {
     }
     // int tentatives = 3;
 
-//    public String seConnecter1() {
-//        Object[] res = ejbFacade.seConnecter1(selected, DeviceUtil.getDevice());
-//        int res1 = (int) res[0];
-//        if (res1 < 0) {
-//            JsfUtil.addErrorMessage("le code de l'erreur " + res1);
-//            return "/index";
-//        } else {
-//            SessionUtil.registerUser(ejbFacade.clone(selected));
-//            historiqueFacade.create(new Historique(new Date(), 1, ejbFacade.clone(selected)));
-//            return "/user/Home?faces-redirect=true";
-//        }
-//        
-//    }
     public String seConnecter() {
-        int res1 = ejbFacade.seConnecter(selected);
-        if (res1 == 1) {
-            SessionUtil.registerUser(selected);
-            historiqueFacade.create(new Historique(new Date(), 1, selected));
+        Object[] res = ejbFacade.seConnecter(selected, DeviceUtil.getDevice());
+        int res1 = (int) res[0];
+        if (res1 < 0) {
+            JsfUtil.addErrorMessage("le code de l'erreur " + res1);
+            return "/index?faces-redirect=true";
+        } else {
+            SessionUtil.registerUser(ejbFacade.clone(selected));
+            historiqueFacade.create(new Historique(new Date(), 1, ejbFacade.clone(selected), deviceFacade.curentDevice(selected, DeviceUtil.getDevice())));
             return "/user/Home?faces-redirect=true";
         }
-        return "/index";
     }
+//    public String seConnecter() {
+//        int res1 = ejbFacade.seConnecter(selected);
+//        if (res1 == 1) {
+//            SessionUtil.registerUser(selected);
+//            historiqueFacade.create(new Historique(new Date(), 1, selected));
+//            return "/user/Home?faces-redirect=true";
+//        }
+//        return "/index";
+//    }
 
     public void adminCheaked() {
         selected.setCreateAdresse(true);

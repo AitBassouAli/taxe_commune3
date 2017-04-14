@@ -74,9 +74,9 @@
                         <h:outputText id="nbrMoisRetard"  value="#{taxeTrimController.selected.nbrMoisRetard}" rendered="#{taxeTrimController.rendred==true}" />
 
                     </p:panelGrid>
-                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}" />
+                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}"  />
                     <p:commandButton id="save" actionListener="#{taxeTrimController.create}" value="#{bundle.Save}" update="display,:TaxeTrimListForm:datalist,:growl" 
-                                     disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}" oncomplete="handleSubmit(args,'TaxeTrimCreateDialog');"/>
+                                     ajax="false" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}" oncomplete="handleSubmit(args,'TaxeTrimCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="TaxeTrimCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

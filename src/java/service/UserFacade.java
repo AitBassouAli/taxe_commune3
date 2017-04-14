@@ -11,6 +11,7 @@ import controler.util.HashageUtil;
 import controler.util.JsfUtil;
 import controler.util.SessionUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -147,81 +148,82 @@ public class UserFacade extends AbstractFacade<User> {
         userDestination.setEmail(userSource.getEmail());
     }
 
-//    public Object[] seConnecter1(User user, Device device) {
-//        if (user == null || user.getLogin() == null) {
-//            JsfUtil.addErrorMessage("Veuilliez saisir votre login");
-//            return new Object[]{-5, null};
-//        } else {
-//            User loadedUser = find(user.getLogin());
-//            if (loadedUser == null) {
-//                return new Object[]{-4, null};
-//            } else if (!loadedUser.getPassword().equals(HashageUtil.sha256(user.getPassword()))) {
-//                if (loadedUser.getNbrCnx() < 3) {
-//                    System.out.println("hana loadedUser.getNbrCnx() < 3 ::: " + loadedUser.getNbrCnx());
-//                    loadedUser.setNbrCnx(loadedUser.getNbrCnx() + 1);
-//                    edit(loadedUser);
-//                    return new Object[]{-7, null};
-//                } else {//(loadedUser.getNbrCnx() >= 3)
-//                    System.out.println("hana loadedUser.getNbrCnx() >= 3::: " + loadedUser.getNbrCnx());
-//                    loadedUser.setBlocked(1);
-//                    edit(loadedUser);
-//                    return new Object[]{-3, null};
-//                }
-//            } else if (loadedUser.getBlocked() == 1) {
-//                JsfUtil.addErrorMessage("Cet utilisateur est bloqué");
-//                return new Object[]{-2, null};
-//            } else {
-//                loadedUser.setNbrCnx(0);
-//                edit(loadedUser);
-//                user = clone(loadedUser);
-//                user.setPassword(null);
-//                int resDevice = deviceFacade.checkDevice(loadedUser, device);
-//                switch (resDevice) {
-//                    case -1:
-//                        return new Object[]{-1, null};
-//                    case 1:
-//                        deviceFacade.save(device, loadedUser);
-//                        return new Object[]{1, loadedUser};
-//                    default:
-//                        return new Object[]{2, loadedUser};
-//                }
-//            }
-//        }
-//    }
-
-    public int seConnecter(User user) {
+    public Object[] seConnecter(User user, Device device) {
         if (user == null || user.getLogin() == null) {
             JsfUtil.addErrorMessage("Veuilliez saisir votre login");
-            return -5;
+            return new Object[]{-5, null};
         } else {
             User loadedUser = find(user.getLogin());
             if (loadedUser == null) {
-                return -4;
+                return new Object[]{-4, null};
             } else if (!loadedUser.getPassword().equals(HashageUtil.sha256(user.getPassword()))) {
                 if (loadedUser.getNbrCnx() < 3) {
                     System.out.println("hana loadedUser.getNbrCnx() < 3 ::: " + loadedUser.getNbrCnx());
                     loadedUser.setNbrCnx(loadedUser.getNbrCnx() + 1);
                     edit(loadedUser);
-                    return -7;
+                    return new Object[]{-7, null};
                 } else {//(loadedUser.getNbrCnx() >= 3)
                     System.out.println("hana loadedUser.getNbrCnx() >= 3::: " + loadedUser.getNbrCnx());
                     loadedUser.setBlocked(1);
                     edit(loadedUser);
-                    return -3;
+                    return new Object[]{-3, null};
                 }
             } else if (loadedUser.getBlocked() == 1) {
                 JsfUtil.addErrorMessage("Cet utilisateur est bloqué");
-                return -2;
+                return new Object[]{-2, null};
             } else {
                 loadedUser.setNbrCnx(0);
                 edit(loadedUser);
                 user = clone(loadedUser);
                 user.setPassword(null);
-                return 1;
+                int resDevice = deviceFacade.checkDevice(loadedUser, device);
+                device.setDateCreation(new Date());
+                switch (resDevice) {
+                    case 3:
+                        deviceFacade.save(device, loadedUser);
+                        return new Object[]{3, null};
+                    case 1:
+                        deviceFacade.save(device, loadedUser);
+                        return new Object[]{1, loadedUser};
+                    default:
+                        return new Object[]{2, loadedUser};
+                }
             }
         }
     }
 
+//    public int seConnecter(User user) {
+//        if (user == null || user.getLogin() == null) {
+//            JsfUtil.addErrorMessage("Veuilliez saisir votre login");
+//            return -5;
+//        } else {
+//            User loadedUser = find(user.getLogin());
+//            if (loadedUser == null) {
+//                return -4;
+//            } else if (!loadedUser.getPassword().equals(HashageUtil.sha256(user.getPassword()))) {
+//                if (loadedUser.getNbrCnx() < 3) {
+//                    System.out.println("hana loadedUser.getNbrCnx() < 3 ::: " + loadedUser.getNbrCnx());
+//                    loadedUser.setNbrCnx(loadedUser.getNbrCnx() + 1);
+//                    edit(loadedUser);
+//                    return -7;
+//                } else {//(loadedUser.getNbrCnx() >= 3)
+//                    System.out.println("hana loadedUser.getNbrCnx() >= 3::: " + loadedUser.getNbrCnx());
+//                    loadedUser.setBlocked(1);
+//                    edit(loadedUser);
+//                    return -3;
+//                }
+//            } else if (loadedUser.getBlocked() == 1) {
+//                JsfUtil.addErrorMessage("Cet utilisateur est bloqué");
+//                return -2;
+//            } else {
+//                loadedUser.setNbrCnx(0);
+//                edit(loadedUser);
+//                user = clone(loadedUser);
+//                user.setPassword(null);
+//                return 1;
+//            }
+//        }
+//    }
     public List<Boolean> getPrivileges() {
         User loadeUser = find(SessionUtil.getConnectedUser().getLogin());
         List<Boolean> privileges = new ArrayList();

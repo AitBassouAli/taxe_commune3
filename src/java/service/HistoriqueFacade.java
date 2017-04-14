@@ -6,6 +6,11 @@
 package service;
 
 import bean.Historique;
+import bean.User;
+import controler.util.DateUtil;
+import controler.util.SearchUtil;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +28,20 @@ public class HistoriqueFacade extends AbstractFacade<Historique> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public List<Historique> rechercher(Date dateMin, Date dateMax, int type, User user) {
+        String requette = "SELECT h FROM Historique h where  1=1 ";
+        requette += SearchUtil.addConstraintMinMaxDate("h", "dateAction", dateMin, dateMax);
+        if (type != 0) {
+            requette += SearchUtil.addConstraint("h", "type", "=", type);
+        }
+        if (user != null) {
+            requette += SearchUtil.addConstraint("h", "user.login", "=", user.getLogin());
+        }
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+
     }
 
     public HistoriqueFacade() {

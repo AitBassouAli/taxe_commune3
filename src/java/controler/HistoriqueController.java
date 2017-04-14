@@ -1,7 +1,9 @@
 package controler;
 
+import bean.Device;
 import bean.Historique;
 import bean.User;
+import controler.util.DeviceUtil;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
@@ -21,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.DeviceFacade;
 
 @Named("historiqueController")
 @SessionScoped
@@ -30,16 +33,44 @@ public class HistoriqueController implements Serializable {
     private service.HistoriqueFacade ejbFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private service.UserFacade userFacade;
+    @EJB
+    private DeviceFacade deviceFacade;
     private List<Historique> items = null;
     private Historique selected;
-    
-    
-    
+    private List<User> users;
+    private User user;
+    private Date dateMin;
+    private Date dateMax;
+    private int type;
+
+    private int verificationDate() {
+        if (dateMax != null && dateMin != null) {
+            if (dateMax.getTime() > dateMin.getTime()) {
+                return 1;
+            }
+            return -1;
+        }
+        return 2;
+    }
+
+    public void rechercher() {
+        if (verificationDate() > 0) {
+            items = ejbFacade.rechercher(dateMin, dateMax, type, user);
+        }
+    }
+
+    public void findAll() {
+        items = ejbFacade.findAll();
+    }
+
     //crreation d'un historique de deconnections ali
-    public  String deconnection(){
-        User user=SessionUtil.getConnectedUser();
-        SessionUtil.unSetUser(user);
-        selected=new Historique(new Date(),2,user);
+    public String deconnection() {
+        User connectedUser = SessionUtil.getConnectedUser();
+        SessionUtil.unSetUser(connectedUser);
+        Device device = deviceFacade.curentDevice(connectedUser, DeviceUtil.getDevice());
+        selected = new Historique(new Date(), 2, connectedUser, device);
         ejbFacade.create(selected);
         return "/index?faces-redirect=true";
     }
@@ -82,11 +113,12 @@ public class HistoriqueController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("HistoriqueUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(Historique historique) {
+        selected = historique;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("HistoriqueDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(historique);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -191,6 +223,52 @@ public class HistoriqueController implements Serializable {
             }
         }
 
+    }
+
+    public List<User> getUsers() {
+        if (users == null) {
+            users = userFacade.findAll();
+        }
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public User getUser() {
+        if (user == null) {
+            user = new User();
+        }
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
 }

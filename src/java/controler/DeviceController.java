@@ -1,6 +1,7 @@
 package controler;
 
 import bean.Device;
+import bean.User;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import service.DeviceFacade;
@@ -29,6 +30,13 @@ public class DeviceController implements Serializable {
     private service.JournalFacade journalFacade;
     private List<Device> items = null;
     private Device selected;
+    private User user;
+    private String browser;
+    private String categorie;
+
+    public void search() {
+        items = ejbFacade.search(user, browser, categorie);
+    }
 
     public DeviceController() {
     }
@@ -68,11 +76,12 @@ public class DeviceController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("DeviceUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(Device device) {
+        selected = device;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("DeviceDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(device);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -83,7 +92,7 @@ public class DeviceController implements Serializable {
         return items;
     }
 
-     private void persist(PersistAction persistAction, String successMessage) {
+    private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
@@ -177,6 +186,33 @@ public class DeviceController implements Serializable {
             }
         }
 
+    }
+
+    public User getUser() {
+        if (user == null) {
+            user = new User();
+        }
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getBrowser() {
+        return browser;
+    }
+
+    public void setBrowser(String browser) {
+        this.browser = browser;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
     }
 
 }
