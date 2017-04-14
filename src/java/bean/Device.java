@@ -6,11 +6,13 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -26,9 +28,10 @@ public class Device implements Serializable {
     private String browser;
     private String operatingSystem;
     private String deviceCategorie;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateCreation;
     @ManyToOne
-    private User user; 
-    
+    private User user;
 
     public Long getId() {
         return id;
@@ -37,8 +40,6 @@ public class Device implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-   
 
     public User getUser() {
         return user;
@@ -72,7 +73,13 @@ public class Device implements Serializable {
         this.deviceCategorie = deviceCategorie;
     }
 
-    
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
 
     @Override
     public int hashCode() {
@@ -98,5 +105,5 @@ public class Device implements Serializable {
     public String toString() {
         return "bean.Device[ id=" + id + " ]";
     }
-    
+
 }

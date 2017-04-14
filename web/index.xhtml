@@ -23,18 +23,18 @@
                 <b:panel title="PLATEFORME DE GESTION DES TAXES SEJOURS" look="primary" style="text-align: center;margin-top: 5%; margin-left: 20%;margin-right:20%;">
 
                     <img src="logomaroc.png" style=" padding: 20px" height="250" width="460" ></img>
-                    <p:panel header="Connecter vous a votre compte" style="margin-left: 15%;margin-right:15%;text-align: center;font-family:cursive;font-style: oblique">
+                    <p:panel header="Connecter vous a votre compte" style="margin-left: 15%;margin-right:15%;text-align: center">
                         <h:form style="margin-left:2%;margin-right:40%;">
                             <!--////////////////////////////////-->
                             <!--////////////////////////////////-->
                             <b:panelGrid columns="2" class="form-group">
-                                <h:outputLabel value="Login:" for="login" style=" font-family:cursive;font-style: oblique;font-size: 12pt ;padding-top: 10px ;margin-left: -50px"/>
+                                <h:outputLabel value="Login:" for="login" style=" font-size: 12pt ;padding-top: 10px ;margin-left: -50px"/>
                                 <b:inputText id="login" value="#{userController.selected.login}" class="form-control" >
                                     <f:facet name="prepend">
                                         <b:icon name="user" />
                                     </f:facet>
                                 </b:inputText>
-                                <h:outputLabel  value="Password:" style="padding-top: 10px ;margin-left: -95px;width:1px;font-family:cursive;font-style: oblique;font-size: 12pt" for="password"  />
+                                <h:outputLabel  value="Password:" style="padding-top: 10px ;margin-left: -95px;width:1px;font-size: 12pt" for="password"  />
                                 <p:password id="password"  value="#{userController.selected.password}"  class="form-control" />                                           
                             </b:panelGrid>
                             <b:commandButton class="btn btn-primary  form-control" style="font-size: 11pt" icon="ui-icon-user" value="Sing in" action="#{userController.seConnecter()}"></b:commandButton><br></br><br></br>
