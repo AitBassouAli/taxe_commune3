@@ -35,11 +35,13 @@ public class RedevableController implements Serializable {
     public void findByRCorCIN() {
         itemsAvaible = ejbFacade.findByCinOrRc(selected);
     }
-    public void findByCin(){
-        selected=ejbFacade.findOnebyCin(selected.getCin());
+
+    public void findByCin() {
+        selected = ejbFacade.findOnebyCin(selected.getCin());
     }
-     public void findByRc(){
-        selected=ejbFacade.findOnebyRc(selected.getRc());
+
+    public void findByRc() {
+        selected = ejbFacade.findOnebyRc(selected.getRc());
     }
 
     public RedevableController() {
@@ -113,32 +115,34 @@ public class RedevableController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
+                Redevable oldvalue=new Redevable();
+                if (persistAction != PersistAction.CREATE) {
+                     oldvalue = getFacade().find(selected.getId());
+                }
                     switch (persistAction) {
                         case CREATE:
                             if (getFacade().findByCinOrRc(selected).isEmpty()) {
                                 getFacade().edit(selected);
-                                journalFacade.journalCreatorDelet("Redevable", 1);
+                                journalFacade.journalUpdate("Redevable", 1, null, selected);
                                 JsfUtil.addSuccessMessage("Redevable bien crée");
                             } else {
                                 JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
                             }
                             break;
                         case UPDATE:
-                            Redevable oldvalue = getFacade().find(selected.getId());
                             getFacade().edit(selected);
                             journalFacade.journalUpdate("Redevable", 2, oldvalue, selected);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                         default:
                             getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Redevable", 3);
+                            journalFacade.journalUpdate("Redevable", 3, oldvalue, selected);
                             JsfUtil.addSuccessMessage(successMessage);
                             break;
                     }
                 }
 
-            } catch (EJBException ex) {
+             catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {

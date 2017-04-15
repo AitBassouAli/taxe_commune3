@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import service.AnnexeAdministratifFacade;
-import service.RueFacade;
 
 @Named("quartierController")
 @SessionScoped
@@ -129,25 +128,26 @@ public class QuartierController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("Quartier", 1);
-                            JsfUtil.addSuccessMessage("Quartier bien crée");
-                            break;
-                        case UPDATE:
-                            Quartier oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Quartier", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Quartier", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Quartier oldvalue = new Quartier();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Quartier", 1, null, selected);
+                        JsfUtil.addSuccessMessage("Quartier bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Quartier", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Quartier", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

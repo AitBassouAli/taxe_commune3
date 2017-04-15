@@ -45,14 +45,23 @@ public class Journal implements Serializable {
         return type;
     }
 
-    public Journal(Date dateAction, int type, String beanName, User user) {
+    public Journal(Date dateAction, int type, String beanName, User user, Device device, String nouvelleValeur) {
         this.dateAction = dateAction;
         this.type = type;
         this.beanName = beanName;
         this.user = user;
+        this.device = device;
+        this.nouvelleValeur = nouvelleValeur;
     }
 
-   
+    public Journal(Date dateAction, int type, String beanName, User user, String ancienValeur, Device device) {
+        this.dateAction = dateAction;
+        this.type = type;
+        this.beanName = beanName;
+        this.user = user;
+        this.device = device;
+        this.ancienValeur = ancienValeur;
+    }
 
     public Journal(Date dateAction, int type, String ancienValeur, String nouvelleValeur, String beanName, User user) {
         this.dateAction = dateAction;
@@ -62,7 +71,7 @@ public class Journal implements Serializable {
         this.beanName = beanName;
         this.user = user;
     }
- 
+
     public void setType(int type) {
         this.type = type;
     }

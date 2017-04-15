@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author ayoub
  */
-@Stateless
+    @Stateless
 public class DeviceFacade extends AbstractFacade<Device> {
 
     @PersistenceContext(unitName = "projet_java_taxPU")

@@ -133,25 +133,26 @@ public class HistoriqueController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("Historique", 1);
-                            JsfUtil.addSuccessMessage("Historique bien crée");
-                            break;
-                        case UPDATE:
-                            Historique oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Historique", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Historique oldvalue = new Historique();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Historique", 1, null, selected);
+                        JsfUtil.addSuccessMessage("Historique bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

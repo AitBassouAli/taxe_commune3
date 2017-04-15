@@ -34,7 +34,7 @@ public class JournalController implements Serializable {
     private Date dateMax;
     private int typee;
     private String beanName;
-    
+
     public void searche() {
         items = ejbFacade.journaleSearch(dateMin, dateMax, typee, beanName);
     }
@@ -96,25 +96,26 @@ public class JournalController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("Journal", 1);
-                            JsfUtil.addSuccessMessage("Journal bien crée");
-                            break;
-                        case UPDATE:
-                            Journal oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Journal", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Journal", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Journal oldvalue = new Journal();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Journal", 1, null, selected);
+                        JsfUtil.addSuccessMessage("Journal bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Journal", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Journal", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

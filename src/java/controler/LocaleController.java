@@ -228,26 +228,28 @@ public class LocaleController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("Locale", 1);
-                            JsfUtil.addSuccessMessage("Locale bien crée");
-                            break;
-                        case UPDATE:
-                            Locale oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Locale", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Locale", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Locale oldvalue = new Locale();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
                 }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Locale", 1, null, selected);
+                        JsfUtil.addSuccessMessage("Locale bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Locale", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Locale", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                }
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

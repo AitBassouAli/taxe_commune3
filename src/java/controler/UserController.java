@@ -1,6 +1,5 @@
 package controler;
 
-import bean.Device;
 import bean.Historique;
 import bean.User;
 import controler.util.DeviceUtil;
@@ -163,25 +162,26 @@ public class UserController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("User", 1);
-                            JsfUtil.addSuccessMessage("User bien crée");
-                            break;
-                        case UPDATE:
-                            User oldvalue = getFacade().find(selected.getLogin());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("User", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("User", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                User oldvalue = new User();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getLogin());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("User", 1, null, selected);
+                        JsfUtil.addSuccessMessage("User bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("User", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("User", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {
