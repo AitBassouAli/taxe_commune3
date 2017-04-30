@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <ui:composition template="../template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListRueTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <div style="width: 100%">
+                <div class="col-lg-3" style="margin-top: 4%;">
+                    <h:form id="SecteurListForm">
+                        <p:panel >
+                            <p:dataTable id="datalist" value="#{rueController.secteurs}" var="item"
+                                         selectionMode="single" 
+                                         paginator="true"
+                                         rowKey="#{item.id}"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         >
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListSecteurTitle_abreviation}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.abreviation}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListSecteurTitle_nomSecteur}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nomSecteur}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <p:commandButton actionListener="#{rueController.findAnnexs(item)}" style="background:#337ab7" icon="ui-icon-search" update=":AnnexeAdministratifListForm:datalist,:AnnexeAdministratifCreateForm"/>
+                                    <p:commandButton id="editButton" style="background:#f0ad4e"  icon="ui-icon-pencil" actionListener="#{rueController.prepareEditSecteur(item)}" update=":SecteurEditForm" oncomplete="PF('SecteurEditDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroySecteur(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" style="background:#d9534f">
+                                         <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                     <p:confirmDialog global="true">
+                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                                </p:confirmDialog> 
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreateSecteur()}" 
+                                                     update=":SecteurCreateForm" oncomplete="PF('SecteurCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"
+                                                     style="background: #337ab7;font-size: 10pt !important " class="form-control btn btn-primary"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <div class="col-lg-3" style="margin-top: 4%;">
+
+                    <h:form id="AnnexeAdministratifListForm">
+                        <p:panel class="form-group" >
+                            <p:outputLabel value="Nom Annex : "/>
+                            <p:inputText id="nomAnnex" value="#{rueController.nomAnnex}" style="width:150px;"></p:inputText>
+                            <p:commandButton actionListener="#{rueController.findAnnexByName()}"  update="datalist" style="background: #5cb85c" icon="ui-icon-refresh" />
+                            <p:dataTable id="datalist" value="#{rueController.secteur.annexeAdministratifs}" var="item"
+                                         selectionMode="single" 
+                                         paginator="true"
+                                         rowKey="#{item.id}"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         >
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListAnnexeAdministratifTitle_nom}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nom}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListAnnexeAdministratifTitle_abreviation}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.abreviation}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <p:commandButton actionListener="#{rueController.findQuartiers(item)}" style="background:#337ab7" icon="ui-icon-search" update=":QuartierListForm:datalist"/>
+                                    <p:commandButton id="editButton" style="background:#f0ad4e"  icon="ui-icon-pencil"  update=":AnnexeAdministratifEditForm" oncomplete="PF('AnnexeAdministratifEditDialog').show()"
+                                                     actionListener="#{rueController.prepareEditAnnexe(item)}" disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" style="background:#d9534f"  actionListener="#{rueController.destroyAnnexe(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" >
+                                     <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                     <p:confirmDialog global="true">
+                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                                </p:confirmDialog> 
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton id="createButton" icon="ui-icon-plus" actionListener="#{rueController.prepareCreateAnnexe()}"  value="#{bundle.Create}"  update=":AnnexeAdministratifCreateForm"
+                                                     oncomplete="PF('AnnexeAdministratifCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"
+                                                     style="background: #337ab7;font-size: 10pt !important " class="form-control btn btn-primary"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+
+                </div>
+                <div class="col-lg-3" style="margin-top: 4%;">
+                    <h:form id="QuartierListForm">
+                        <p:panel >
+                            <p:outputLabel value="Nom Quartier : "/>
+                            <p:inputText id="nomQuartier" value="#{rueController.nomQuartier}"  style="width:150px;"></p:inputText>
+                            <p:commandButton actionListener="#{rueController.findQuartierByName()}" update="datalist" style="background: #5cb85c" icon="ui-icon-refresh" />
+                            <p:dataTable id="datalist" value="#{rueController.annexeAdministratif.quartiers}" var="item"
+                                         selectionMode="single" 
+                                         paginator="true"
+                                         rowKey="#{item.id}"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         >
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListQuartierTitle_numAbreviation}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.numAbreviation}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListQuartierTitle_nom}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nom}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <p:commandButton actionListener="#{rueController.findRues(item)}" style="background:#337ab7" icon="ui-icon-search" update=":RueListForm:datalist" />
+                                    <p:commandButton id="editButton" icon="ui-icon-pencil"  style="background:#f0ad4e" update=":QuartierEditForm" oncomplete="PF('QuartierEditDialog').show()"
+                                                     actionListener="#{rueController.PrepareEditQuartier(item)}" disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" actionListener="#{rueController.destroyQuartier(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" style="background:#d9534f">
+                                    <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                     <p:confirmDialog global="true">
+                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                                </p:confirmDialog> 
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}" actionListener="#{rueController.prepareCreateQuartier()}" 
+                                                     update=":QuartierCreateForm" 
+                                                     oncomplete="PF('QuartierCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"
+                                                     style="background: #337ab7;font-size: 10pt !important " class="form-control btn btn-primary"/>
+                                </f:facet>
+
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <div class="col-lg-3" style="margin-top: 4%;">
+
+                    <h:form id="RueListForm">
+                        <p:panel >
+                            <p:outputLabel value="Nom Rue : "/>
+                            <p:inputText id="nomRue" value="#{rueController.nomRue}"  style="width:150px;"></p:inputText>
+                            <p:commandButton actionListener="#{rueController.findRueByName()}" update="datalist" style="background: #5cb85c" icon="ui-icon-refresh" />
+                            <p:dataTable id="datalist" value="#{rueController.quartier.rues}" var="item"
+                                         selectionMode="single" 
+                                         paginator="true"
+                                         rowKey="#{item.id}"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         >
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListRueTitle_numAbreviation}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.numAbreviation}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListRueTitle_nom}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nom}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <p:commandButton id="viewButton"   icon="ui-icon-search" style="background:#337ab7" actionListener="#{rueController.prepareEditRue(item)}" update=":RueViewForm"  oncomplete="PF('RueViewDialog').show()"/>
+                                    <p:commandButton id="editButton" icon="ui-icon-pencil" style="background:#f0ad4e" actionListener="#{rueController.prepareEditRue(item)}"  update=":RueEditForm" oncomplete="PF('RueEditDialog').show()"
+                                                     disabled="#{rueController.user.createAdresse==false}"/>
+                                    <p:commandButton id="deleteButton"  icon="ui-icon-trash"   actionListener="#{rueController.destroy(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" style="background:#d9534f">
+                                    <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                     <p:confirmDialog global="true">
+                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                                </p:confirmDialog> 
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton id="createButton" icon="ui-icon-extlink"   value="#{bundle.Create}" actionListener="#{rueController.prepareCreate}" 
+                                                     update=":RueCreateForm" oncomplete="PF('RueCreateDialog').show()"  disabled="#{rueController.user.createAdresse==false}"
+                                                     style="background: #337ab7;font-size: 10pt !important " class="form-control btn btn-primary"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <ui:include src="../secteur/Create.xhtml"/>
+                <ui:include src="../secteur/Edit.xhtml"/>
+
+                <ui:include src="../annexeAdministratif/Create.xhtml"/>
+                <ui:include src="../annexeAdministratif/Edit.xhtml"/>
+
+                <ui:include src="../quartier/Create.xhtml"/>
+                <ui:include src="../quartier/Edit.xhtml"/>
+
+                <ui:include src="../rue/Create.xhtml"/>
+                <ui:include src="../rue/Edit.xhtml"/>
+                <ui:include src="../rue/View.xhtml"/>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -6,6 +6,7 @@
 package service;
 
 import bean.Categorie;
+import bean.TauxTaxe;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,7 +30,10 @@ public class CategorieFacade extends AbstractFacade<Categorie> {
         super(Categorie.class);
     }
     
-    
+    public TauxTaxe searche(Categorie categorie )
+    {
+        return (TauxTaxe) em.createQuery("SELECT taux from TauxTaxe taux where taux.categorie.id='"+categorie.getId()+"'").getSingleResult();
+    }
      public void clone(Categorie categorieSource,Categorie categorieDestaination){
         categorieDestaination.setId(categorieSource.getId());
         categorieDestaination.setNom(categorieSource.getNom());

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:outputScript name="/resources/js/jquery.js"/>
+    <h:outputScript name="/resources/js/bootstrap.js"/>
+
+    <ui:composition template="../template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListRedevableTitle}"></h:outputText>
+        </ui:define>
+
+        <script type="text/javaScript" >
+            $(function(){
+            $("#viewButton").click(function(){
+            alert("event click");
+            });
+            });
+        </script>
+        <ui:define name="body">
+            <h:form id="RedevableListForm">
+                <p:dataTable id="datalist" value="#{redevableController.items}" var="item"
+                             selectionMode="single" 
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="background-color: #8c8c8c !important;font-weight: 400 !important"
+                             >
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_rc}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.rc==''?'----------------':item.rc}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_cin}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cin==''?'----------------':item.cin}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_nom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_prenom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_adresse}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.adresse}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_email}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_fax}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fax}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_pattente}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.pattente}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search"  actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableViewForm" oncomplete="PF('RedevableViewDialog').show()" style="background:#337ab7" />
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil"  actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableEditForm" oncomplete="PF('RedevableEditDialog').show()" style="background:#f0ad4e" />
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash" actionListener="#{redevableController.destroy(item)}" update=":growl,datalist" style="background:#d9534f"  >
+                            <p:confirm header="Confirmation" message="Vous etes sure?" icon="ui-icon-alert"  />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+                            <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                    <f:facet name="footer">
+                        <div class=" col-lg-3"/>
+                        <div class="col-lg-6 center-block">
+                            <p:commandButton id="createButton" icon="ui-icon-plus" iconPos="right"  value="#{bundle.Create}" actionListener="#{redevableController.prepareCreate}" update=":RedevableCreateForm" oncomplete="PF('RedevableCreateDialog').show()" 
+                                             style="background: #337ab7;font-size: 10pt !important " class="form-control btn btn-primary"/>
+                        </div>
+                        <div class=" col-lg-3"/>
+                    </f:facet>
+
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

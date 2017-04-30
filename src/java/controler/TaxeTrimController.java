@@ -98,11 +98,11 @@ public class TaxeTrimController implements Serializable {
     private String activite;
     private int firstYear;
     private int secondYear;
-    private BarChartModel modele;
+    private BarChartModel modele = null;
     private LineChartModel lineModel;
     private DonutChartModel donutChartModel;
     private List<TaxeTrim> taxes;
-    private int typeGraphe;
+    private int typeGraphe = 1;
     private boolean editRedevableBtn;
 
     // jasper
@@ -110,12 +110,19 @@ public class TaxeTrimController implements Serializable {
         ejbFacade.printPdf(selected);
         FacesContext.getCurrentInstance().responseComplete();
     }
+    //with Item in the view
+    public void generatPdf2(TaxeTrim taxeTrim) throws JRException, IOException  {
+       selected=taxeTrim;
+       generatPdf();
+    }
 
     public void editRedevableBtnClicked() {
         editRedevableBtn = true;
+        selected.getRedevable().setNom("");
     }
 
-    public void prepareEdit() {
+    public void prepareEdit(TaxeTrim taxeTrim) {
+        selected=taxeTrim;
         editRedevableBtn = false;
         cin = "";
         rc = "";
@@ -144,6 +151,19 @@ public class TaxeTrimController implements Serializable {
 
     public void itemSelect() {
         rendred = false;
+    }
+
+    public BarChartModel initBarCharModel() {
+        BarChartModel model = ejbFacade.initBarModel(ejbFacade.findAll(), 0, 0);
+        model.setTitle("Statistique");
+        model.setLegendPosition("ne");
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setLabel("Les trimestres");
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel("Montant");
+        yAxis.setMin(0);
+        yAxis.setMax(20000);
+        return model;
     }
 
     //apl au methode de recherches destaxTrm par criter pour construire un graphe
@@ -197,7 +217,7 @@ public class TaxeTrimController implements Serializable {
                 Axis yAxis = lineModel.getAxis(AxisType.Y);
                 yAxis.setLabel("Montant");
                 yAxis.setMin(0);
-                yAxis.setMax(ejbFacade.maxY(taxes, firstYear, secondYear) + 1000);
+                yAxis.setMax(ejbFacade.maxY(taxes, firstYear, secondYear) * 1.1);
                 break;
             }
             default:
@@ -238,17 +258,19 @@ public class TaxeTrimController implements Serializable {
 
     public void findRedevableByCin() {
         selected.setLocale(null);
-        redevable.setLocales(localeFacade.findByRedevableCin(cin));
+        // redevable.setLocales(localeFacade.findByRedevableCin(cin));
         rc = "";
         redevable = findRedevable();
+        redevable.setLocales(localeFacade.findByRedevable(redevable));
         rendred = false;
     }
 
     public void findRedevableByRc() {
         selected.setLocale(null);
-        redevable.setLocales(localeFacade.findByRedevableRc(rc));
+        //redevable.setLocales(localeFacade.findByRedevableRc(rc));
         cin = "";
         redevable = findRedevable();
+        redevable.setLocales(localeFacade.findByRedevable(redevable));
         rendred = false;
     }
 
@@ -323,9 +345,7 @@ public class TaxeTrimController implements Serializable {
             selected.setRedevable(redevable);
             selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
-            selected.setId(ejbFacade.generateId("TaxeTrim", "id")); //pour ne pas avoir un null lors du remplissage du PDF
-            System.out.println("id de ce dernier selected qui a été creé==> " + selected.getId());
-            generatPdf();
+          
         } else {
             switch ((int) res[0]) {
                 case -1:
@@ -351,11 +371,12 @@ public class TaxeTrimController implements Serializable {
         }
     }
 
-    public void destroy() {
+    public void destroy(TaxeTrim taxeTrim) {
+        selected=taxeTrim;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(taxeTrim);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -370,25 +391,26 @@ public class TaxeTrimController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("TaxeTrim", 1);
-                            JsfUtil.addSuccessMessage("TaxeTrim bien crée");
-                            break;
-                        case UPDATE:
-                            TaxeTrim oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("TaxeTrim", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("TaxeTrim", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                TaxeTrim oldvalue = new TaxeTrim();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeTrim", 1, null, selected);
+                        JsfUtil.addSuccessMessage("TaxeTrim bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeTrim", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("TaxeTrim", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {
@@ -703,7 +725,7 @@ public class TaxeTrimController implements Serializable {
 
     public BarChartModel getModele() {
         if (modele == null) {
-            modele = new BarChartModel();
+            modele = initBarCharModel();
         }
         return modele;
     }

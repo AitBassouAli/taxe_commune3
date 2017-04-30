@@ -31,15 +31,19 @@ public class RedevableController implements Serializable {
     private List<Redevable> items = null;
     private List<Redevable> itemsAvaible;
     private Redevable selected;
+    private int typeEntite = 1;
+    private Redevable oldRedevable;
 
     public void findByRCorCIN() {
         itemsAvaible = ejbFacade.findByCinOrRc(selected);
     }
-    public void findByCin(){
-        selected=ejbFacade.findOnebyCin(selected.getCin());
+
+    public void findByCin() {
+        selected = ejbFacade.findOnebyCin(selected.getCin());
     }
-     public void findByRc(){
-        selected=ejbFacade.findOnebyRc(selected.getRc());
+
+    public void findByRc() {
+        selected = ejbFacade.findOnebyRc(selected.getRc());
     }
 
     public RedevableController() {
@@ -90,15 +94,53 @@ public class RedevableController implements Serializable {
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
+    public void preparUpdate(Redevable redevable) {
+        selected = redevable;
+        oldRedevable = redevable;
+        if (redevable.getCin().equals("")) {
+            typeEntite = 2;
+        } else {
+            typeEntite = 1;
+        }
     }
 
-    public void destroy() {
+    public int chowMessage() {
+        if (typeEntite == 1) {
+            if (selected.getCin().equals("") || selected.getEmail().equals("")) {
+                JsfUtil.addErrorMessage("cin  or email  requaredddd !!!!!!");
+                return -1;
+            }
+            return 1;
+        } else {
+            if (selected.getRc().equals("") || selected.getEmail().equals("")) {
+                JsfUtil.addErrorMessage("rc  or email  requaredddd !!!!!!");
+                return -2;
+            }
+            return 2;
+        }
+    }
+
+    public void update() {
+        int res = chowMessage();
+        if (res > 0) {
+            if (typeEntite == 1) {
+                selected.setCin("");
+                selected.setPrenom("");
+            } else {
+                selected.setRc("");
+            }
+            persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
+        } else {
+            items.set(items.indexOf(oldRedevable), oldRedevable);
+        }
+    }
+
+    public void destroy(Redevable redevable) {
+        selected = redevable;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("RedevableDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(redevable);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -109,35 +151,43 @@ public class RedevableController implements Serializable {
         return items;
     }
 
+    public int getTypeEntite() {
+        return typeEntite;
+    }
+
+    public void setTypeEntite(int typeEntite) {
+        this.typeEntite = typeEntite;
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            if (getFacade().findByCinOrRc(selected).isEmpty()) {
-                                getFacade().edit(selected);
-                                journalFacade.journalCreatorDelet("Redevable", 1);
-                                JsfUtil.addSuccessMessage("Redevable bien crée");
-                            } else {
-                                JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
-                            }
-                            break;
-                        case UPDATE:
-                            Redevable oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Redevable", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Redevable", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Redevable oldvalue = new Redevable();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
                 }
-
+                switch (persistAction) {
+                    case CREATE:
+                        if (getFacade().findByCinOrRc(selected).isEmpty()) {
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("Redevable", 1, null, selected);
+                            JsfUtil.addSuccessMessage("Redevable bien crée");
+                        } else {
+                            JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
+                        }
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Redevable", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Redevable", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                }
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
@@ -154,6 +204,17 @@ public class RedevableController implements Serializable {
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
+    }
+
+    public Redevable getOldRedevable() {
+        if (oldRedevable == null) {
+            oldRedevable = new Redevable();
+        }
+        return oldRedevable;
+    }
+
+    public void setOldRedevable(Redevable oldRedevable) {
+        this.oldRedevable = oldRedevable;
     }
 
     public Redevable getRedevable(java.lang.Long id) {

@@ -8,6 +8,7 @@ package service;
 import bean.AnnexeAdministratif;
 import bean.Categorie;
 import bean.Locale;
+import bean.PositionLocale;
 import bean.Quartier;
 import bean.Redevable;
 import bean.Rue;
@@ -32,9 +33,26 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     private AnnexeAdministratifFacade annexeAdministratifFacade;
     @EJB
     private SecteurFacade secteurFacade;
+    @EJB
+    private PositionLocaleFacade positionLocaleFacade;
 
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
+
+    public Locale attachLocaleToPosition(Locale locale, double lat, double lng) {
+        PositionLocale positionLocale = new PositionLocale();
+        positionLocale.setLat(lat);
+        positionLocale.setLng(lng);
+        positionLocaleFacade.create(positionLocale);
+        long idPos = positionLocaleFacade.generateId("PositionLocale", "id");
+        PositionLocale loaded = positionLocaleFacade.find(idPos);
+        locale.setPositionLocale(loaded);
+        return locale;
+    }
+
+    public List<Locale> findByRue(Rue rue) {
+        return em.createQuery("SELECT l FROM Locale l where l.rue.id = " + rue.getId()).getResultList();
+    }
 
     public List<String> findAllActivities() {
         return em.createQuery("SELECT distinct(l.activite) FROM Locale l").getResultList();
@@ -46,7 +64,16 @@ public class LocaleFacade extends AbstractFacade<Locale> {
 
     public List<Locale> findByRedevableRc(String redevable) {
         if (!redevable.equals("")) {
-            String rqt = "SELECT l FROM Locale l WHERE l.proprietaire.rc= '" + redevable + "' OR l.gerant.rc='" + redevable + "'";
+            String rqt = "SELECT l FROM Locale l WHERE l.proprietaire.rc= '" + redevable + "' And l.gerant.rc='" + redevable + "'";
+            System.out.println(rqt);
+            return em.createQuery(rqt).getResultList();
+        } else {
+            return null;
+        }
+    }
+    public List<Locale> findByRedevable(Redevable redevable) {
+        if (redevable!=null) {
+            String rqt = "SELECT l FROM Locale l WHERE l.proprietaire.id= '" + redevable.getId() + "' OR l.gerant.id='" + redevable.getId() + "'";
             System.out.println(rqt);
             return em.createQuery(rqt).getResultList();
         } else {
@@ -147,6 +174,7 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     public void clone(Locale localeSource, Locale localeDestaination) {
         localeDestaination.setId(localeSource.getId());
         localeDestaination.setActivite(localeSource.getActivite());
+        localeDestaination.setNom(localeSource.getNom());
         localeDestaination.setCategorie(localeSource.getCategorie());
         localeDestaination.setComplementAdresse(localeSource.getComplementAdresse());
         localeDestaination.setDescription(localeSource.getDescription());

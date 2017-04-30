@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link  src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>
+        <link src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+    </h:head>
+
+
+    <h:body style="background-image:url(white-background-01-4873.jpg)">
+
+        <div class="container">
+            <h:form>   
+                <nav class="navbar navbar-default navbar-fixed-top">
+
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <img src="logoapp.png" height="50" width="50" ></img>
+                            <a class="navbar-brand" href="#">GESTION DES TAXES</a>
+
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li><p:commandLink  action="#{historiqueController.deconnection()}" value="Se deconnecter"/></li>
+                        </ul>
+                    </div>
+                </nav>
+                <img src="head.png" height="200" width="1140"/>
+                <b:container></b:container>
+                <b:panel title="PLATEFORME DE GESTION DES TAXES SEJOURS" look="primary" style="background-color: #e6f2ff;text-align: center">
+                    <div class="col-lg-3">
+                        <p:commandLink action="/inaccessible/charts/grapheCritere?faces-redirect=true" >
+                            <img src="stat.jpg" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Statistiques</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink  action="/inaccessible/search/Adrressage?faces-redirect=true" >
+                            <img src="adres.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Adressage</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink  action="/inaccessible/taxeTrim/List?faces-redirect=true" >
+                            <img src="paie.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Services de paiement</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink action="/inaccessible/locale/List?faces-redirect=true" >
+                            <img src="locs.jpg" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Locales</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" >
+                            <img src="redev.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Redevables</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink  action="/inaccessible/categorie/List?faces-redirect=true" >
+                            <img src="cats.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Tarifs des taxes</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink action="/inaccessible/search/SearchRedevable?faces-redirect=true" >
+                            <img src="search_users.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Rechercher sur redevable</h3>
+                        </p:commandLink>
+                    </div>
+                    <div class="col-lg-3">
+                        <p:commandLink action="/inaccessible/search/SearchTaxTrim?faces-redirect=true" > 
+                            <img src="search_taxe.png" class="img-circle mying" height="200" width="200"></img>
+                            <h3>Rechercher sur taxes trimistrielle</h3>
+                        </p:commandLink>     
+                    </div>
+                </b:panel>     
+            </h:form>
+        </div>
+    </h:body>
+    <ui:include src="AdminAccess.xhtml"/>
+</html>
+

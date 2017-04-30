@@ -34,8 +34,8 @@ public class TauxTaxeController implements Serializable {
     }
 
     public TauxTaxe getSelected() {
-        if(selected==null){
-            selected=new TauxTaxe();
+        if (selected == null) {
+            selected = new TauxTaxe();
         }
         return selected;
     }
@@ -89,26 +89,27 @@ public class TauxTaxeController implements Serializable {
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
-             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("TauxTaxe", 1);
-                            JsfUtil.addSuccessMessage("TauxTaxe bien crée");
-                            break;
-                        case UPDATE:
-                            TauxTaxe oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("TauxTaxe", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("TauxTaxe", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+            try {
+                TauxTaxe oldvalue = new TauxTaxe();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TauxTaxe", 1, null, selected);
+                        JsfUtil.addSuccessMessage("TauxTaxe bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TauxTaxe", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("TauxTaxe", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

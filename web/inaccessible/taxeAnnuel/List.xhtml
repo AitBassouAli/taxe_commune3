@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="../template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListTaxeAnnuelTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="TaxeAnnuelListForm" >
+               
+                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel"   >
+
+
+                    <b:panelGrid columns="6" >
+                        <h:outputLabel value="montantMin:" for="montantMin" />
+                        <b:inputText id="montantMin" value="#{taxeAnnuelController.montantMin}"  />
+                        <h:outputLabel value="montantMax:" for="montantMax" />
+                        <b:inputText id="montantMax" value="#{taxeAnnuelController.montantMax}"  />
+                        <h:outputLabel value="Locale Référence:" for="localeName" />
+                        <b:inputText id="localeName" value="#{taxeAnnuelController.localeName}"  />
+                        <h:outputLabel value="TrimPayeMin:" for="tMin" />
+                        <b:inputText id="tMin" value="#{taxeAnnuelController.nombreTaxeMin}"  />
+                        <h:outputLabel value="TrimPayeMax:" for="tMax" />
+                        <b:inputText id="tMax" value="#{taxeAnnuelController.nombreTaxetMax}"  />
+                        <h:outputLabel value="Annee:" for="a" />
+                        <b:inputText id="a" value="#{taxeAnnuelController.annee}"  />
+                    </b:panelGrid>
+                </b:panel>
+                <div align="center">
+                    <b:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
+                    </div>
+
+                <p:panel header="#{bundle.ListTaxeAnnuelTitle}">
+                    <b:dataTable id="datalist" value="#{taxeAnnuelController.items}" var="item"
+                                 selectionMode="single" 
+                                 >
+
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Annee"/>
+                            </f:facet>
+                            <h:outputText value="#{item.annee}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Locale"/>
+                            </f:facet>
+                            <h:outputText value="#{item.locale.toString()}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeAnnuelTitle_taxeTotale}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.taxeTotale}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre des trimistres paye"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nbrTrimesterPaye}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <b:commandButton id="viewButton"   value=""  icon="glyphicon glyphicon-search" style="color: lightsteelblue"  actionListener="#{taxeAnnuelController.prepareView(item)}" update=":TaxeAnnuelViewForm" oncomplete="PF('TaxeAnnuelViewDialog').show()" />
+                            <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeAnnuelController.destroy(item)}" update="TaxeAnnuelListForm,:growl" />
+
+                        </b:dataTableColumn>
+
+                    </b:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

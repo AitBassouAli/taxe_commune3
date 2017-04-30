@@ -14,7 +14,11 @@
     <class>bean.TaxeAnnuel</class>
     <class>bean.TaxeTrim</class>
     <class>bean.User</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <class>bean.Device</class>
+    <class>bean.Historique</class>
+    <class>bean.Journal</class>
+    <class>bean.PositionLocale</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>

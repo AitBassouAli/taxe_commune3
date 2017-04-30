@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link  src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>
+    <link src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+
+
+    <h:head>
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>       
+        <h:outputStylesheet library="css" name="css/bootstrap.css"/>       
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+    <h:body>
+        <style >
+            .menuitem{
+                text-align: center ;font-size: 12pt;margin-left:10px ;
+            }
+            .submenu{
+                text-align: center ;font-size: 12pt;padding-left:20px; 
+            }
+
+        </style>
+        <b:growl id="growl" class="alert alert-danger" />
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="65" >
+                <h:form id="menuForm">
+
+                    <b:navBar  fixed="top"  inverse="true" sticky="true" brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml"  >
+                        <b:navbarLinks>
+                            <b:navLink value="Adressage" href="../search/Adrressage.xhtml"></b:navLink>
+                            <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" >
+                                <b:navLink value="Redevables" href="../redevable/List.xhtml"></b:navLink>
+                                <b:navLink value="Locales" href="../locale/List.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:dropMenu value="Services de Paiement" iconAwesome="birthday-cake">
+
+                                <b:dropMenu value="Taxe" >
+                                    <b:navLink value="Taxes Trimistrielles" href="../taxeTrim/List.xhtml"></b:navLink>
+                                    <b:navLink value="Taxes Anuelles" href="../taxeAnnuel/List.xhtml"></b:navLink>
+                                </b:dropMenu>
+                                <b:dropMenu value="Taux" >
+                                    <b:navLink value="TauxTaxe" href="../tauxTaxe/List.xhtml"></b:navLink>
+                                    <b:navLink value="TauxTaxeRetard" href="../tauxTaxeRetard/List.xhtml"></b:navLink>
+                                </b:dropMenu>
+                                <b:navLink value="Categories" href="../categorie/List.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:navLink value="Statistiques" href="../charts/grapheCritere.xhtml"></b:navLink>
+                            <b:dropMenu value="Configuration"  >
+                                <b:navLink value="Utilisateures" href="../user/List.xhtml"></b:navLink>
+                                <b:navLink value="Histouriques" href="../historique/List.xhtml"></b:navLink>
+                                <b:navLink value="Journal" href="../journal/List.xhtml"></b:navLink>
+                                <b:navLink value="Device" href="../device/List.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:dropMenu value="Recherches" >
+                                <b:navLink value="Redevables" href="../search/SearchRedevable.xhtml"></b:navLink>
+                                <b:navLink value="Locales" href="../search/SearchLocale.xhtml"></b:navLink>
+                                <b:navLink value="Taxes " href="../search/SearchTaxeTrim.xhtml"></b:navLink>
+                                <b:navLink value="Txes/Locales" href="../search/locale_taxes.xhtml"></b:navLink>
+                            </b:dropMenu>
+                        </b:navbarLinks>
+
+
+                        <!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
+                        <b:navbarLinks pull="right"><b:navLink value="    " href="#"/></b:navbarLinks>
+                        <b:navbarLinks pull="right" styleClass="hidden-xs">
+                            <b:dropMenu value="#{userController.connectedUser.login}" iconAwesome="envelope">
+                                <b:navLink value="Profile" href="../user/Profil.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:navCommandLink value="Deconnexion" icon="glyphicon glyphicon-off"  action="#{historiqueController.deconnection()}"></b:navCommandLink>
+                        </b:navbarLinks>
+                    </b:navBar>
+
+                </h:form>
+            </p:layoutUnit>
+
+
+
+            <p:layoutUnit position="center">
+                <ui:insert name="body"/>
+            </p:layoutUnit>
+
+        </p:layout>
+
+
+    </h:body>
+
+</html>
+

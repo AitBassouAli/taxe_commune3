@@ -29,8 +29,24 @@ public class TaxeAnnuelController implements Serializable {
     private service.JournalFacade journalFacade;
     private List<TaxeAnnuel> items = null;
     private TaxeAnnuel selected;
+    private Double montantMin;
+    private Double montantMax;
+    private int nombreTaxeMin;
+    private int nombreTaxetMax;
+    private int annee;
+    private String localeName;
 
     public TaxeAnnuelController() {
+    }
+
+    public void findByCreteria() {
+        //appelle 3la lmethode dyal recherch     
+        items = ejbFacade.findTaxeAnnuelByCretere( montantMin, montantMax, nombreTaxeMin, nombreTaxetMax, localeName,annee);
+    }
+    public void prepareView(TaxeAnnuel taxeAnnuel) {
+        selected = taxeAnnuel;
+
+        taxeAnnuel = new TaxeAnnuel();
     }
 
     public TaxeAnnuel getSelected() {
@@ -42,6 +58,54 @@ public class TaxeAnnuelController implements Serializable {
 
     public void setSelected(TaxeAnnuel selected) {
         this.selected = selected;
+    }
+
+    public Double getMontantMin() {
+        return montantMin;
+    }
+
+    public void setMontantMin(Double montantMin) {
+        this.montantMin = montantMin;
+    }
+
+    public Double getMontantMax() {
+        return montantMax;
+    }
+
+    public void setMontantMax(Double montantMax) {
+        this.montantMax = montantMax;
+    }
+
+    public int getNombreTaxeMin() {
+        return nombreTaxeMin;
+    }
+
+    public void setNombreTaxeMin(int nombreTaxeMin) {
+        this.nombreTaxeMin = nombreTaxeMin;
+    }
+
+    public int getNombreTaxetMax() {
+        return nombreTaxetMax;
+    }
+
+    public void setNombreTaxetMax(int nombreTaxetMax) {
+        this.nombreTaxetMax = nombreTaxetMax;
+    }
+
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
     }
 
     protected void setEmbeddableKeys() {
@@ -71,11 +135,12 @@ public class TaxeAnnuelController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeAnnuelUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(TaxeAnnuel taxeAnnuel) {
+        selected = taxeAnnuel;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeAnnuelDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(taxeAnnuel);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -90,25 +155,26 @@ public class TaxeAnnuelController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("TaxeAnnuel", 1);
-                            JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
-                            break;
-                        case UPDATE:
-                            TaxeAnnuel oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("TaxeAnnuel", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                TaxeAnnuel oldvalue = new TaxeAnnuel();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 1, null, selected);
+                        JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

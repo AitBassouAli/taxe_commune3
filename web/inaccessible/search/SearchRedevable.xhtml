@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="/resources/css/bootstrap.css"/>
+        <h:outputScript name="/resources/js/jquery.js"/>
+        <h:outputScript name="/resources/js/bootstrap.js"/>
+    </h:head>
+
+    <ui:composition template="../template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListLocaleTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="RedevableListForm">
+                <p:fieldset legend="Search:" style="padding-left:20%;padding-right:5%; background-color: #eee6ff ">
+                    <p:panelGrid columns="6" >
+                        <p:outputLabel value="Rc:" for="rc" />
+                        <p:inputText id="rc" value="#{redevableController.selected.rc}" title="Rc" />
+                        <p:outputLabel value="Cin:" for="cin" />
+                        <p:inputText id="cin" value="#{redevableController.selected.cin}" title="Cin" />
+                        <p:outputLabel value="Pattente:" for="pattente" />
+                        <p:inputText id="pattente" value="#{redevableController.selected.pattente}" title="Pattente" />
+                        <p:outputLabel value="Nom:" for="nom" />
+                        <p:inputText id="nom" value="#{redevableController.selected.nom}" title="Nom" />
+                        <p:outputLabel value="Nature:" for="nature" />
+                        <p:selectOneMenu id="nature" value="#{redevableController.selected.nature}">
+                            <f:selectItem itemValue="0" itemLabel="--SELECT--"/>
+                            <f:selectItem itemValue="1" itemLabel="gerant"/>
+                            <f:selectItem itemValue="2" itemLabel="proprietaire"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Email" for="email" />
+                        <p:inputText id="email" value="#{redevableController.selected.email}" title="Email" />
+                    </p:panelGrid>
+                    <div style="padding-left: 30%">
+                        <p:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{redevableController.findByRCorCIN()}" update="datalist"></p:commandButton>
+                    </div>
+                </p:fieldset>
+                <br/><br/>
+                <p:fieldset legend="List">
+                    <p:dataTable value="#{redevableController.itemsAvaible}" var="item" id="datalist">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Rc"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rc==''?'----_----':item.rc}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Pattente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pattente}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Cin"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cin==''?'----_----':item.cin}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Prenom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenom}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nature"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nature==1? 'Gerant':'Proprietaire'}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Adresse"/>
+                            </f:facet>
+                            <h:outputText value="#{item.adresse}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fax"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fax}"/>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:fieldset>
+                <!--</p:panel>-->
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

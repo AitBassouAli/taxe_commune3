@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="../template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListJournalTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="JournalListForm">
+                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel-success" >
+                
+                    <p:panelGrid columns="10" style="margin-left: 150px" >
+                        <p:outputLabel value="OperationType:" for="numeroTrim" />
+
+                        <p:selectOneMenu id="numeroTrim" value="#{journalController.typee}" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                            <f:selectItem itemLabel="Create" itemValue="1"/>
+                            <f:selectItem itemLabel="Update" itemValue="2"/>
+                            <f:selectItem itemLabel="Delete" itemValue="3"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="beanName:" for="beanName" />
+                        <p:inputText id="beanName" value="#{journalController.beanName}"  />
+                        <p:outputLabel value="DateMin:" for="dateMin" />
+                        <p:calendar id="dateMin" pattern="MM/dd/yyyy" value="#{journalController.dateMin}"  showOn="button" />
+                        <p:outputLabel value="DateMin:" for="dateMax"  />
+                        <p:calendar id="dateMax" pattern="MM/dd/yyyy" value="#{journalController.dateMax}" showOn="button"/>
+                    </p:panelGrid>
+                        <div align="center" class="col-sm-2" style="margin-left: 40%;font-size: 10pt" >
+                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{journalController.searche()}" update="datalist"></b:commandButton>
+                    </div>
+                    
+                </b:panel>
+                <b:dataTable id="datalist" value="#{journalController.items}" var="item"
+                             selectionMode="single" class="datatable"
+
+                             >
+
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="beanName"/>
+                        </f:facet>
+                        <h:outputText value="#{item.beanName}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_type}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.type}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_ancienValeur}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.ancienValeur}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_nouvelleValeur}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nouvelleValeur}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_dateAction}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateAction}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_user}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.user}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListJournalTitle_device}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.device.deviceCategorie}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"  class="btn btn-danger center-block" >
+                            <p:confirm header="Confirmation" message="#{'Voullez-vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                        </b:commandButton>
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog> 
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
+                    <b:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{taxeTrimController.prepareCreate}" update=":TaxeTrimCreateForm" oncomplete="PF('TaxeTrimCreateDialog').show()"/>

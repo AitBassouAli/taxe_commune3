@@ -181,7 +181,7 @@ public class UserFacade extends AbstractFacade<User> {
                 switch (resDevice) {
                     case 3:
                         deviceFacade.save(device, loadedUser);
-                        return new Object[]{3, null};
+                        return new Object[]{3, loadedUser};
                     case 1:
                         deviceFacade.save(device, loadedUser);
                         return new Object[]{1, loadedUser};

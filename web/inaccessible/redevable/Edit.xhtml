@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:outputScript name="/resources/js/jquery.js"/>
+
+    
+    <ui:composition>
+
+        <p:dialog id="RedevableEditDlg" widgetVar="RedevableEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditRedevableTitle}">
+            <h:form id="RedevableEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{redevableController.selected != null}">
+                        <p:outputLabel value="Type d'entité" />
+                        <p:selectOneMenu id="typeEntite" value="#{redevableController.typeEntite}" >
+                            <f:selectItem itemValue="1" itemLabel="Personne Physique"/>
+                            <f:selectItem itemValue="2" itemLabel="Personne morale"/>
+                            <p:ajax update="RedevableEditForm" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_rc}" for="rc" rendered="#{redevableController.typeEntite==2}" />
+                        <p:inputText id="rc" value="#{redevableController.selected.rc}" rendered="#{redevableController.typeEntite==2}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_cin}" for="cin" rendered="#{redevableController.typeEntite==1}" />
+                        <p:inputText id="cin" value="#{redevableController.selected.cin}" rendered="#{redevableController.typeEntite==1}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{redevableController.selected.nom}" title="#{bundle.EditRedevableTitle_nom}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_prenom}" for="prenom" rendered="#{redevableController.typeEntite==1}" />
+                        <p:inputText id="prenom" value="#{redevableController.selected.prenom}" rendered="#{redevableController.typeEntite==1}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_nature}" for="nature" />
+                        <p:selectOneMenu id="nature" value="#{redevableController.selected.nature}" >
+                            <f:selectItem itemValue="1" itemLabel="#{bundle.Gerant}"/>
+                            <f:selectItem itemValue="2" itemLabel="#{bundle.Proprietaire}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_adresse}" for="adresse" />
+                        <p:inputText id="adresse" value="#{redevableController.selected.adresse}" title="#{bundle.EditRedevableTitle_adresse}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_email}" for="email" />
+                        <p:inputText id="email" required="true" 
+                                     requiredMessage="Please enter your email address."
+                                     validatorMessage="Invalid email format"
+                                     value="#{redevableController.selected.email}">
+
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_fax}" for="fax" />
+                        <p:inputText id="fax" value="#{redevableController.selected.fax}" title="#{bundle.EditRedevableTitle_fax}" />
+                        <p:outputLabel value="#{bundle.EditRedevableLabel_pattente}" for="pattente" />
+                        <p:inputText id="pattente" value="#{redevableController.selected.pattente}" title="#{bundle.EditRedevableTitle_pattente}" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{redevableController.update}" value="#{bundle.Save}" update="display,:RedevableListForm:datalist,:growl"
+                                     disabled="#{empty redevableController.selected.cin and empty redevableController.selected.rc}" oncomplete="handleSubmit(args, 'RedevableEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="RedevableEditDialog.hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
