@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <h:outputStylesheet name="/resources/css/bootstrap.css"/>
+        <h:outputScript name="/resources/js/jquery.js"/>
+        <h:outputScript name="/resources/js/bootstrap.js"/>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBDNr0iHK-GjfC5Oj_D3Us6j6a1gxLDAg8" sensor="false">
+
+        </script>
+        <script type="text/javascript">
+            var currentMarker = null;
+            function createLocaleMarkerInOverlay(positionsLocales) {
+                PF('mapa')._render();
+                console.log(positionsLocales);
+                for (var i = 0; i&lt; positionsLocales.length; i++) {
+                    var positionsLocale = positionsLocales[i];
+                    currentMarker = new google.maps.Marker({position: new google.maps.LatLng(positionsLocale.lat, positionsLocale.lng)});
+                    PF('mapa').addOverlay(currentMarker);
+                }
+            }
+        </script>
+
+    </h:head>
+
+    <h:body>
+          
+<div class="col-lg-1"/>
+                <div class="col-lg-10">
+                    <h:form id="mapForm"  prependId="false">
+                        <b:growl id="growl"/>
+                        <h:outputLabel value="Ce Locale deja positionne ,afficher l'enciene Position ?" rendered="#{not empty localeController.selected.positionLocale.id}"/>
+                        <b:commandButton value="Afficher" class="form-control" actionListener="#{localeController.mapOneLocale()}" update="map" rendered="#{not empty localeController.selected.positionLocale.id}" />
+
+                        <p:gmap class="form-control" center="31.625832802876324,-7.988905906677246" id="map" zoom="15" type="ROADMAP" widgetVar="mapa"  style="width:100%;height:450px;margin-top: 2%" onPointClick="handlePointClick(event);"  >
+
+                        </p:gmap> 
+
+                        <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="lat,lng,save" />
+
+                        <h:inputText id="lat" value="#{localeController.lat}" />
+                        <h:inputText id="lng" value="#{localeController.lng}" />
+                        <p:commandButton id="save" value="Positionner Ici" actionListener="#{localeController.attachPositionToLocale()}" update="growl" 
+                                         class="form-control" disabled="#{empty localeController.selected or localeController.lat==0 or localeController.lng==0}" />
+                    </h:form></div>
+                    <div class="col-lg-1"/>
+            <script type="text/javascript" >
+                function handlePointClick(event) {
+
+                    if (navigator.geolocation)
+                    {
+                        browserSupportFlag = true;
+                        var latlng = event.latLng;
+                        geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({'latLng': latlng}, function (results, status)
+                        {
+                            if (status === google.maps.GeocoderStatus.OK)
+                            {
+                                onPoint([{name: 'lng', value: event.latLng.lng()}, {name: 'lat', value: event.latLng.lat()}]);
+
+                            }
+                        });
+                    }
+                }
+
+            </script>
+    </h:body>
+
+</html>

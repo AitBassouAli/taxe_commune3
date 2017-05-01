@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <head> 
+        <meta charset="utf-8" />  
+        <!-- Change for better search engine indexing -->  
+        <title>Web Site</title>  
+        <meta name="title" content="Web site" />  
+        <meta name="description" content="Your Web site description here" />  
+        <meta name="keywords" content="Your Web site keywords here" />  
+        <meta name="subject" content="Your Web Site subject here" />  
+        <meta name="copyright" content="Your company or organization" />  
+        <meta name="robots" content="All" />  
+        <meta name="abstract" content="Site description here" />  
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300|Open+Sans:300italic|Open+Sans+Condensed:700|Open+Sans+Condensed:300|Open+Sans+Condensed:300|Open+Sans+Condensed:300" type="text/css" />  
+        <meta name="MSSmartTagsPreventParsing" content="true" /> 
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link  src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>
+        <link src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+
+
+
+    </head>
+    <body>
+<h:form>
+        <!--Header-->
+        <div class="header">
+            <div class="slider">
+                <img src="img/jumbo.jpg"/>
+            </div>
+            
+            <div class="navbar">
+                <div class="container">
+                    <h4>GESTION<span> DES TAXES</span> SEJOURS</h4>
+                    <ul>
+                        <li>
+                            <p:commandLink class="active" action="faces/user/Home" value="Home"></p:commandLink>
+                        </li>
+                        <li>
+                            <p:commandLink action="faces/user/Admin" value="Amin pannel"></p:commandLink>
+                        </li>
+                        <li>
+                            <p:commandLink action="faces/user/Profil?fsces-redirect=true" value="Mon Compte"></p:commandLink>
+                        </li>
+
+                        <li><p:commandLink class="warning" action="#{historiqueController.deconnection()}" value="Se deconnecter"></p:commandLink></li>
+                    </ul> 
+                </div>
+            </div>
+            <!-- END Header -->
+            <!-- this th end of the header -->
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <p:commandLink action="/faces/locale/List" >
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </div>
+                <!-- second pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- third pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- fourth pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- success panels -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- second pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- third pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body" >
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- fourth pannel -->
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            penel
+                            <div class="panel-body">
+                                <img src="img/jumbo.jpg" class="img-thumbnail"/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end pannels -->
+            <!--About Me-->
+            <div class="about-me" style="text-align: center;">
+                <div class="info" >
+
+                </div>
+            </div>
+      
+        </div>
+          </h:form>
+        <!--END About Me-->
+    </body>
+</html>
+
+
