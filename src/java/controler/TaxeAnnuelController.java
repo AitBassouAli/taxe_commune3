@@ -90,25 +90,26 @@ public class TaxeAnnuelController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("TaxeAnnuel", 1);
-                            JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
-                            break;
-                        case UPDATE:
-                            TaxeAnnuel oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("TaxeAnnuel", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                TaxeAnnuel oldvalue = new TaxeAnnuel();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 1, null, selected);
+                        JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("TaxeAnnuel", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

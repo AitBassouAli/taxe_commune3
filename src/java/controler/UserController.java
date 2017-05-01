@@ -1,14 +1,16 @@
 package controler;
 
-import bean.Device;
 import bean.Historique;
+import bean.Secteur;
 import bean.User;
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.urlPatternType;
 import controler.util.DeviceUtil;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import controler.util.SessionUtil;
 import service.UserFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.AnnexeAdministratifFacade;
 import service.DeviceFacade;
 import service.HistoriqueFacade;
 
@@ -37,9 +40,103 @@ public class UserController implements Serializable {
     private service.JournalFacade journalFacade;
     @EJB
     private DeviceFacade deviceFacade;
+    @EJB
+    private AnnexeAdministratifFacade annexeAdministratifFacade;
     private List<User> items = null;
     private User selected = new User();
+    private User oldUser;
     private User connectedUser;
+    //la page profile + changer mdp
+    private String oldPassword;
+    private String changePassword;
+    private String changeRepetePassword;
+    private boolean afficheProfile = true;
+    private boolean changerPasswrd = false;
+    private boolean changerAutreInfos = false;
+    //la recherche
+    private Secteur secteur;
+
+    public void findByCreteria() {
+        items = ejbFacade.findByCreteria(selected, secteur);
+    }
+
+    public void refresh() {
+        selected = null;
+        secteur = null;
+        items = null;
+    }
+
+    public void findAnnexs() {
+        if (secteur == null) {
+            getSecteur().setAnnexeAdministratifs(new ArrayList<>());
+        } else {
+            secteur.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteur));
+        }
+    }
+
+    public String genaratePasswrd() {
+        if (!selected.getLogin().equals("")) {
+            int res = ejbFacade.sendPW(selected.getLogin());
+            if (res < 0) {
+                JsfUtil.addErrorMessage("there is a problem");
+            } else {
+                JsfUtil.addSuccessMessage("loook your email");
+                return "/inaccessible/user/Home?faces-redirect=true";
+            }
+        }
+        return null;
+    }
+
+    public void aficherProfil(boolean profile, boolean password, boolean autreInfos) {
+        afficheProfile = profile;
+        changerPasswrd = password;
+        changerAutreInfos = autreInfos;
+        oldPassword = "";
+        changePassword = "";
+        changeRepetePassword = "";
+    }
+
+    public void changePass() {
+        int res = ejbFacade.changePassword(getConnectedUser().getLogin(), oldPassword, changePassword, changeRepetePassword);
+        showMessage(res);
+    }
+
+    public void changeInformation() {
+        ejbFacade.changeData(connectedUser);
+        JsfUtil.addSuccessMessage("Modification avec succes");
+    }
+
+    private void showMessage(int res) {
+        if (res == -1) {
+            JsfUtil.addErrorMessage("la confirmation de votre mot de passe n'est pas correct");
+        } else if (res == -2) {
+            JsfUtil.addErrorMessage("l'ancient mot de passe ne correspond pas au mot de passe de la base de données");
+        } else if (res == -3) {
+            JsfUtil.addErrorMessage("le nouveau mot de passe ne doit pas etre l'ancient");
+        } else {
+            JsfUtil.addSuccessMessage("Modification avec succes ");
+        }
+    }
+
+    public void preparUpdate(User user) {
+        oldUser = ejbFacade.find(user.getLogin());
+        selected = ejbFacade.find(user.getLogin());
+    }
+
+    public void bloquer(User user) {
+        String msg = "";
+        oldUser = ejbFacade.find(user.getLogin());
+        selected = ejbFacade.find(user.getLogin());
+        if (selected.getBlocked() == 1) {
+            selected.setBlocked(0);
+            msg += "Utilisateur est mintenant Debloquée";
+        } else {
+            selected.setBlocked(1);
+            msg += "Utilisateur est mintenant Bloquée";
+        }
+        update();
+        JsfUtil.addSuccessMessage(msg);
+    }
 
     public String reset() {
         User loadedUser = ejbFacade.find(selected);
@@ -79,9 +176,9 @@ public class UserController implements Serializable {
             JsfUtil.addErrorMessage("le code de l'erreur " + res1);
             return "/index?faces-redirect=true";
         } else {
-            SessionUtil.registerUser(ejbFacade.clone(selected));
+            SessionUtil.registerUser(selected);
             historiqueFacade.create(new Historique(new Date(), 1, ejbFacade.clone(selected), deviceFacade.curentDevice(selected, DeviceUtil.getDevice())));
-            return "/user/Home?faces-redirect=true";
+            return "/inaccessible/user/Home?faces-redirect=true";
         }
     }
 //    public String seConnecter() {
@@ -142,19 +239,23 @@ public class UserController implements Serializable {
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("UserUpdated"));
+        items=null;
+//        items.set(items.indexOf(oldUser), selected);
+//        oldUser = null;
     }
 
-    public void destroy() {
+    public void destroy(User user) {
+        selected = user;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("UserDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(user);    // Invalidate list of items to trigger re-query.
         }
     }
 
     public List<User> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getFacade().findByAnnexe(getConnectedUser());
         }
         return items;
     }
@@ -163,25 +264,26 @@ public class UserController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("User", 1);
-                            JsfUtil.addSuccessMessage("User bien crée");
-                            break;
-                        case UPDATE:
-                            User oldvalue = getFacade().find(selected.getLogin());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("User", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("User", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                User oldvalue = new User();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getLogin());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().addUser(selected);
+                        journalFacade.journalUpdate("User", 1, null, selected);
+                        JsfUtil.addSuccessMessage("User bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("User", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("User", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {
@@ -264,6 +366,76 @@ public class UserController implements Serializable {
 
     public void setConnectedUser(User connectedUser) {
         this.connectedUser = connectedUser;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(String changePassword) {
+        this.changePassword = changePassword;
+    }
+
+    public String getChangeRepetePassword() {
+        return changeRepetePassword;
+    }
+
+    public void setChangeRepetePassword(String changeRepetePassword) {
+        this.changeRepetePassword = changeRepetePassword;
+    }
+
+    public boolean isAfficheProfile() {
+        return afficheProfile;
+    }
+
+    public void setAfficheProfile(boolean afficheProfile) {
+        this.afficheProfile = afficheProfile;
+    }
+
+    public boolean isChangerPasswrd() {
+        return changerPasswrd;
+    }
+
+    public void setChangerPasswrd(boolean changerPasswrd) {
+        this.changerPasswrd = changerPasswrd;
+    }
+
+    public boolean isChangerAutreInfos() {
+        return changerAutreInfos;
+    }
+
+    public void setChangerAutreInfos(boolean changerAutreInfos) {
+        this.changerAutreInfos = changerAutreInfos;
+    }
+
+    public Secteur getSecteur() {
+        if (secteur == null) {
+            secteur = new Secteur();
+        }
+        return secteur;
+    }
+
+    public void setSecteur(Secteur secteur) {
+        this.secteur = secteur;
+    }
+
+    public User getOldUser() {
+        if (oldUser == null) {
+            oldUser = new User();
+        }
+        return oldUser;
+    }
+
+    public void setOldUser(User oldUser) {
+        this.oldUser = oldUser;
     }
 
 }

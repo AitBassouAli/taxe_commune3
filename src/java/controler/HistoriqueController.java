@@ -67,11 +67,16 @@ public class HistoriqueController implements Serializable {
 
     //crreation d'un historique de deconnections ali
     public String deconnection() {
+        System.out.println("DECONNEXIOOOOOON");
         User connectedUser = SessionUtil.getConnectedUser();
         SessionUtil.unSetUser(connectedUser);
+        SessionUtil.getSession().invalidate();
         Device device = deviceFacade.curentDevice(connectedUser, DeviceUtil.getDevice());
         selected = new Historique(new Date(), 2, connectedUser, device);
         ejbFacade.create(selected);
+        if (SessionUtil.getConnectedUser() != null) {
+            System.out.println("==========================+++++==========================");
+        }
         return "/index?faces-redirect=true";
     }
 
@@ -133,25 +138,26 @@ public class HistoriqueController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("Historique", 1);
-                            JsfUtil.addSuccessMessage("Historique bien crée");
-                            break;
-                        case UPDATE:
-                            Historique oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("Historique", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                Historique oldvalue = new Historique();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Historique", 1, null, selected);
+                        JsfUtil.addSuccessMessage("Historique bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("Historique", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {

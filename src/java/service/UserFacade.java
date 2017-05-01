@@ -5,16 +5,22 @@
  */
 package service;
 
+import bean.AnnexeAdministratif;
 import bean.Device;
+import bean.Secteur;
 import bean.User;
+import controler.util.EmailUtil;
 import controler.util.HashageUtil;
 import controler.util.JsfUtil;
+import controler.util.RandomStringUtil;
+import controler.util.SearchUtil;
 import controler.util.SessionUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -47,78 +53,73 @@ public class UserFacade extends AbstractFacade<User> {
                 return user;
             }
         } catch (Exception e) {
-            JsfUtil.addErrorMessage("Login incorrect");
+            return null;
         }
         return null;
     }
-//
-//    public void seDeConnnecter() {
-//        historiqueConnexionFacade.createDeConnexion();
-//        SessionUtil.getSession().invalidate();
-//
-//    }
-//
-//    public List<User> findUserByTaxeGenerale(Date datePresentationMin, Date datePresentationMax, Activite activite, Secteure secteure, AnnexeAdministrative annexeAdministrative, Quartier quartier, Rue rue, List<String> typesTaxe) {
-//        List<User> userBoison = new ArrayList<>();
-//        List<User> userSejour = new ArrayList<>();
-//        List<User> user37 = new ArrayList<>();
-//        List<User> user38 = new ArrayList<>();
-//        List<User> users = new ArrayList<>();
-//        if (datePresentationMin != null && datePresentationMax != null) {
-//            if (datePresentationMin.compareTo(datePresentationMax) > 0) {
-//                Date date1 = datePresentationMin;
-//                datePresentationMin = datePresentationMax;
-//                datePresentationMax = date1;
-//                System.out.println("les date m9lobin o hahoma t9ado ");
-//                System.out.println("ha la date min " + datePresentationMin);
-//                System.out.println("ha date max " + datePresentationMax);
-//            }
-//        }
-//        for (int i = 0; i < typesTaxe.size(); i++) {
-//            if (typesTaxe.get(i).equals("Boison")) {
-//                userBoison = findUserByTaxe("TaxeBoisonAnuelle", "taxeBoisonAnuelle", "TaxeBoisonTrimistrielle", "taxeBoisonTrimistrielle", datePresentationMin, datePresentationMax, activite, secteure, annexeAdministrative, quartier, rue);
-//                users = findUsersIntersection(userBoison, users);
-//            } else if (typesTaxe.get(i).equals("Sejour")) {
-//                userSejour = findUserByTaxe("TaxeSejourAnuelle", "taxeSejourAnuelle", "TaxeSejourTrimistrielle", "taxeSejourTrimistrielle", datePresentationMin, datePresentationMax, activite, secteure, annexeAdministrative, quartier, rue);
-//                users = findUsersIntersection(userSejour, users);
-//            } else if (typesTaxe.get(i).equals("37")) {
-//                user37 = findUserByTaxe("Taxe37TrimistrielleItem", "taxe37Trimistrielleitem", "Taxe37TrimistrielleItem", "taxe37Trimistrielleitem", datePresentationMin, datePresentationMax, activite, secteure, annexeAdministrative, quartier, rue);
-//                users = findUsersIntersection(user37, users);
-//            } else if (typesTaxe.get(i).equals("38")) {
-//                user38 = findUserByTaxe("Taxe38TrimistrielleItem", "taxe38TrimistrielleItem", "Taxe38TrimistrielleItem", "taxe38TrimistrielleItem", datePresentationMin, datePresentationMax, activite, secteure, annexeAdministrative, quartier, rue);
-//                users = findUsersIntersection(user38, users);
-//            }
-//        }
-//        return users;
-//    }
 
-//    public List<User> findUserByTaxe(String taxeBeanAnnuel, String abreviationBeanAnnuel, String taxeBeanTrim, String abreviationBeanTrim, Date datePresentationMin, Date datePresentationMax, Activite activite, Secteure secteure, AnnexeAdministrative annexeAdministrative, Quartier quartier, Rue rue) {
-//        String ajouteCritaireAnnuel = "";
-//        String variable = ".user";
-//        String ajouteCritaireTrimistriel = "";
-//        if (taxeBeanAnnuel.equals("Taxe37TrimistrielleItem") || taxeBeanAnnuel.equals("Taxe38TrimistrielleItem")) {
-//            if (taxeBeanAnnuel.equals("Taxe37TrimistrielleItem")) {
-//                ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique37Et38Item(false, abreviationBeanTrim, "", activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, true);
-//            } else if (taxeBeanAnnuel.equals("Taxe37TrimistrielleItem")) {
-//                ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique37Et38Item(false, abreviationBeanTrim, "", activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, false);
-//            }
-//        } else {
-//            ajouteCritaireAnnuel = statistiqueFacade.constructRequetteStatistique(true, abreviationBeanTrim, abreviationBeanAnnuel, activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, false);
-//            ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique(false, abreviationBeanTrim, abreviationBeanAnnuel, activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, false);
-//        }
-//        List<User> userAnuel = em.createQuery("SELECT DISTINCT(" + taxeBeanAnnuel + variable + ") FROM " + taxeBeanAnnuel + " " + abreviationBeanAnnuel
-//                + "  WHERE " + abreviationBeanAnnuel + variable + ".login != null" + ajouteCritaireAnnuel).getResultList();
-//        if(taxeBeanTrim.equals("taxe37Trimistrielleitem")){
-//            ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique37Et38Item(false, abreviationBeanTrim, abreviationBeanAnnuel, activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, true);
-//        }else if(taxeBeanTrim.equals("taxe38Trimistrielleitem")){
-//            ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique37Et38Item(false, abreviationBeanTrim, abreviationBeanAnnuel, activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, false);
-//        }else{
-//            ajouteCritaireTrimistriel = statistiqueFacade.constructRequetteStatistique(false, abreviationBeanTrim, abreviationBeanAnnuel, activite, rue, quartier, annexeAdministrative, secteure, datePresentationMax, datePresentationMin, null, null, false);
-//        }
-//        List<User> userTrim = em.createQuery("SELECT DISTINCT(" + taxeBeanTrim + variable + ") FROM " + taxeBeanTrim + " " + abreviationBeanTrim
-//                + "  WHERE " + abreviationBeanTrim + ".user.login != null" + ajouteCritaireTrimistriel).getResultList();
-//        return findUsersIntersection(userAnuel, userTrim);
-//     
+    public List<User> findByCreteria(User selected, Secteur secteur) {
+        String requette = "SELECT u FROM User u WHERE 1=1";
+        if (selected.getBlocked() > 0) {
+            requette += SearchUtil.addConstraint("u", "blocked", "=", selected.getBlocked());
+        }
+        if (!selected.getNom().equals("")) {
+            requette += SearchUtil.addConstraint("u", "nom", "=", selected.getNom());
+        }
+         if (!selected.getEmail().equals("")) {
+            requette += SearchUtil.addConstraint("u", "email", "LIKE", "%"+selected.getEmail()+"%");
+        }
+        if (selected.getAnnexeAdministratif() == null) {
+            if (secteur != null) {
+                requette += SearchUtil.addConstraint("u", "annexeAdministratif.secteur.id", "=", secteur.getId());
+            }
+        } else {
+            requette += SearchUtil.addConstraint("u", "annexeAdministratif.id", "=", selected.getAnnexeAdministratif().getId());
+        }
+         requette += SearchUtil.addConstraint("u", "admine", "=", selected.isAdmine());
+
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+    }
+
+    public User findByEmail(String email) {
+        try {
+            User user = (User) em.createQuery("select u from User u where u.email LIKE '" + email + "'").getSingleResult();
+            if (user != null) {
+                return user;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
+    public int sendPW(String email) {
+        User user = findByEmail(email);
+        if (user == null) {
+            return -1;
+        } else {
+            String pw = RandomStringUtil.generate();
+            String msg = "Bienvenu Mr. " + user.getNom() + ",<br/>"
+                    + "D'après votre demande de reinitialiser le mot de passe de votre compte TaxeSejour, nous avons generer ce mot de passe pour vous.\n"
+                    + "<br/><br/>"
+                    + "      Nouveau Mot de Passe: <br/><center><b>"
+                    + pw
+                    + "</b></center><br/><br/><b><i>PS:</i></b>  SVP changer ce mot de passe apres que vous avez connecter pour des raison du securité .<br/> Cree votre propre mot de passe";
+            try {
+                EmailUtil.sendMail("pfetaxe@gmail.com", "taxeCommune", msg, email, "Demande de reanitialisation du mot de pass");
+            } catch (MessagingException ex) {
+                //  Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+                return -2;
+            }
+
+            user.setBlocked(0);
+            user.setPassword(HashageUtil.sha256(pw));
+            edit(user);
+            return 1;
+        }
+    }
+
     public int changePassword(String login, String oldPassword, String newPassword, String newPasswordConfirmation) {
         System.out.println("voila hana dkhalt le service verifierPassword");
         User loadedeUser = find(login);
@@ -181,7 +182,7 @@ public class UserFacade extends AbstractFacade<User> {
                 switch (resDevice) {
                     case 3:
                         deviceFacade.save(device, loadedUser);
-                        return new Object[]{3, null};
+                        return new Object[]{3, loadedUser};
                     case 1:
                         deviceFacade.save(device, loadedUser);
                         return new Object[]{1, loadedUser};
@@ -192,51 +193,14 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
 
-//    public int seConnecter(User user) {
-//        if (user == null || user.getLogin() == null) {
-//            JsfUtil.addErrorMessage("Veuilliez saisir votre login");
-//            return -5;
-//        } else {
-//            User loadedUser = find(user.getLogin());
-//            if (loadedUser == null) {
-//                return -4;
-//            } else if (!loadedUser.getPassword().equals(HashageUtil.sha256(user.getPassword()))) {
-//                if (loadedUser.getNbrCnx() < 3) {
-//                    System.out.println("hana loadedUser.getNbrCnx() < 3 ::: " + loadedUser.getNbrCnx());
-//                    loadedUser.setNbrCnx(loadedUser.getNbrCnx() + 1);
-//                    edit(loadedUser);
-//                    return -7;
-//                } else {//(loadedUser.getNbrCnx() >= 3)
-//                    System.out.println("hana loadedUser.getNbrCnx() >= 3::: " + loadedUser.getNbrCnx());
-//                    loadedUser.setBlocked(1);
-//                    edit(loadedUser);
-//                    return -3;
-//                }
-//            } else if (loadedUser.getBlocked() == 1) {
-//                JsfUtil.addErrorMessage("Cet utilisateur est bloqué");
-//                return -2;
-//            } else {
-//                loadedUser.setNbrCnx(0);
-//                edit(loadedUser);
-//                user = clone(loadedUser);
-//                user.setPassword(null);
-//                return 1;
-//            }
-//        }
-//    }
-    public List<Boolean> getPrivileges() {
-        User loadeUser = find(SessionUtil.getConnectedUser().getLogin());
-        List<Boolean> privileges = new ArrayList();
-
-        return privileges;
+    public List<User> findByAnnexe(User connectedUser) {
+        AnnexeAdministratif annexeAdministratif=find(connectedUser.getLogin()).getAnnexeAdministratif();
+        if (annexeAdministratif != null && annexeAdministratif.getId() != null) {
+            return em.createQuery("SELECT u FROM User u WHERE  u.annexeAdministratif.id=" + annexeAdministratif.getId()).getResultList();
+        }
+        return new ArrayList();
     }
 
-//    public List<User> findByCommune(Commune commune) {
-//        if (commune != null && commune.getId() != null) {
-//            return em.createQuery("SELECT u FROM User u WHERE  u.commune.id=" + commune.getId()).getResultList();
-//        }
-//        return new ArrayList();
-//    }
     public User clone(User user) {
         User clone = new User();
         clone.setLogin(user.getLogin());
@@ -250,36 +214,14 @@ public class UserFacade extends AbstractFacade<User> {
         return clone;
     }
 
-//    @Override
-//    public void create(User user) {
-//        user.setCommune(SessionUtil.getCurrentCommune());
-//        super.create(user);
-//        SessionUtil.getCurrentCommune().getUsers().add(user);
-//
-//    }
-//
-//    @Override
-//    public void edit(User user) {
-//        super.edit(user);
-//        int index = SessionUtil.getCurrentCommune().getUsers().indexOf(user);
-//        if (index != -1) {
-//            SessionUtil.getCurrentCommune().getUsers().set(index, user);
-//        }
-//    }
-//
-//    @Override
-//    public void remove(User user) {
-//        super.remove(user);
-//        int index = SessionUtil.getCurrentCommune().getUsers().indexOf(user);
-//        if (index != -1) {
-//            SessionUtil.getCurrentCommune().getUsers().remove(index);
-//        }
-//    }
-//
-//    @Override
-//    public List<User> findAll() {
-//        return findByCommune(SessionUtil.getCurrentCommune());
-//    }
+    @Override
+    public void create(User user) {
+        user.setAnnexeAdministratif(SessionUtil.getCurrentAnnexe());
+        super.create(user);
+        SessionUtil.getCurrentAnnexe().getUsers().add(user);
+
+    }
+
     public String findLogin(User user) {
         return (String) em.createQuery("SELECT u.login FROM User u WHERE u.login='" + user.getLogin() + "'").getSingleResult();
     }
@@ -305,17 +247,4 @@ public class UserFacade extends AbstractFacade<User> {
 
     }
 
-    public Object[] seConnecte(User user) {
-        User loadedUser = find(user.getLogin());
-        if (loadedUser == null) {
-            JsfUtil.addErrorMessage("ERROR!!");
-            return new Object[]{-1, null};
-        } else if (!loadedUser.getPassword().equals(user.getPassword())) {
-            return new Object[]{-2, null};
-        } else if (loadedUser.getBlocked() == 1) {
-            return new Object[]{-3, null};
-        } else {
-            return new Object[]{1, loadedUser};
-        }
-    }
 }

@@ -56,6 +56,22 @@ public class RedevableFacade extends AbstractFacade<Redevable> {
         return em.createQuery(requette).getResultList();
     }
 
+    public List<Redevable> redevableHasRcOrCin(Redevable redevable) {
+        String requette = "SELECT r FROM Redevable r WHERE 1=1";
+        if (redevable.getCin() != null) {
+            if (!redevable.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("r", "cin", "=", redevable.getCin());
+            }
+        }
+        if (redevable.getRc() != null) {
+            if (!redevable.getRc().equals("")) {
+                requette += SearchUtil.addConstraint("r", "rc", "=", redevable.getRc());
+            }
+        }
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+    }
+
     public List<Redevable> findByCin(String redevable) {
         return em.createQuery("SELECT r FROM Redevable r WHERE r.cin= '" + redevable + "'").getResultList();
     }

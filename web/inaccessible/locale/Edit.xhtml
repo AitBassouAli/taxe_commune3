@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="LocaleEditDlg" widgetVar="LocaleEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditLocaleTitle}">
+           
+            <h:form id="redevableEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{localeController.selected != null}">
+
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" rendered="#{localeController.editerProprietaire==true}" />
+                        <p:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" rendered="#{localeController.editerProprietaire==true}">
+                            <p:commandButton actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="ui-icon-search" update=":LocaleEditForm"/>
+                        </p:inputText>
+
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" rendered="#{localeController.editerGerant==true}" />
+                        <p:inputText id="gerant" value="#{localeController.gerantCinRc}" rendered="#{localeController.editerGerant==true}" >
+                            <p:commandButton actionListener="#{localeController.findGerantByCinOrRc()}" icon="ui-icon-search" update=":LocaleEditForm"/>
+                        </p:inputText>
+
+
+                    </p:panelGrid>
+
+                </h:panelGroup>
+
+            </h:form>
+            <br/><br/><br/>
+            
+            <h:form id="LocaleEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{localeController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire} " for="proprietaire" />
+                        <p:commandButton icon="ui-icon-refresh" actionListener="#{localeController.editProprietaire()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
+                            <h:outputText id="proprietaire" value="#{localeController.selected.proprietaire.nom}"/>
+                        </p:commandButton>
+
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
+                        <p:commandButton icon="ui-icon-refresh" actionListener="#{localeController.editGerant()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
+                            <h:outputText id="gerant" value="#{localeController.selected.gerant.nom}" />
+                        </p:commandButton>
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_activite}" for="activite" />
+                        <p:inputText id="activite" value="#{localeController.selected.activite}" title="#{bundle.CreateLocaleTitle_activite}" />
+                        
+                        <p:outputLabel value="Nom" for="nom" />
+                        <p:inputText id="nom" value="#{localeController.selected.nom}"/>
+
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_complementAdresse}" for="complementAdresse" />
+                        <p:inputText id="complementAdresse" value="#{localeController.selected.complementAdresse}" title="#{bundle.CreateLocaleTitle_complementAdresse}" />
+                        <p:outputLabel value="#{bundle.CreateLocaleLabel_description}" for="description" />
+                        <p:inputText id="description" value="#{localeController.selected.description}" title="#{bundle.CreateLocaleTitle_description}" />
+
+                    </p:panelGrid>
+                    <p:commandButton id="save" actionListener="#{localeController.update}" value="#{bundle.Save}" update="display,:LocaleListForm:datalist,:growl" oncomplete="handleSubmit(args, 'LocaleEditDialog');"
+                                     disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id}"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="LocaleEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

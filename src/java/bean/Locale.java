@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -39,6 +40,8 @@ public class Locale implements Serializable {
     private int dernierAnneePaiement;
     @ManyToOne
     private Categorie categorie;
+    @OneToOne
+    private PositionLocale positionLocale;
 
     public int getDernierTrimestrePaiement() {
         return dernierTrimestrePaiement;
@@ -144,6 +147,14 @@ public class Locale implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public PositionLocale getPositionLocale() {
+        return positionLocale;
+    }
+
+    public void setPositionLocale(PositionLocale positionLocale) {
+        this.positionLocale = positionLocale;
     }
 
     @Override

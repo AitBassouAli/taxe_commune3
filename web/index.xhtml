@@ -18,15 +18,14 @@
         <h:outputScript library="js" name="jsfcrud.js"/>
     </h:head>
     <body style="background-color: #eeefee">
+        <b:growl id="growl" />
         <h:form id="loginForm">
             <b:container>
                 <b:panel title="PLATEFORME DE GESTION DES TAXES SEJOURS" look="primary" style="text-align: center;margin-top: 5%; margin-left: 20%;margin-right:20%;">
 
-                    <img src="logomaroc.png" style=" padding: 20px" height="250" width="460" ></img>
+                    <img src="logo.png" style=" padding: 20px" class="center-block" width="200" height="250"></img>
                     <p:panel header="Connecter vous a votre compte" style="margin-left: 15%;margin-right:15%;text-align: center">
                         <h:form style="margin-left:2%;margin-right:40%;">
-                            <!--////////////////////////////////-->
-                            <!--////////////////////////////////-->
                             <b:panelGrid columns="2" class="form-group">
                                 <h:outputLabel value="Login:" for="login" style=" font-size: 12pt ;padding-top: 10px ;margin-left: -50px"/>
                                 <b:inputText id="login" value="#{userController.selected.login}" class="form-control" >
@@ -38,7 +37,7 @@
                                 <p:password id="password"  value="#{userController.selected.password}"  class="form-control" />                                           
                             </b:panelGrid>
                             <b:commandButton class="btn btn-primary  form-control" style="font-size: 11pt" icon="ui-icon-user" value="Sing in" action="#{userController.seConnecter()}"></b:commandButton><br></br><br></br>
-                            <p:commandLink  class="form-control"  value="Forgot password?" action="/faces/index"></p:commandLink><br></br>
+                            <p:commandLink  class="form-control"  value="Forgot password?" action="#{userController.genaratePasswrd()}" update=":growl"></p:commandLink><br></br>
                         </h:form>
                     </p:panel>
                 </b:panel>

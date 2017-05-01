@@ -91,25 +91,26 @@ public class TauxTaxeRetardController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                if (null != persistAction) {
-                    switch (persistAction) {
-                        case CREATE:
-                            getFacade().edit(selected);
-                            journalFacade.journalCreatorDelet("TauxTaxeRetard", 1);
-                            JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
-                            break;
-                        case UPDATE:
-                            TauxTaxeRetard oldvalue = getFacade().find(selected.getId());
-                            getFacade().edit(selected);
-                            journalFacade.journalUpdate("TauxTaxeRetard", 2, oldvalue, selected);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                        default:
-                            getFacade().remove(selected);
-                            journalFacade.journalCreatorDelet("TauxTaxeRetard", 3);
-                            JsfUtil.addSuccessMessage(successMessage);
-                            break;
-                    }
+                TauxTaxeRetard oldvalue = new TauxTaxeRetard();
+                if (persistAction != PersistAction.CREATE) {
+                    oldvalue = getFacade().find(selected.getId());
+                }
+                switch (persistAction) {
+                    case CREATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TauxTaxeRetard", 1, null, selected);
+                        JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
+                        break;
+                    case UPDATE:
+                        getFacade().edit(selected);
+                        journalFacade.journalUpdate("TauxTaxeRetard", 2, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
+                    default:
+                        getFacade().remove(selected);
+                        journalFacade.journalUpdate("TauxTaxeRetard", 3, oldvalue, selected);
+                        JsfUtil.addSuccessMessage(successMessage);
+                        break;
                 }
 
             } catch (EJBException ex) {
