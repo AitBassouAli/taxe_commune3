@@ -1,0 +1,87 @@
+body{
+	height:1000px;
+}
+.container {
+	width: 80%;
+	margin: auto;
+}
+.header .slider {
+	height: 400px;
+	background-image: url("img/jumbo.jpg");
+	overflow: hidden;
+}
+
+/*START HEADER*/
+.header .navbar {
+	background-color: #AFC5D2;
+	color: #FFF;
+	overflow: hidden;
+	/*margin: auto;*/
+}
+.header .navbar h4 {
+	float: left;
+}
+.header .navbar h4 span {
+	color: green;
+}
+.header .navbar ul {
+	font-size: 16px;
+	list-style: none;
+	padding-left: 0;
+	overflow: hidden;
+	float: right;
+}
+
+.header .navbar ul li {
+	float: left;
+	padding: 10px;
+}
+
+/*END HEADER*/
+
+/*Features*/
+.features {
+	font-family: Arial;
+	height: 200px;
+	overflow-y: scroll;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.features .feat {
+	float: left;
+	width: 33.33333%;
+	background-color: #DDD;
+}
+.features .feat .h3 {
+	text-transform: uppercase;
+}
+.features .feat p {
+	
+}
+
+/*END Features*/
+
+
+/*about me*/
+
+.image {
+	margin-top: 30px;
+	width: 300px;
+	height: 100px;
+}
+
+.about-me {
+	background-color: #F2F2F2;
+	overflow: hidden;
+
+}
+.about-me .image {
+	float: left;
+}
+.about-me .info {
+	float: left;
+	text-align: left;
+	text-align: center;
+	padding: 25px;
+}
+/*END about me*/
