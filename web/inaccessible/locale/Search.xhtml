@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <h:outputStylesheet name="/resources/css/bootstrap.css"/>
         <h:outputScript name="/resources/js/jquery.js"/>
@@ -24,51 +25,50 @@
                 }
             }
         </script>
-        
+
     </h:head>
 
-
     <h:body>
-        <p:dialog id="mapDlg" widgetVar="mapDialog" >
-         <div class="container" >
-        
-            <div class="col-lg-7">
-                <h:form id="mapForm"  prependId="false">
-            <p:outputLabel value="Ce Locale deja positionne ,afficher l'enciene Position ?"/>
-            <p:commandButton value="Afficher" actionListener="#{localeController.mapOneLocale()}" />
-            <p:growl id="messages" showDetail="true" life="2000"  />
-            <p:gmap center="31.625832802876324,-7.988905906677246" id="map" zoom="15" type="ROADMAP" widgetVar="mapa"  style="width:600px;height:400px" onPointClick="handlePointClick(event);"  >
+          
+<div class="col-lg-1"/>
+                <div class="col-lg-10">
+                    <h:form id="mapForm"  prependId="false">
+                        <b:growl id="growl"/>
+                        <h:outputLabel value="Ce Locale deja positionne ,afficher l'enciene Position ?" rendered="#{not empty localeController.selected.positionLocale.id}"/>
+                        <b:commandButton value="Afficher" class="form-control" actionListener="#{localeController.mapOneLocale()}" update="map" rendered="#{not empty localeController.selected.positionLocale.id}" />
 
-            </p:gmap> 
-            <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="messages,lat,lng,save" />
-            
-            <h:inputText id="lat" value="#{localeController.lat}" />
-            <h:inputText id="lng" value="#{localeController.lng}" />
-            <p:commandButton id="save" value="Positionner Ici" actionListener="#{localeController.attachPositionToLocale()}" update=":growl" 
-                             disabled="#{empty localeController.selected or localeController.lat==0 or localeController.lng==0}" oncomplete="handleSubmit(args,'mapDialog');" />
-        </h:form></div></div>
-        </p:dialog>
+                        <p:gmap class="form-control" center="31.625832802876324,-7.988905906677246" id="map" zoom="15" type="ROADMAP" widgetVar="mapa"  style="width:100%;height:450px;margin-top: 2%" onPointClick="handlePointClick(event);"  >
 
-<script type="text/javascript" >
-            function handlePointClick(event) {
+                        </p:gmap> 
 
-                if (navigator.geolocation)
-                {
-                    browserSupportFlag = true;
-                    var latlng = event.latLng;
-                    geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({'latLng': latlng}, function(results, status)
+                        <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="lat,lng,save" />
+
+                        <h:inputText id="lat" value="#{localeController.lat}" />
+                        <h:inputText id="lng" value="#{localeController.lng}" />
+                        <p:commandButton id="save" value="Positionner Ici" actionListener="#{localeController.attachPositionToLocale()}" update="growl" 
+                                         class="form-control" disabled="#{empty localeController.selected or localeController.lat==0 or localeController.lng==0}" />
+                    </h:form></div>
+                    <div class="col-lg-1"/>
+            <script type="text/javascript" >
+                function handlePointClick(event) {
+
+                    if (navigator.geolocation)
                     {
-                        if (status === google.maps.GeocoderStatus.OK)
+                        browserSupportFlag = true;
+                        var latlng = event.latLng;
+                        geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({'latLng': latlng}, function (results, status)
                         {
-        onPoint([ {name: 'lng', value:event.latLng.lng()}, {name: 'lat', value: event.latLng.lat()}]);
+                            if (status === google.maps.GeocoderStatus.OK)
+                            {
+                                onPoint([{name: 'lng', value: event.latLng.lng()}, {name: 'lat', value: event.latLng.lat()}]);
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
-            }
-        </script>
-    </h:body>
 
+            </script>
+    </h:body>
 
 </html>

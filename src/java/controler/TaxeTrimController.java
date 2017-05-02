@@ -345,7 +345,6 @@ public class TaxeTrimController implements Serializable {
             selected.setRedevable(redevable);
             selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
-          
         } else {
             switch ((int) res[0]) {
                 case -1:

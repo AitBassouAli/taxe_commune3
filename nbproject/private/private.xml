@@ -3,23 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/categorie/Category_Taux.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/Adrressage.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TauxTaxeRetardFacade.java</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/user/Home.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/List.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TauxTaxeRetardController.java</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TauxTaxeController.java</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/template.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeAnnuel/List.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/home/Home.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/template.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/JournalFacade.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/user/Home.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/Edit.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/bean/Journal.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/JournalController.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/LocaleController.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TauxTaxeFacade.java</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/tauxTaxe/List.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/List.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TauxTaxeRetardController.java</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/tauxTaxeRetard/List.xhtml</file>
-            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TauxTaxeController.java</file>
+            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/UserController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -35,7 +35,7 @@ public class RedevableController implements Serializable {
     private Redevable oldRedevable;
 
     public void findByRCorCIN() {
-        itemsAvaible = ejbFacade.findByCinOrRc(selected);
+        items = ejbFacade.findByCinOrRc(selected);
     }
 
     public void findByCin() {
@@ -95,9 +95,9 @@ public class RedevableController implements Serializable {
     }
 
     public void preparUpdate(Redevable redevable) {
-        selected = redevable;
-        oldRedevable = redevable;
-        if (redevable.getCin().equals("")) {
+        selected = ejbFacade.find(redevable.getId());
+        oldRedevable = ejbFacade.find(redevable.getId());
+        if (selected.getCin().equals("")) {
             typeEntite = 2;
         } else {
             typeEntite = 1;
@@ -124,14 +124,13 @@ public class RedevableController implements Serializable {
         int res = chowMessage();
         if (res > 0) {
             if (typeEntite == 1) {
+                selected.setRc("");
+            } else {
                 selected.setCin("");
                 selected.setPrenom("");
-            } else {
-                selected.setRc("");
             }
             persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
-        } else {
-            items.set(items.indexOf(oldRedevable), oldRedevable);
+            items=null;
         }
     }
 

@@ -23,29 +23,74 @@
             <h:form id="LocaleListForm" style="background-color: lightyellow" >
                 <b:panel title="Rechercher des locales par différents critères" class="panel-success" style="background-color:#d0e9c6 " >
                     <div class="col-lg-1" />
-                    <div align="center" class="col-lg-9">
-                        <p:panelGrid columns="10">
+                    <div align="center" class="col-lg-8">
+                        <p:panelGrid columns="6" class="panel-body" >
                             <p:outputLabel value="Proprietaire:" />
                             <p:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
                             <p:outputLabel value="Gerant:" />
                             <p:inputText id="gerant" value="#{localeController.gerantCinRc}" />
                             <p:outputLabel value="Categorie:"  />
-                            <p:selectOneMenu id="categorie" value="#{localeController.categorie}" filter="true" >
+                            <p:selectOneMenu id="categorie" value="#{localeController.categorie}" filter="true" class="form-control" >
                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                 <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
                             </p:selectOneMenu>
+
+                            <p:outputLabel value="secteur" />
+                            <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true" class="form-control" >
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{secteurController.items}"
+                                               var="secteurItem" 
+                                               itemValue="#{secteurItem}"/>
+                                <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="annexAdministratif" />
+                            <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true" class="form-control" >
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
+                                               var="annexAdministratifItem" 
+                                               itemValue="#{annexAdministratifItem}"/>
+                                <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="quartier" />
+                            <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true" class="form-control" >
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
+                                               var="quartierItem" 
+                                               itemValue="#{quartierItem}"/>
+                                <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
+                            <p:selectOneMenu id="rue" value="#{localeController.rue}" filter="true"  class="form-control">
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{localeController.quartier.rues}"
+                                               var="rueItem"
+                                               itemValue="#{rueItem}"/>
+                            </p:selectOneMenu>
                             <p:outputLabel value="Reference:" for="reference" />
-                            <p:inputText id="reference" value="#{localeController.selected.reference}" title="Reference" />
+                            <p:selectOneMenu id="reference" value="#{localeController.locale}" filter="true"  class="form-control">
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{localeController.items}"
+                                               var="localeItem"
+                                               itemValue="#{localeItem}"/>
+                            </p:selectOneMenu>
                             <p:outputLabel value="Activite:" for="activite" />
                             <p:inputText id="activite" value="#{localeController.selected.activite}" title="Activite" />
                         </p:panelGrid>
-                        <div align="center" class="col-sm-5" style="margin-left: 35%;font-size: 10pt" >
-                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{localeController.findByCreteria()}" update="datalist"></b:commandButton>
-                        </div>
-                    </div>
+                          </div>
+                        <div class="col-lg-2"/>
+                            <div class="col-lg-3" style="margin-top: 2%">
+                                <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
+                            </div>
+                        <div class="col-lg-3" style="margin-top: 1%">
+                                <b:commandButton value="Afficher dans Map" class="form-control"  action="#{localeController.addItemsToMap()}"></b:commandButton>
+                            </div>
+                  
                     <div class="col-lg-2"/>
-                 </b:panel>
-                
+                </b:panel>
+
                 <div class="table-responsive">
                     <b:dataTable id="datalist" value="#{localeController.itemsRecherche}" var="item"
                                  selectionMode="single" 
@@ -57,146 +102,91 @@
                                 <h:outputText value="#{bundle.ListLocaleTitle_reference}"/>
                             </f:facet>
                             <h:outputText value="#{item.reference}"/>
-                         </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Nom "/>
                             </f:facet>
                             <h:outputText value="#{item.nom}"/>
                         </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_categorie}"/>
                             </f:facet>
                             <h:outputText value="#{item.categorie.nom}"/>
-                       </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_rue}"/>
                             </f:facet>
                             <h:outputText value="#{item.rue.nom}"/>
-                       </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_complementAdresse}"/>
                             </f:facet>
                             <h:outputText value="#{item.complementAdresse}"/>
-                       </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_activite}"/>
                             </f:facet>
                             <h:outputText value="#{item.activite}"/>
                         </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_description}"/>
                             </f:facet>
                             <h:outputText value="#{item.description}"/>
-                       </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_proprietaire}"/>
                             </f:facet>
-                             <b:commandButton update="proprtDetail" value="" oncomplete="PF('thisProprietaire').show('#{component.clientId}')" icon="ui-icon-search" style="float: right" title="detail">
-                                <h:outputText value="#{item.proprietaire.cin==''?item.proprietaire.rc:item.proprietaire.cin}" />
-                            </b:commandButton>
-                       </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                            <h:outputText value="#{item.proprietaire.cin==''?item.proprietaire.rc:item.proprietaire.cin}" />
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListLocaleTitle_gerant}"/>
                             </f:facet>
-                             <b:commandButton update="gerantDetail" value="" oncomplete="PF('thisGerant').show('#{component.clientId}')" icon="ui-icon-search" style="float: right" title="detail" >
                             <h:outputText value="#{item.gerant.cin==''?item.gerant.rc:item.gerant.cin}" />
-                            </b:commandButton>
-
                         </b:dataTableColumn>
-                        
-                         <b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Action" />
                             </f:facet>
-                             <b:commandButton id="viewButton" value="V"  icon="ui-icon-search"  actionListener="#{localeController.preparUpdate(item)}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" style="background:#337ab7" />
-                             <b:commandButton id="editButton"  value="E"  icon="ui-icon-pencil" actionListener="#{localeController.preparUpdate(item)}" update=":LocaleEditForm,:redevableEditForm" oncomplete="PF('LocaleEditDialog').show()" style="background:#f0ad4e" />
-                             <p:growl id="message" showDetail="true" />
-                             <b:commandButton id="deleteButton" value="D" icon="ui-icon-trash" actionListener="#{localeController.destroy(item)}" update=":growl,datalist,message"
-                                             style="background:#d9534f"  >
-                                <p:confirm header="Confirmation" message="Vous etes sure?" icon="ui-icon-alert" />
-                            </b:commandButton>
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <b:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <b:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                             <b:commandButton id="mapButton"  value="M"   actionListener="#{localeController.preparUpdate(item)}" update=":mapForm" oncomplete="PF('mapDialog').show()" style="background:#f0ad4e" />
-                       </b:dataTableColumn>
-                        
-                        <f:facet name="footer">
-                             <div class=" col-lg-3"/>
-                            <div class="col-lg-6 center-block">
-                             <b:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{localeController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"
-                                            style="background:#00abeb;font-size: 10pt !important ;color: white !important" class="form-control btn btn-primary"  />
-                              </div>
-                            <div class=" col-lg-3"/>
+                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{localeController.preparUpdate(item)}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" style="color:#337ab7" />
+                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{localeController.preparUpdate(item)}" update=":LocaleEditForm,:redevableEditForm" oncomplete="PF('LocaleEditDialog').show()" style="color:#f0ad4e" />
+                            <p:growl id="message" showDetail="true" />
+                            <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.preparMap(item)}"  style="color:#337ab7" />
+                        </b:dataTableColumn>
+                        <f:facet name="footer"  >
+
                         </f:facet>
                     </b:dataTable>
                 </div>
+                <div class=" col-lg-3" />
+                <div class="col-lg-6 center-block">
+                    <b:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{localeController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"
+                                     style="font-size: 10pt !important ;color: white !important" class="form-control btn btn-primary"  />
+                    <b:commandButton id="createButton2" icon="ui-icon-plus"   value="#{bundle.Create}" action="#{localeController.prepareCreateLocaleAndRedevable()}" 
+                                     style="font-size: 10pt !important ;color: white !important" class="form-control btn btn-danger"  />
+                </div>
+                <div class=" col-lg-3"/>
             </h:form>
 
-            <p:overlayPanel widgetVar="thisGerant" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
-                <p:outputPanel id="gerantDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty localeController.selected.gerant}" columnClasses="label,value">
-                        <h:outputText value="Cin" />
-                        <h:outputText value="#{localeController.selected.gerant.cin}" />
-                        <h:outputText value="Nom" />
-                        <h:outputText value="#{localeController.selected.gerant.nom}" />
-                        <h:outputText value="Prénom" />
-                        <h:outputText value="#{localeController.selected.gerant.prenom}" />
 
-                        <h:outputText value="Adresse" />
-                        <h:outputText value="#{localeController.selected.gerant.adresse}" />
-
-                        <h:outputText value="Pattente" />
-                        <h:outputText value="#{localeController.selected.gerant.pattente}"/>
-
-                        <h:outputText value="Email" />
-                        <h:outputText value="#{localeController.selected.gerant.email}" />
-                    </p:panelGrid>
-                </p:outputPanel>
-            </p:overlayPanel>
-
-
-            <p:overlayPanel widgetVar="thisProprietaire" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
-                <p:outputPanel id="proprtDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty localeController.selected.proprietaire}" columnClasses="label,value">
-                        <h:outputText value="Cin" />
-                        <h:outputText value="#{localeController.selected.proprietaire.cin}" />
-                        <h:outputText value="Nom" />
-                        <h:outputText value="#{localeController.selected.proprietaire.nom}" />
-                        <h:outputText value="Prénom" />
-                        <h:outputText value="#{localeController.selected.proprietaire.prenom}" />
-                        <h:outputText value="Adresse" />
-                        <h:outputText value="#{localeController.selected.proprietaire.adresse}" />
-
-                        <h:outputText value="Pattente" />
-                        <h:outputText value="#{localeController.selected.proprietaire.pattente}"/>
-
-                        <h:outputText value="Email" />
-                        <h:outputText value="#{localeController.selected.proprietaire.email}" />
-                    </p:panelGrid>
-                </p:outputPanel>
-            </p:overlayPanel>
             <ui:include src="Create.xhtml"/>
             <ui:include src="Edit.xhtml"/>
             <ui:include src="View.xhtml"/>
-            <ui:include src="Search.xhtml"/>
         </ui:define>
     </ui:composition>
 

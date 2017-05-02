@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+        <!-- Custom CSS -->
+        <link href="css/heroic-features.css" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <!-- form:h -->
+                    <h:form>
+                        <div class="nav navbar-nav">
+                            <li>
+                                <p:commandLink action="/inaccessible/user/Home?faces-redirect=true" value="Home1"/>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{historiqueController.deconnection()}" value="Se deconnecter"/>
+                            </li>
+                        </div>
+                    </h:form>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <!-- Jumbotron Header -->
+            <header class="hero-spacer">
+                <img src="m.png" height="200" width="200" style="margin-left: 40%; margin-top: 0%;"/>
+            </header>
+
+            <div class="page-header">
+                <div class="alert alert-info" style="text-align: center">
+                    <h1 class="center-block" >GESTION DES TAXES SEJOURS</h1>
+                </div>
+            </div>
+            <!-- Title -->
+
+            <!-- /.row -->
+            <h:form>
+                <!-- Page Features -->
+                <div class="row text-center">
+
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink  action="/inaccessible/charts/grapheCritere?faces-redirect=true" >
+                                    <img src="images/charts.png" height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>Statistiques</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink   action="/inaccessible/search/Adrressage?faces-redirect=true" >
+                                    <img src="images/adres.jpg"  height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>Adressage</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink   action="/inaccessible/taxeTrim/List?faces-redirect=true" >
+                                    <img src="images/paie.jpg"  height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>paiement</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink   action="/inaccessible/locale/List?faces-redirect=true" >
+                                    <img src="images/locales.png" height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>Locales</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" >
+                                    <img src="images/redev.png"  height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>Redevables</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink  action="/inaccessible/categorie/List?faces-redirect=true" >
+                                    <img src="images/cats.png" height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>Tarifs des taxes</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink  action="/inaccessible/search/SearchRedevable?faces-redirect=true" >
+                                    <img src="images/search_redevale.png" height="200" width="200"></img>
+                                </p:commandLink>
+                                <h3>search redevable</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <p:commandLink  action="/inaccessible/search/SearchTaxeTrim?faces-redirect=true" > 
+                                    <img src="images/search_taxe.jpg" height="200" width="200"></img>
+                                </p:commandLink> 
+                                <h3>search taxes</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center" style="margin: 130px">
+
+                    <p style="margin-bottom: 50px">description du projet<br/>
+                        Le présent mémoire s'inscrit dans le cadre du projet java EE S6 portant sur la gestion des taxes séjours, pour les communes.
+                        Pour mener à bien notre projet, nous avons entamé notre travail par une étude fonctionnelle détaillée en premier lieu, en second lieu, nous nous sommes 
+                        focalisés sur une étude technique pour maitriser les langages et les outils de développement à utiliser.
+                        Une fois maitriser le périmètre de notre projet, nous avons choisi la démarche Scrum pour mieux cerner notre problématique de conception et de réalisation du module.
+                    </p>
+                    <p>
+                        <span style="font-weight:bold">Projet java EE S6</span><br></br>
+                        Ait-Bassou ALi :  scrum-master <br></br>
+                        Elmaaradi Ayoub :  web designer <br></br>
+                        Souhail Elfahimi :  coordonateur <br></br>
+                        Fatima Ait-cheikh :  programmer <br></br>
+                        Youness Zouani :  Scrum owner <br></br>
+                    </p>   
+                </div>
+            </h:form>
+
+            <!-- /.row -->
+            <!-- Footer -->
+            <footer>
+                <div class="alert alert-info" style="text-align: right">
+                    <p>Copyright &copy; LST SIR 2016-2017</p>
+                </div>
+            </footer>
+
+        </div>
+        <!-- /.container -->
+
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+
+    </h:body>
+</html>
+

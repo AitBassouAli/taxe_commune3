@@ -1,5 +1,6 @@
 package controler.util;
 
+import bean.AnnexeAdministratif;
 import bean.Redevable;
 import bean.User;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class SessionUtil {
     }
 
     public static void unSetUser(User user) {
+        setAttribute("user", null);
         users.remove(user);
     }
 
@@ -53,14 +55,14 @@ public class SessionUtil {
     public static Redevable getConnectedRedevable() {
         return (Redevable) getAttribute("redevable");
     }
-//
-//    public static Commune getCurrentCommune() {
-//        User user = getConnectedUser();
-//        if (user != null) {
-//            return user.getCommune();
-//        }
-//        return new Commune();
-//    }
+
+    public static AnnexeAdministratif getCurrentAnnexe() {
+        User user = getConnectedUser();
+        if (user != null) {
+            return user.getAnnexeAdministratif();
+        }
+        return new AnnexeAdministratif();
+    }
 
     public static SessionUtil getInstance() {
         return instance;

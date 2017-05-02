@@ -22,6 +22,13 @@ public class RueFacade extends AbstractFacade<Rue> {
 
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
+    
+    
+    public void updateQuartier(Quartier quartier) {
+        String rqt = "UPDATE Rue r set r.quartier = " + null + " WHERE r.quartier =" + quartier.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
+    }
 
     public List<Rue> findByQuartier(Quartier quartier) {
         if (quartier != null && quartier.getId() != null) {

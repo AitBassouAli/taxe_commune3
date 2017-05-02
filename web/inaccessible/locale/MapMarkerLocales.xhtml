@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <h:outputStylesheet name="/resources/css/bootstrap.css"/>
         <h:outputScript name="/resources/js/jquery.js"/>
@@ -29,56 +30,23 @@
 
 
     <h:body>
-
-        <h:form id="form">
-            <h:panelGroup id="display">
-                <p:panelGrid columns="9" >
-
-                    <p:outputLabel value="Secteure"  />
-                    <p:selectOneMenu id="secteure" value="#{localeController.secteur}"  filter="true" filterMatchMode="startsWith" styleClass="sizeInput">
-                        <f:selectItem  itemValue="#{null}" itemLabel="--SELECT--"/>
-                        <f:selectItems value="#{secteurController.items}" var="itemmm" itemValue="#{itemmm}"/>
-                        <p:ajax process="secteure" listener="#{localeController.findAnnexs()}" update="annexAdministrative,quartier,rue " />
-                    </p:selectOneMenu> 
-                    <p:outputLabel value="Annexe Administrative"  />
-                    <p:selectOneMenu id="annexAdministrative" value="#{localeController.annexeAdministratif}"  filter="true" filterMatchMode="startsWith" styleClass="sizeInput">
-                        <f:selectItem  itemValue="#{null}" itemLabel="--SELECT--"/>
-                        <f:selectItems value="#{localeController.secteur.annexeAdministratifs}" var="itemm"
-                                       itemValue="#{itemm}"/>
-                        <p:ajax process="annexAdministrative" listener="#{localeController.findQuartiers()}" update="quartier,rue"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Quartier"  />
-                    <p:selectOneMenu id="quartier" value="#{localeController.quartier}" filter="true" filterMatchMode="startsWith" styleClass="sizeInput" >
-                        <f:selectItem  itemValue="#{null}" itemLabel="--SELECT--"/>
-                        <f:selectItems value="#{localeController.annexeAdministratif.quartiers}" var="item"
-                                       itemValue="#{item}"/>     
-                        <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Rue "  />
-                    <p:selectOneMenu id="rue" value="#{localeController.selected.rue}"  filter="true" filterMatchMode="startsWith" styleClass="sizeInput">
-                        <f:selectItem  itemValue="#{null}" itemLabel="--SELECT--"/>
-                        <f:selectItems value="#{localeController.quartier.rues}" var="ite"
-                                       itemValue="#{ite}"/>
-                    </p:selectOneMenu> 
-                    <p:commandButton value="Search" 
-                                     actionListener="#{localeController.addLocalesMarkersToMap}"/>
-                </p:panelGrid>
-            </h:panelGroup>
-        </h:form>
-
+        <div class="col-lg-12">
         <h:form  prependId="false">
+            <b:navCommandLink value="Retour" class="form-control" icon="glyphicon glyphicon-circle-arrow-left" icon-size="lg" action="List?faces-redirect=true" />
+            <div class="container ">
             <p:growl id="messages" showDetail="true" life="2000"  />
 
-            <p:gmap center="31.625832802876324,-7.988905906677246" id="map" zoom="15" type="ROADMAP" widgetVar="mapa"  style="width:600px;height:400px" onPointClick="handlePointClick(event);"  >
+            <p:gmap center="31.625832802876324,-7.988905906677246" id="map" zoom="15" type="ROADMAP" widgetVar="mapa"  style="width:100%;height:450px;margin-top: 5%" onPointClick="handlePointClick(event);"  >
 
             </p:gmap> 
             <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="messages,lat,lng" />
 
             <h:inputText id="lat" value="#{localeController.lat}" />
             <h:inputText id="lng" value="#{localeController.lng}" />
-
+             </div>
         </h:form>
-
+        </div>
+       
         <script type="text/javascript" >
             function handlePointClick(event) {
                 if (navigator.geolocation)

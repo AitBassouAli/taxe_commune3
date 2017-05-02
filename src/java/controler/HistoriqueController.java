@@ -70,10 +70,11 @@ public class HistoriqueController implements Serializable {
         System.out.println("DECONNEXIOOOOOON");
         User connectedUser = SessionUtil.getConnectedUser();
         SessionUtil.unSetUser(connectedUser);
+        SessionUtil.getSession().invalidate();
         Device device = deviceFacade.curentDevice(connectedUser, DeviceUtil.getDevice());
         selected = new Historique(new Date(), 2, connectedUser, device);
         ejbFacade.create(selected);
-        if(SessionUtil.getConnectedUser()!=null){
+        if (SessionUtil.getConnectedUser() != null) {
             System.out.println("==========================+++++==========================");
         }
         return "/index?faces-redirect=true";

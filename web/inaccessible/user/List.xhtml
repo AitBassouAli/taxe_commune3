@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
 
@@ -15,82 +16,118 @@
 
         <ui:define name="body">
             <h:form id="UserListForm">
-                <p:panel header="#{bundle.ListUserTitle}">
-                    <p:dataTable id="datalist" value="#{userController.items}" var="item"
-                                 selectionMode="single" selection="#{userController.selected}"
-                                 paginator="true"
-                                 rowKey="#{item.login}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
+
+                <b:panel title="Rechercher des Utilisateurs par différents critères" class="panel-success" style="background-color:#d0e9c6 " >
+                    <div class="col-lg-1" />
+                    <div align="center" class="col-lg-9">
+                        <p:panelGrid columns="10" >
+                            <p:outputLabel value="Nom:" />
+                            <p:inputText id="nom" value="#{userController.selected.nom}" />
+                            <p:outputLabel value="Email:" />
+                            <p:inputText id="email" value="#{userController.selected.email}" />
+                            <p:outputLabel value="secteur" />
+                            <p:selectOneMenu id="secteur"  value="#{userController.secteur}" filter="true" class="form-control" >
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{secteurController.items}"
+                                               var="secteurItem" 
+                                               itemValue="#{secteurItem}"/>
+                                <p:ajax process="secteur" listener="#{userController.findAnnexs()}" update="annexAdministratif" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="annexAdministratif" />
+                            <p:selectOneMenu id="annexAdministratif"  value="#{userController.selected.annexeAdministratif}" filter="true" class="form-control" >
+                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                <f:selectItems value="#{userController.secteur.annexeAdministratifs}"
+                                               var="annexAdministratifItem" 
+                                               itemValue="#{annexAdministratifItem}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Bloquer:"  />
+                            <p:selectOneMenu id="blocked" value="#{userController.selected.blocked}" filter="true"  class="form-control">
+                                <f:selectItem itemValue="-1" itemLabel="--SELECT--"/>
+                                <f:selectItem itemValue="0" itemLabel="NON"/>
+                                <f:selectItem itemValue="1" itemLabel="OUI"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <div align="center" class="col-sm-5 center-block" style="margin-left: 30%;font-size: 10pt" >
+                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{userController.findByCreteria()}" update="datalist"></b:commandButton>
+                            <b:commandButton value="Reafresher" class=" form-control"  actionListener="#{userController.refresh()}" update="UserListForm"></b:commandButton>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"/>
+                </b:panel>
+
+
+                <div class="table-responsive">
+                    <b:dataTable id="datalist" value="#{userController.items}" var="item"
+                                 selectionMode="single" 
                                  >
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-                        <p:column>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUserTitle_login}"/>
                             </f:facet>
                             <h:outputText value="#{item.login}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUserTitle_nom}"/>
                             </f:facet>
                             <h:outputText value="#{item.nom}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUserTitle_prenom}"/>
                             </f:facet>
                             <h:outputText value="#{item.prenom}"/>
-                        </p:column>
-                        <!-- <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListUserTitle_password}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.password}"/>
-                            </p:column>-->   
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Fonction"/>
                             </f:facet>
-                            <h:outputText value="#{item.admine==true?'Admin':'simpleUser'}"/>
-                        </p:column>
-
-                        <p:column>
+                            <h:outputText value="#{item.admine==true?'Admin':'simple Utilisateur'}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Email"/>
                             </f:facet>
                             <h:outputText value="#{item.email}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Tel"/>
                             </f:facet>
                             <h:outputText value="#{item.tel}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Blocked"/>
                             </f:facet>
-                            <h:outputText value="#{item.blocked}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="NbrCnx"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nbrCnx}"/>
-                        </p:column>
+                            <h:outputText value="#{item.blocked==0?'Non':'oui'}" style="color :#{item.blocked==0?'green':'red'}; font-weight: bold"/>
+                        </b:dataTableColumn>
 
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{userController.preparUpdate(item)}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" style="color:#337ab7" />
+                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{userController.preparUpdate(item)}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" style="color:#f0ad4e" />
+                            <b:commandButton id="bloqueButton" value="" tooltip="#{item.blocked==0?'Bloquer':'Debloquer'}" icon="glyphicon glyphicon-minus-sign" actionListener="#{userController.bloquer(item)}" update="UserListForm,:growl"
+                                             style="color:#d9534f" >
+                            </b:commandButton>
+                        </b:dataTableColumn>
 
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{userController.prepareCreate}" update=":UserCreateForm" oncomplete="PF('UserCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" disabled="#{empty userController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" disabled="#{empty userController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{userController.destroy}" update=":growl,datalist" disabled="#{empty userController.selected}"/>
                         </f:facet>
-                    </p:dataTable>
-                </p:panel>
+
+                    </b:dataTable>
+                </div>
+                <div class=" col-lg-3" />
+                <div class="col-lg-6 center-block">
+                    <b:commandButton id="createButton" icon="glyphicon glyphicon-plus"   value="#{bundle.Create}" actionListener="#{userController.prepareCreate}" update=":UserCreateForm" oncomplete="PF('UserCreateDialog').show()"
+                                     style="font-size: 10pt !important ;color: white !important" class="form-control btn btn-primary"  />
+                </div>
+                <div class=" col-lg-3"/>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

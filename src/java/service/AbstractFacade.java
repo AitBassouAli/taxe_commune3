@@ -65,7 +65,7 @@ public abstract class AbstractFacade<T> {
         if (maxId == null || maxId.isEmpty() || maxId.get(0) == null) {
             return 1L;
         }
-        return maxId.get(0);
+        return maxId.get(0)+1;
     }
     
 }

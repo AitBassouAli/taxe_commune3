@@ -45,7 +45,7 @@
                                     <p:commandButton actionListener="#{rueController.findAnnexs(item)}" style="background:#337ab7" icon="ui-icon-search" update=":AnnexeAdministratifListForm:datalist,:AnnexeAdministratifCreateForm"/>
                                     <p:commandButton id="editButton" style="background:#f0ad4e"  icon="ui-icon-pencil" actionListener="#{rueController.prepareEditSecteur(item)}" update=":SecteurEditForm" oncomplete="PF('SecteurEditDialog').show()"  disabled="#{rueController.user.createAdresse==false}"/>
                                     <p:commandButton id="deleteButton" icon="ui-icon-trash"  actionListener="#{rueController.destroySecteur(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" style="background:#d9534f">
-                                         <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
+                                         <p:confirm header="Confirmation" message="#{'Voullez-vous vraiment supprimer ?'}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                      <p:confirmDialog global="true">
                                                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
@@ -94,13 +94,6 @@
                                     <p:commandButton actionListener="#{rueController.findQuartiers(item)}" style="background:#337ab7" icon="ui-icon-search" update=":QuartierListForm:datalist"/>
                                     <p:commandButton id="editButton" style="background:#f0ad4e"  icon="ui-icon-pencil"  update=":AnnexeAdministratifEditForm" oncomplete="PF('AnnexeAdministratifEditDialog').show()"
                                                      actionListener="#{rueController.prepareEditAnnexe(item)}" disabled="#{rueController.user.createAdresse==false}"/>
-                                    <p:commandButton id="deleteButton" icon="ui-icon-trash" style="background:#d9534f"  actionListener="#{rueController.destroyAnnexe(item)}" update="datalist"  disabled="#{rueController.user.createAdresse==false}" >
-                                     <p:confirm header="Confirmation" message="#{'Voullez vous vraiment supprimer ?'}" icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                     <p:confirmDialog global="true">
-                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-                                                </p:confirmDialog> 
                                 </p:column>
                                 <f:facet name="footer">
                                     <p:commandButton id="createButton" icon="ui-icon-plus" actionListener="#{rueController.prepareCreateAnnexe()}"  value="#{bundle.Create}"  update=":AnnexeAdministratifCreateForm"

@@ -26,6 +26,9 @@
 
                         </div>
                         <ul class="nav navbar-nav">
+                            <li >
+                                <p:commandLink action="/inaccessible/home/Home?faces-redirect=true" value="Home2"/>
+                            </li>
                             <li><p:commandLink  action="#{historiqueController.deconnection()}" value="Se deconnecter"/></li>
                         </ul>
                     </div>
@@ -40,31 +43,31 @@
                         </p:commandLink>
                     </div>
                     <div class="col-lg-3">
-                        <p:commandLink  action="/inaccessible/search/Adrressage?faces-redirect=true" >
+                        <p:commandLink  action="/inaccessible/search/Adrressage?faces-redirect=true" disabled="#{userController.connectedUser.createAdresse==false}" >
                             <img src="adres.png" class="img-circle mying" height="200" width="200"></img>
                             <h3>Adressage</h3>
                         </p:commandLink>
                     </div>
                     <div class="col-lg-3">
-                        <p:commandLink  action="/inaccessible/taxeTrim/List?faces-redirect=true" >
+                        <p:commandLink  action="/inaccessible/taxeTrim/List?faces-redirect=true" disabled="#{userController.connectedUser.createTaxes==false}" >
                             <img src="paie.png" class="img-circle mying" height="200" width="200"></img>
                             <h3>Services de paiement</h3>
                         </p:commandLink>
                     </div>
                     <div class="col-lg-3">
-                        <p:commandLink action="/inaccessible/locale/List?faces-redirect=true" >
+                        <p:commandLink action="/inaccessible/locale/List?faces-redirect=true" disabled="#{userController.connectedUser.createLocale==false or userController.connectedUser.createRedevable==false}" >
                             <img src="locs.jpg" class="img-circle mying" height="200" width="200"></img>
                             <h3>Locales</h3>
                         </p:commandLink>
                     </div>
                     <div class="col-lg-3">
-                        <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" >
+                        <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" disabled="#{userController.connectedUser.createRedevable==false}">
                             <img src="redev.png" class="img-circle mying" height="200" width="200"></img>
                             <h3>Redevables</h3>
                         </p:commandLink>
                     </div>
                     <div class="col-lg-3">
-                        <p:commandLink  action="/inaccessible/categorie/List?faces-redirect=true" >
+                        <p:commandLink  action="/inaccessible/categorie/List?faces-redirect=true" disabled="#{userController.connectedUser.createCtegorieTaux==false}" >
                             <img src="cats.png" class="img-circle mying" height="200" width="200"></img>
                             <h3>Tarifs des taxes</h3>
                         </p:commandLink>

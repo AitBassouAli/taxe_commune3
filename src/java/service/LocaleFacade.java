@@ -39,14 +39,22 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
+    public void updateRue(Rue rue) {
+        String rqt = "UPDATE Locale l set l.rue = " + null + " WHERE l.rue =" + rue.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
+    }
+
     public Locale attachLocaleToPosition(Locale locale, double lat, double lng) {
         PositionLocale positionLocale = new PositionLocale();
         positionLocale.setLat(lat);
         positionLocale.setLng(lng);
-        positionLocaleFacade.create(positionLocale);
         long idPos = positionLocaleFacade.generateId("PositionLocale", "id");
+        positionLocale.setId(idPos);
+        positionLocaleFacade.create(positionLocale);
         PositionLocale loaded = positionLocaleFacade.find(idPos);
         locale.setPositionLocale(loaded);
+        edit(locale);
         return locale;
     }
 
@@ -71,8 +79,9 @@ public class LocaleFacade extends AbstractFacade<Locale> {
             return null;
         }
     }
+
     public List<Locale> findByRedevable(Redevable redevable) {
-        if (redevable!=null) {
+        if (redevable != null) {
             String rqt = "SELECT l FROM Locale l WHERE l.proprietaire.id= '" + redevable.getId() + "' OR l.gerant.id='" + redevable.getId() + "'";
             System.out.println(rqt);
             return em.createQuery(rqt).getResultList();
@@ -81,7 +90,7 @@ public class LocaleFacade extends AbstractFacade<Locale> {
         }
     }
 
-    public List<Locale> findByGerantOrProprietaire(Categorie categorie, Redevable proprietaire, String activite, String reference, Redevable gerant) {
+    public List<Locale> findByGerantOrProprietaire(Categorie categorie, Redevable proprietaire, String activite, Redevable gerant, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur, Locale reference) {
         String requette = "SELECT l FROM Locale l WHERE 1=1";
 
         if (proprietaire != null) {
@@ -102,10 +111,25 @@ public class LocaleFacade extends AbstractFacade<Locale> {
             requette += SearchUtil.addConstraint("l", "categorie.id", "=", categorie.getId());
         }
         if (!activite.equals("")) {
-            requette += SearchUtil.addConstraint("l", "activite", "=", activite);
+            requette += SearchUtil.addConstraint("l", "activite", "LIKE", "%" + activite + "%");
         }
-        if (!reference.equals("")) {
-            requette += SearchUtil.addConstraint("l", "reference", "=", reference);
+        if (rue == null) {
+            if (quartier == null) {
+                if (annex == null) {
+                    if (secteur != null) {
+                        requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.secteur.id", "=", secteur.getId());
+                    }
+                } else {
+                    requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.id", "=", annex.getId());
+                }
+            } else {
+                requette += SearchUtil.addConstraint("l", "rue.quartier.id", "=", quartier.getId());
+            }
+        } else {
+            requette += SearchUtil.addConstraint("l", "rue.id", "=", rue.getId());
+        }
+        if (reference != null) {
+            requette += SearchUtil.addConstraint("l", "id", "=", reference.getId());
         }
         System.out.println(requette);
         return em.createQuery(requette).getResultList();

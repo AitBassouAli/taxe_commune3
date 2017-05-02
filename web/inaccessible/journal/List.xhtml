@@ -17,8 +17,9 @@
         <ui:define name="body">
             <h:form id="JournalListForm">
                 <b:panel title="Rechercher des taxeTrime par différents critères" class="panel-success" >
-                
-                    <p:panelGrid columns="10" style="margin-left: 150px" >
+                    <div class="col-lg-2" />
+                    <div align="center" class="col-lg-9">
+                    <p:panelGrid columns="10"  >
                         <p:outputLabel value="OperationType:" for="numeroTrim" />
 
                         <p:selectOneMenu id="numeroTrim" value="#{journalController.typee}" >
@@ -34,10 +35,11 @@
                         <p:outputLabel value="DateMin:" for="dateMax"  />
                         <p:calendar id="dateMax" pattern="MM/dd/yyyy" value="#{journalController.dateMax}" showOn="button"/>
                     </p:panelGrid>
-                        <div align="center" class="col-sm-2" style="margin-left: 40%;font-size: 10pt" >
+                        <div align="center" class="col-sm-6" style="margin-left: 20%;font-size: 10pt" >
                             <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{journalController.searche()}" update="datalist"></b:commandButton>
                     </div>
-                    
+                    </div>
+                    <div class="col-lg-2"/>
                 </b:panel>
                 <b:dataTable id="datalist" value="#{journalController.items}" var="item"
                              selectionMode="single" class="datatable"
@@ -92,13 +94,7 @@
                         <f:facet name="header">
                             <h:outputText value="Action"/>
                         </f:facet>
-                        <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"  class="btn btn-danger center-block" >
-                            <p:confirm header="Confirmation" message="#{'Voullez-vous vraiment supprimer ?'}" icon="ui-icon-alert" />
-                        </b:commandButton>
-                        <p:confirmDialog global="true">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-                        </p:confirmDialog> 
+                        <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"  class="btn btn-danger center-block"  icon=" glyphicon glyphicon-trash" />
                     </b:dataTableColumn>
                 </b:dataTable>
             </h:form>
@@ -106,4 +102,3 @@
     </ui:composition>
 
 </html>
-                    <b:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{taxeTrimController.prepareCreate}" update=":TaxeTrimCreateForm" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
