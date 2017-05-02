@@ -1,0 +1,189 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 avr. 2017, 23:37:15
+    Author     : HP
+*/
+
+.deleteButton {
+    color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+    
+}
+.deleteButton:focus,
+.deleteButton.focus {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #761c19;
+}
+.deleteButton:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.deleteButton:active,
+.deleteButton.active,
+.open > .dropdown-toggle.deleteButton {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.deleteButton:active:hover,
+.deleteButton.active:hover,
+.open > .dropdown-toggle.deleteButton:hover,
+.deleteButton:active:focus,
+.deleteButton.active:focus,
+.open > .dropdown-toggle.deleteButton:focus,
+.deleteButton:active.focus,
+.deleteButton.active.focus,
+.open > .dropdown-toggle.deleteButton.focus {
+  color: #fff;
+  background-color: #ac2925;
+  border-color: #761c19;
+}
+.deleteButton:active,
+.deleteButton.active,
+.open > .dropdown-toggle.deleteButton {
+  background-image: none;
+}
+.deleteButton.disabled:hover,
+.deleteButton[disabled]:hover,
+fieldset[disabled] .deleteButton:hover,
+.deleteButton.disabled:focus,
+.deleteButton[disabled]:focus,
+fieldset[disabled] .deleteButton:focus,
+.deleteButton.disabled.focus,
+.deleteButton[disabled].focus,
+fieldset[disabled] .deleteButton.focus {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.deleteButton .badge {
+  color: #d9534f;
+  background-color: #fff;
+}
+
+
+
+
+.editButton {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.editButton:focus,
+.editButton.focus {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #985f0d;
+}
+.editButton:hover {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.editButton:active,
+.editButton.active,
+.open > .dropdown-toggle.editButton {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.editButton:active:hover,
+.editButton.active:hover,
+.open > .dropdown-toggle.editButton:hover,
+.editButton:active:focus,
+.editButton.active:focus,
+.open > .dropdown-toggle.editButton:focus,
+.editButton:active.focus,
+.editButton.active.focus,
+.open > .dropdown-toggle.editButton.focus {
+  color: #fff;
+  background-color: #d58512;
+  border-color: #985f0d;
+}
+.editButton:active,
+.editButton.active,
+.open > .dropdown-toggle.editButton {
+  background-image: none;
+}
+.editButton.disabled:hover,
+.editButton[disabled]:hover,
+fieldset[disabled] .editButton:hover,
+.editButton.disabled:focus,
+.editButton[disabled]:focus,
+fieldset[disabled] .editButton:focus,
+.editButton.disabled.focus,
+.editButton[disabled].focus,
+fieldset[disabled] .editButton.focus {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.editButton .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+
+
+
+.viewButton {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.viewButton:focus,
+.viewButton.focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40;
+}
+.viewButton:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.viewButton:active,
+.viewButton.active,
+.open > .dropdown-toggle.viewButton {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.viewButton:active:hover,
+.viewButton.active:hover,
+.open > .dropdown-toggle.viewButton:hover,
+.viewButton:active:focus,
+.viewButton.active:focus,
+.open > .dropdown-toggle.viewButton:focus,
+.viewButton:active.focus,
+.viewButton.active.focus,
+.open > .dropdown-toggle.viewButton.focus {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.viewButton:active,
+.viewButton.active,
+.open > .dropdown-toggle.viewButton {
+  background-image: none;
+}
+.viewButton.disabled:hover,
+.viewButton[disabled]:hover,
+fieldset[disabled] .viewButton:hover,
+.viewButton.disabled:focus,
+.viewButton[disabled]:focus,
+fieldset[disabled] .viewButton:focus,
+.viewButton.disabled.focus,
+.viewButton[disabled].focus,
+fieldset[disabled] .viewButton.focus {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.viewButton .badge {
+  color: #337ab7;
+  background-color: #fff;
+}
