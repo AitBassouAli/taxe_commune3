@@ -39,6 +39,12 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
+    public void updateRue(Rue rue) {
+        String rqt = "UPDATE Locale l set l.rue = " + null + " WHERE l.rue =" + rue.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
+    }
+
     public Locale attachLocaleToPosition(Locale locale, double lat, double lng) {
         PositionLocale positionLocale = new PositionLocale();
         positionLocale.setLat(lat);

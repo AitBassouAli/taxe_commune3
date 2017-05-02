@@ -94,13 +94,7 @@
                         <f:facet name="header">
                             <h:outputText value="Action"/>
                         </f:facet>
-                        <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"  class="btn btn-danger center-block" >
-                            <p:confirm header="Confirmation" message="#{'Voullez-vous vraiment supprimer ?'}" icon="ui-icon-alert" />
-                        </b:commandButton>
-                        <p:confirmDialog global="true">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-                        </p:confirmDialog> 
+                        <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"  class="btn btn-danger center-block"  icon=" glyphicon glyphicon-trash" />
                     </b:dataTableColumn>
                 </b:dataTable>
             </h:form>

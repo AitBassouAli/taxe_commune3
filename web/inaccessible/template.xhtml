@@ -36,31 +36,30 @@
             <p:layoutUnit position="north" size="65" >
                 <h:form id="menuForm">
 
-                    <b:navBar style=" background-color:mediumseagreen " fixed="top" sticky="true" brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top" >
+                    <b:navBar inverse="true" fixed="top" sticky="true" brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top" >
                         <b:navbarLinks>
-                            <b:navLink value="Adressage" href="../search/Adrressage.xhtml"></b:navLink>
-                            <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" >
+                            <b:navLink value="Adressage" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
+                            <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >
                                 <b:navLink value="Redevables" href="../redevable/List.xhtml"></b:navLink>
                                 <b:navLink value="Locales" href="../locale/List.xhtml"></b:navLink>
                             </b:dropMenu>
-                            <b:dropMenu value="Services de Paiement" iconAwesome="birthday-cake">
-
-                                <b:dropMenu value="Taxe" >
+                            <b:dropMenu value="Services de Paiement" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createCtegorieTaux==true or userController.connectedUser.createTaxes==true}">
+                                <b:dropMenu value="Taxe" rendered="#{userController.connectedUser.createTaxes==true}" >
                                     <b:navLink value="Taxes Trimistrielles" href="../taxeTrim/List.xhtml"></b:navLink>
                                     <b:navLink value="Taxes Anuelles" href="../taxeAnnuel/List.xhtml"></b:navLink>
                                 </b:dropMenu>
-                                <b:dropMenu value="Taux" >
+                                <b:dropMenu value="Taux" rendered="#{userController.connectedUser.createCtegorieTaux==true}" >
                                     <b:navLink value="TauxTaxe" href="../tauxTaxe/List.xhtml"></b:navLink>
                                     <b:navLink value="TauxTaxeRetard" href="../tauxTaxeRetard/List.xhtml"></b:navLink>
                                 </b:dropMenu>
-                                <b:navLink value="Categories" href="../categorie/List.xhtml"></b:navLink>
+                                <b:navLink value="Categories" href="../categorie/List.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"></b:navLink>
                             </b:dropMenu>
                             <b:navLink value="Statistiques" href="../charts/grapheCritere.xhtml"></b:navLink>
-                            <b:dropMenu value="Configuration"  >
+                            <b:dropMenu value="Configuration" rendered="#{userController.connectedUser.createUser==true}" >
                                 <b:navLink value="Utilisateures" href="../user/List.xhtml"></b:navLink>
-                                <b:navLink value="Histouriques" href="../historique/List.xhtml"></b:navLink>
-                                <b:navLink value="Journal" href="../journal/List.xhtml"></b:navLink>
-                                <b:navLink value="Device" href="../device/List.xhtml"></b:navLink>
+                                <b:navLink value="Histouriques" href="../historique/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
+                                <b:navLink value="Journal" href="../journal/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
+                                <b:navLink value="Device" href="../device/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
                             </b:dropMenu>
                             <b:dropMenu value="Recherches" >
                                 <b:navLink value="Redevables" href="../search/SearchRedevable.xhtml"></b:navLink>
@@ -75,9 +74,9 @@
                         <b:navbarLinks pull="right"><b:navLink value="    " href="#"/></b:navbarLinks>
                         <b:navbarLinks pull="right" styleClass="hidden-xs">
                             <b:dropMenu value="#{userController.connectedUser.login}" iconAwesome="envelope">
-                                <b:navLink value="Profile" href="../user/Profil.xhtml"></b:navLink>
+                                <b:navLink value="Profile" icon="glyphicon glyphicon-euro"  href="../user/Profil.xhtml"></b:navLink>
+                                <b:navCommandLink value="Deconnexion" icon="glyphicon glyphicon-off"  action="#{historiqueController.deconnection()}"></b:navCommandLink>
                             </b:dropMenu>
-                            <b:navCommandLink value="Deconnexion" icon="glyphicon glyphicon-off"  action="#{historiqueController.deconnection()}"></b:navCommandLink>
                         </b:navbarLinks>
                     </b:navBar>
 

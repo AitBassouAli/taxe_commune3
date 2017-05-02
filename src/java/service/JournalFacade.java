@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Device;
 import bean.Journal;
 import bean.User;
 import controler.util.DeviceUtil;
@@ -37,26 +38,25 @@ public class JournalFacade extends AbstractFacade<Journal> {
     public JournalFacade() {
         super(Journal.class);
     }
-//     public  String deconnection(){
-//        User user=SessionUtil.getConnectedUser();
-//        SessionUtil.unSetUser(user);
-//        selected=new Historique(new Date(),2,user);
-//        ejbFacade.create(selected);
-//        return "/faces/index";
-//    }
+
+    public void updateDevice(Device device) {
+        String rqt = "UPDATE Journal j set j.device = " + null + " WHERE j.device.id =" + device.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
+    }
 
     public void journalUpdate(String beanName, int type, Object old, Object neew) {
         Journal journal;
         User user = SessionUtil.getConnectedUser();
         switch (type) {
             case 1:
-                journal = new Journal(new Date(), type, beanName, user, deviceFacade.curentDevice(user, DeviceUtil.getDevice()), neew.toString());
+                journal = new Journal(new Date(), type, beanName, user, deviceFacade.curentDevice(user, DeviceUtil.getDevice()), (String) neew);
                 break;
             case 2:
-                journal = new Journal(new Date(), type, old.toString(), neew.toString(), beanName, user);
+                journal = new Journal(new Date(), type, (String) old, (String) neew, beanName, user, deviceFacade.curentDevice(user, DeviceUtil.getDevice()));
                 break;
             default:
-                journal = new Journal(new Date(), type, beanName, user, old.toString(), deviceFacade.curentDevice(user, DeviceUtil.getDevice()));
+                journal = new Journal(new Date(), type, beanName, user, (String) old, deviceFacade.curentDevice(user, DeviceUtil.getDevice()));
                 break;
         }
         create(journal);

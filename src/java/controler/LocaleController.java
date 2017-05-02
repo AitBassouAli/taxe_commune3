@@ -18,6 +18,7 @@ import service.LocaleFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -385,6 +386,43 @@ public class LocaleController implements Serializable {
         return items;
     }
 
+    public Object[] compare(Locale nouveau, Locale auncienne, int type) {
+        String newVal = "";
+        String oldVal = "";
+        switch (type) {
+            case 1:
+                newVal = "" + nouveau.getReference() + " " + nouveau.getNom();
+                break;
+            case 2:
+                if (!nouveau.getNom().equals(auncienne.getNom())) {
+                    oldVal += "Nom => " + auncienne.getNom();
+                    newVal += "Nom => " + nouveau.getNom();
+                }
+                if (!nouveau.getActivite().equals(auncienne.getActivite())) {
+                    oldVal += ", Activité =>" + auncienne.getActivite();
+                    newVal += ", Activité =>" + nouveau.getActivite();
+                }
+                if (!Objects.equals(nouveau.getProprietaire().getId(), auncienne.getProprietaire().getId())) {
+                    Redevable newprop = redevableFacade.find(nouveau.getProprietaire().getId());
+                    Redevable oldprop = redevableFacade.find(auncienne.getProprietaire().getId());
+                    oldVal += " , Proprietaire => : " + newprop.getNom();
+                    newVal += " , Proprietaire => : " + oldprop.getNom();
+                }
+                if (!Objects.equals(nouveau.getGerant().getId(), auncienne.getGerant().getId())) {
+                    Redevable newGerant = redevableFacade.find(nouveau.getGerant().getId());
+                    Redevable oldGerant = redevableFacade.find(auncienne.getGerant().getId());
+                    oldVal += " , Gerant => : " + newGerant.getNom();
+                    newVal += " , Gearnt => : " + oldGerant.getNom();
+                }
+                break;
+            case 3:
+                oldVal = "" + nouveau.getReference() + " " + nouveau.getNom();
+                ;
+                break;
+        }
+        return new Object[]{newVal, oldVal};
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -395,18 +433,21 @@ public class LocaleController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
+                        Object[] newOldCreate = compare(selected, oldvalue, 1);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Locale", 1, null, selected);
+                        journalFacade.journalUpdate("Locale", 1, newOldCreate[1], newOldCreate[0]);
                         JsfUtil.addSuccessMessage("Locale bien crée");
                         break;
                     case UPDATE:
+                        Object[] newOldUpdate = compare(selected, oldvalue, 2);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Locale", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("Locale", 2, newOldUpdate[1], newOldUpdate[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
+                        Object[] newOldDelete = compare(selected, oldvalue, 3);
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Locale", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("Locale", 3, newOldDelete[1], newOldDelete[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

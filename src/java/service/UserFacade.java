@@ -76,8 +76,6 @@ public class UserFacade extends AbstractFacade<User> {
         } else {
             requette += SearchUtil.addConstraint("u", "annexeAdministratif.id", "=", selected.getAnnexeAdministratif().getId());
         }
-         requette += SearchUtil.addConstraint("u", "admine", "=", selected.isAdmine());
-
         System.out.println(requette);
         return em.createQuery(requette).getResultList();
     }

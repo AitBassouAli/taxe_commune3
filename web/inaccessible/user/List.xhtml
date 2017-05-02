@@ -115,9 +115,6 @@
                             <b:commandButton id="bloqueButton" value="" tooltip="#{item.blocked==0?'Bloquer':'Debloquer'}" icon="glyphicon glyphicon-minus-sign" actionListener="#{userController.bloquer(item)}" update="UserListForm,:growl"
                                              style="color:#d9534f" >
                             </b:commandButton>
-                            <b:commandButton id="deleteButton" value="" tooltip="Supprimer" icon="glyphicon glyphicon-trash" actionListener="#{userController.destroy(item)}" update=":growl,datalist"
-                                             style="color:lightcoral"  >
-                            </b:commandButton>
                         </b:dataTableColumn>
 
                         <f:facet name="footer">

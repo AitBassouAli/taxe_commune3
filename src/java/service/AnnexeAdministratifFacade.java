@@ -23,10 +23,16 @@ public class AnnexeAdministratifFacade extends AbstractFacade<AnnexeAdministrati
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
+    public void updateSecteur(Secteur secteur) {
+        String rqt = "UPDATE AnnexeAdministratif a set a.secteur = " + null + " WHERE a.secteurid =" + secteur.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
+    }
+
     public List<AnnexeAdministratif> findBySecteur(Secteur secteur) {
         if (secteur != null && secteur.getId() != null) {
             return em.createQuery("SELECT a FROM AnnexeAdministratif a WHERE a.secteur.id=" + secteur.getId()).getResultList();
-        }else{
+        } else {
             return null;
         }
     }
@@ -34,7 +40,7 @@ public class AnnexeAdministratifFacade extends AbstractFacade<AnnexeAdministrati
     public List<AnnexeAdministratif> findByName(String nom) {
         return em.createQuery("SELECT a FROM AnnexeAdministratif a WHERE a.nom='" + nom + "'").getResultList();
     }
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;

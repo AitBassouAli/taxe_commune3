@@ -166,14 +166,6 @@
                             <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{localeController.preparUpdate(item)}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" style="color:#337ab7" />
                             <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{localeController.preparUpdate(item)}" update=":LocaleEditForm,:redevableEditForm" oncomplete="PF('LocaleEditDialog').show()" style="color:#f0ad4e" />
                             <p:growl id="message" showDetail="true" />
-                            <b:commandButton id="deleteButton" value="" tooltip="Supprimer" icon="glyphicon glyphicon-trash" actionListener="#{localeController.destroy(item)}" update=":growl,datalist,message"
-                                             style="color:#d9534f"  >
-                                <p:confirm header="Confirmation" message="Vous etes sure?" icon="ui-icon-alert" />
-                            </b:commandButton>
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <b:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <b:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                             <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.preparMap(item)}"  style="color:#337ab7" />
                         </b:dataTableColumn>
                         <f:facet name="footer"  >
