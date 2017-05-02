@@ -44,6 +44,8 @@ public class RueController implements Serializable {
     private UserFacade userFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private service.LocaleFacade localeFacade;
     private User user;
     private List<Rue> items = null;
     private Rue selected;
@@ -80,6 +82,7 @@ public class RueController implements Serializable {
     }
 
     public void destroySecteur(Secteur secteur1) {
+        annexeAdministratifFacade.updateSecteur(secteur1);
         secteurFacade.remove(secteur1);
         secteurs.remove(secteur1);
         secteur = new Secteur();
@@ -160,6 +163,7 @@ public class RueController implements Serializable {
     }
 
     public void destroyQuartier(Quartier quartier1) {
+        ejbFacade.updateQuartier(quartier1);
         quartierFacade.remove(quartier1);
         annexeAdministratif.getQuartiers().remove(quartier1);
         quartier = new Quartier();
@@ -276,6 +280,7 @@ public class RueController implements Serializable {
     }
 
     public void destroy(Rue rue) {
+        localeFacade.updateRue(rue);
         selected = rue;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("RueDeleted"));
         if (!JsfUtil.isValidationFailed()) {

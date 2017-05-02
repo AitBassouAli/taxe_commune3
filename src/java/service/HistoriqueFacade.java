@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Device;
 import bean.Historique;
 import bean.User;
 import controler.util.DateUtil;
@@ -28,6 +29,12 @@ public class HistoriqueFacade extends AbstractFacade<Historique> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public void updateDevice(Device device) {
+        String rqt = "UPDATE Historique h set h.device = " + null + " WHERE h.device.id =" + device.getId();
+        System.out.println(rqt);
+        em.createQuery(rqt).executeUpdate();
     }
 
     public List<Historique> rechercher(Date dateMin, Date dateMax, int type, User user) {

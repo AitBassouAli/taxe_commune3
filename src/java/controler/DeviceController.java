@@ -28,6 +28,8 @@ public class DeviceController implements Serializable {
     private service.DeviceFacade ejbFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private service.HistoriqueFacade historiqueFacade;
     private List<Device> items = null;
     private Device selected;
     private User user;
@@ -78,6 +80,8 @@ public class DeviceController implements Serializable {
 
     public void destroy(Device device) {
         selected = device;
+        journalFacade.updateDevice(selected);
+        historiqueFacade.updateDevice(selected);
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("DeviceDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection

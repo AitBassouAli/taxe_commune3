@@ -116,14 +116,6 @@
                             <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableViewForm" oncomplete="PF('RedevableViewDialog').show()" style="background:#337ab7" />
                             <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableEditForm" oncomplete="PF('RedevableEditDialog').show()" style="background:#f0ad4e" />
                             <p:growl id="message" showDetail="true" />
-                            <b:commandButton id="deleteButton" value="" tooltip="Supprimer" icon="glyphicon glyphicon-trash" actionListener="#{redevableController.destroy(item)}" update=":growl,datalist,message"
-                                             style="background:#d9534f"  >
-                                <p:confirm header="Confirmation" message="Vous etes sure?" icon="ui-icon-alert" />
-                            </b:commandButton>
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <b:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <b:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                         </b:dataTableColumn>
                         <f:facet name="footer">
                             <div class=" col-lg-3" />

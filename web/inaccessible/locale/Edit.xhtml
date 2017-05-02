@@ -51,11 +51,6 @@
                         <p:outputLabel value="Nom" for="nom" />
                         <p:inputText id="nom" value="#{localeController.selected.nom}"/>
 
-                        <p:outputLabel value="#{bundle.CreateLocaleLabel_complementAdresse}" for="complementAdresse" />
-                        <p:inputText id="complementAdresse" value="#{localeController.selected.complementAdresse}" title="#{bundle.CreateLocaleTitle_complementAdresse}" />
-                        <p:outputLabel value="#{bundle.CreateLocaleLabel_description}" for="description" />
-                        <p:inputText id="description" value="#{localeController.selected.description}" title="#{bundle.CreateLocaleTitle_description}" />
-
                     </p:panelGrid>
                     <p:commandButton id="save" actionListener="#{localeController.update}" value="#{bundle.Save}" update="display,:LocaleListForm:datalist,:growl" oncomplete="handleSubmit(args, 'LocaleEditDialog');"
                                      disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id}"/>

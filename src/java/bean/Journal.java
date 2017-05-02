@@ -63,13 +63,14 @@ public class Journal implements Serializable {
         this.ancienValeur = ancienValeur;
     }
 
-    public Journal(Date dateAction, int type, String ancienValeur, String nouvelleValeur, String beanName, User user) {
+    public Journal(Date dateAction, int type, String ancienValeur, String nouvelleValeur, String beanName, User user,Device device) {
         this.dateAction = dateAction;
         this.type = type;
         this.ancienValeur = ancienValeur;
         this.nouvelleValeur = nouvelleValeur;
         this.beanName = beanName;
         this.user = user;
+        this.device = device;
     }
 
     public void setType(int type) {

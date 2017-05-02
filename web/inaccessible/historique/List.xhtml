@@ -103,7 +103,8 @@
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="deleteButton" value="supprimer" class="btn btn-danger" update="HistoriqueListForm,:growl" actionListener="#{historiqueController.destroy(item)}" >
+                            <b:commandButton id="deleteButton" value="supprimer" icon=" glyphicon glyphicon-trash"  class="btn btn-danger" style="color: white"
+                                             update="HistoriqueListForm,:growl" actionListener="#{historiqueController.destroy(item)}" >
                             </b:commandButton>
                         </b:dataTableColumn>
 

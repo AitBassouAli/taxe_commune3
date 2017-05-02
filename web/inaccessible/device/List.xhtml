@@ -93,7 +93,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{deviceController.destroy(item)}" update="DeviceListForm,:growl"  class="btn btn-danger center-block ">
+                            <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{deviceController.destroy(item)}" update="DeviceListForm,:growl"  class="btn btn-danger center-block "  icon=" glyphicon glyphicon-trash">
                             </b:commandButton>
                         </b:dataTableColumn>
                     </b:dataTable>
