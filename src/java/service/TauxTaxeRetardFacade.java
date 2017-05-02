@@ -7,6 +7,7 @@ package service;
 
 import bean.Categorie;
 import bean.TauxTaxeRetard;
+import controler.util.SearchUtil;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +40,15 @@ public class TauxTaxeRetardFacade extends AbstractFacade<TauxTaxeRetard> {
         } else {
             return null;
         }
+    }
+    public List<TauxTaxeRetard> findByInter(Double pMin,Double pMax,Double aMin,Double aMax) {
+        
+        String reqette = "SELECT t FROM TauxTaxeRetard t WHERE 1=1 ";
+        
+        reqette+=SearchUtil.addConstraintMinMax("t","tauxPremierRetard", pMin, pMax);
+        reqette+=SearchUtil.addConstraintMinMax("t","tauxAutreRetard", aMin, aMax);
+        return em.createQuery(reqette).getResultList();
+        
     }
 
     public void clone(TauxTaxeRetard tauxTaxeRetardSource, TauxTaxeRetard tauxTaxeRetardDestaination) {

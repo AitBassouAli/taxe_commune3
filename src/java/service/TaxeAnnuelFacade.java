@@ -59,8 +59,8 @@ public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
         if (nombreTaxeMin > 0) {
             requete += " AND tax.nbrTrimesterPaye >='" + nombreTaxeMin + "'";
         }
-        if (nombreTaxeMin > 0) {
-            requete += " AND tax.nbrTrimesterPaye <='" + nombreTaxeMin + "'";
+        if (nombreTaxetMax > 0) {
+            requete += " AND tax.nbrTrimesterPaye <='" + nombreTaxetMax + "'";
         }
         requete += SearchUtil.addConstraintMinMax("tax", "taxeTotale", montantMin, montantMax);
 

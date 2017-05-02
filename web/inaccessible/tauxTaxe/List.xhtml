@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
 
@@ -15,39 +16,55 @@
 
         <ui:define name="body">
             <h:form id="TauxTaxeListForm" style="padding-left: 15%;padding-right:15%; background-color: #eee6ff ;text-align: center">
-                <p:panel header="#{bundle.ListTauxTaxeTitle}">
-                    <p:dataTable id="datalist" value="#{tauxTaxeController.items}" var="item"
-                                 selectionMode="single" selection="#{tauxTaxeController.selected}"
-                                 paginator="true"
-                                 rowKey="#{item.id}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
+                <b:panel title="Rechercher des Taux par des intervale" class="panel"  >
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTauxTaxeTitle_categorie}"/>
+                    <b:panelGrid columns="4" >
+                        <h:outputLabel value="premierMoisMin:" for="montantMin" />
+                        <b:inputText id="montantMin" value="#{tauxTaxeController.premierMin}"  />
+                        <h:outputLabel value="premierMoisMax:" for="montantMax" />
+                        <b:inputText id="montantMax" value="#{tauxTaxeController.premierMax}"  />
+                        
+                    </b:panelGrid>
+                    <div align="center">
+                        <b:commandButton value="Rechecher" style="width: 200px;color:darkblue;background-color:lightsteelblue" icon="glyphicon glyphicon-search" actionListener="#{tauxTaxeController.searchby()}" update="datalist"></b:commandButton>
+                    </div>
+                </b:panel>
+                    <p:panel header="#{bundle.ListTauxTaxeTitle}">
+                        <div align="center">
+                            <b:commandButton class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()" />
+                        </div >
+                        <b:dataTable id="datalist" value="#{tauxTaxeController.items}" var="item"
+                                     selectionMode="single"
+                                     >
+
+                            <b:dataTableColumn>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListTauxTaxeTitle_categorie}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.categorie.nom}"/>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListTauxTaxeTitle_taux}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.taux}"/>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">
+                                    <h:outputText value="Acion"/>
+                                </f:facet>
+                                <b:commandButton id="editButton"   icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" value="" update=":TauxTaxeEditForm" actionListener="#{tauxTaxeController.prepareEdite(item)}" oncomplete="PF('TauxTaxeEditDialog').show()" />
+                                <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{tauxTaxeController.destroy(item)}" update=":growl,datalist" />
+
+                            </b:dataTableColumn>
+
+                            <f:facet name="footer">
+                                <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()"/>
+                                <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TauxTaxeViewForm" oncomplete="PF('TauxTaxeViewDialog').show()" disabled="#{empty tauxTaxeController.selected}"/>
                             </f:facet>
-                            <h:outputText value="#{item.categorie.nom}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTauxTaxeTitle_taux}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.taux}"/>
-                        </p:column>
-                       
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TauxTaxeViewForm" oncomplete="PF('TauxTaxeViewDialog').show()" disabled="#{empty tauxTaxeController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TauxTaxeEditForm" oncomplete="PF('TauxTaxeEditDialog').show()" disabled="#{empty tauxTaxeController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tauxTaxeController.destroy}" update=":growl,datalist" disabled="#{empty tauxTaxeController.selected}"/>
-                        </f:facet>
-                    </p:dataTable>
-                </p:panel>
+                        </b:dataTable>
+                    </p:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

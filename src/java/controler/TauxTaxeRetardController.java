@@ -29,6 +29,10 @@ public class TauxTaxeRetardController implements Serializable {
     private service.JournalFacade journalFacade;
     private List<TauxTaxeRetard> items = null;
     private TauxTaxeRetard selected;
+    private Double premierMin;
+    private Double premierMax;
+    private Double autreMin;
+    private Double autreMax;
 
     public TauxTaxeRetardController() {
     }
@@ -41,8 +45,17 @@ public class TauxTaxeRetardController implements Serializable {
         return selected;
     }
 
+    public void searchby() {
+        items = ejbFacade.findByInter(premierMin, premierMax, autreMin, autreMax);
+    }
+
     public void setSelected(TauxTaxeRetard selected) {
         this.selected = selected;
+    }
+
+    public void prepareEdite(TauxTaxeRetard tauxTaxeRetard) {
+        selected = tauxTaxeRetard;
+
     }
 
     protected void setEmbeddableKeys() {
@@ -72,11 +85,12 @@ public class TauxTaxeRetardController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeRetardUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(TauxTaxeRetard tauxTaxeRetard) {
+        selected = tauxTaxeRetard;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeRetardDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(tauxTaxeRetard);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -97,9 +111,14 @@ public class TauxTaxeRetardController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        getFacade().edit(selected);
-                        journalFacade.journalUpdate("TauxTaxeRetard", 1, null, selected);
-                        JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
+                        if (ejbFacade.findByCategorie(selected.getCategorie()) == null) {
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("TauxTaxeRetard", 1, null, selected);
+                            JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
+                        } else {
+                            JsfUtil.addErrorMessage("Taux deja existe");
+                        }
+
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
@@ -142,6 +161,39 @@ public class TauxTaxeRetardController implements Serializable {
     public List<TauxTaxeRetard> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+
+    public Double getPremierMin() {
+        return premierMin;
+    }
+
+    public void setPremierMin(Double premierMin) {
+        this.premierMin = premierMin;
+    }
+
+    public Double getPremierMax() {
+        return premierMax;
+    }
+
+    public void setPremierMax(Double premierMax) {
+        this.premierMax = premierMax;
+    }
+
+    public Double getAutreMin() {
+        return autreMin;
+    }
+
+    public void setAutreMin(Double autreMin) {
+        this.autreMin = autreMin;
+    }
+
+    public Double getAutreMax() {
+        return autreMax;
+    }
+
+    public void setAutreMax(Double autreMax) {
+        this.autreMax = autreMax;
+    }
+
 
     @FacesConverter(forClass = TauxTaxeRetard.class)
     public static class TauxTaxeRetardControllerConverter implements Converter {

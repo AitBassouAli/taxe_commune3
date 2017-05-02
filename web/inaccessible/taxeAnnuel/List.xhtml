@@ -17,7 +17,7 @@
         <ui:define name="body">
             <h:form id="TaxeAnnuelListForm" >
                
-                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel"   >
+                <b:panel title="Rechercher des taxeAnnuelle par différents critères" class="panel"   >
 
 
                     <b:panelGrid columns="6" >
@@ -39,7 +39,7 @@
                     <b:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
                     </div>
 
-                <p:panel header="#{bundle.ListTaxeAnnuelTitle}">
+                <p:panel >
                     <b:dataTable id="datalist" value="#{taxeAnnuelController.items}" var="item"
                                  selectionMode="single" 
                                  >

@@ -2,6 +2,7 @@ package controler;
 
 import bean.Categorie;
 import bean.TauxTaxe;
+import bean.TauxTaxeRetard;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import service.CategorieFacade;
@@ -19,11 +20,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.JournalFacade;
+import service.TauxTaxeRetardFacade;
 
 @Named("categorieController")
 @SessionScoped
 public class CategorieController implements Serializable {
 
+    @EJB
+    private TauxTaxeRetardFacade tauxTaxeRetardFacade;
     @EJB
     private service.CategorieFacade ejbFacade;
     @EJB
@@ -31,6 +36,7 @@ public class CategorieController implements Serializable {
     private List<Categorie> items = null;
     private Categorie selected;
     private TauxTaxe tauxTaxe;
+    private TauxTaxeRetard tauxTaxeRetard;
 
     public CategorieController() {
     }
@@ -49,6 +55,7 @@ public class CategorieController implements Serializable {
     public void findTaux(Categorie categorie)
     {
         setTauxTaxe(ejbFacade.searche(categorie));
+        setTauxTaxeRetard(tauxTaxeRetardFacade.findByCategorie(categorie));
     }
     protected void setEmbeddableKeys() {
     }
@@ -56,10 +63,48 @@ public class CategorieController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
+    public TauxTaxeRetardFacade getTauxTaxeRetardFacade() {
+        return tauxTaxeRetardFacade;
+    }
+
+    public void setTauxTaxeRetardFacade(TauxTaxeRetardFacade tauxTaxeRetardFacade) {
+        this.tauxTaxeRetardFacade = tauxTaxeRetardFacade;
+    }
+
+    public CategorieFacade getEjbFacade() {
+        return ejbFacade;
+    }
+
+    public void setEjbFacade(CategorieFacade ejbFacade) {
+        this.ejbFacade = ejbFacade;
+    }
+
+    public JournalFacade getJournalFacade() {
+        return journalFacade;
+    }
+
+    public void setJournalFacade(JournalFacade journalFacade) {
+        this.journalFacade = journalFacade;
+    }
+
+    
     private CategorieFacade getFacade() {
         return ejbFacade;
     }
 
+    public TauxTaxeRetard getTauxTaxeRetard() {
+         if(tauxTaxeRetard==null)
+        {
+            tauxTaxeRetard=new TauxTaxeRetard();
+        }
+        return tauxTaxeRetard;
+    }
+
+    public void setTauxTaxeRetard(TauxTaxeRetard tauxTaxeRetard) {
+        this.tauxTaxeRetard = tauxTaxeRetard;
+    }
+
+    
     public TauxTaxe getTauxTaxe() {
         if(tauxTaxe==null)
         {
@@ -76,6 +121,10 @@ public class CategorieController implements Serializable {
         selected = new Categorie();
         initializeEmbeddableKey();
         return selected;
+    }
+     public void prepareEdite(Categorie categorie) {
+        selected = categorie;
+       
     }
 
     public void create() {
