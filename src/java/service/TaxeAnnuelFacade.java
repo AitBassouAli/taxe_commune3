@@ -8,6 +8,7 @@ package service;
 import bean.Locale;
 import bean.TaxeAnnuel;
 import bean.TaxeTrim;
+import controler.util.SearchUtil;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,19 +20,19 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
-    
+
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public TaxeAnnuelFacade() {
         super(TaxeAnnuel.class);
     }
-    
+
     public void create(Locale locale, int annee) {
         TaxeAnnuel taxeAnnuel = findByLocaleAndAnnee(locale, annee);
         System.out.println("search taxeAnnuel");
@@ -46,7 +47,26 @@ public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
             System.out.println("tcriyat taxeannuell");
         }
     }
-    
+
+    public List<TaxeAnnuel> findTaxeAnnuelByCretere(Double montantMin, Double montantMax, int nombreTaxeMin, int nombreTaxetMax, String localeName, int annee) {
+        String requete = "SELECT tax FROM TaxeAnnuel tax where 1=1";
+        if (annee > 0) {
+            requete += " AND tax.annee =" + annee;
+        }
+        if (!localeName.equals("")) {
+            requete += " AND tax.locale.reference='" + localeName + "'";
+        }
+        if (nombreTaxeMin > 0) {
+            requete += " AND tax.nbrTrimesterPaye >='" + nombreTaxeMin + "'";
+        }
+        if (nombreTaxetMax > 0) {
+            requete += " AND tax.nbrTrimesterPaye <='" + nombreTaxetMax + "'";
+        }
+        requete += SearchUtil.addConstraintMinMax("tax", "taxeTotale", montantMin, montantMax);
+
+        return em.createQuery(requete).getResultList();
+    }
+
     public TaxeAnnuel findByLocaleAndAnnee(Locale locale, int annee) {
         String requette = "SELECT tax FROM TaxeAnnuel tax where 1=1";
         requette += " AND tax.annee =" + annee;
@@ -58,26 +78,26 @@ public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
             return null;
         }
     }
-    
+
     public void delete(TaxeAnnuel taxeAnnuel) {
         if (taxeAnnuel != null && taxeAnnuel.getId() != null) {
             remove(taxeAnnuel);
         }
     }
-    
+
     public void clone(TaxeAnnuel taxeAnnuelSource, TaxeAnnuel taxeAnnuelDestaination) {
         taxeAnnuelDestaination.setId(taxeAnnuelSource.getId());
         taxeAnnuelDestaination.setAnnee(taxeAnnuelSource.getAnnee());
         taxeAnnuelDestaination.setLocale(taxeAnnuelSource.getLocale());
         taxeAnnuelDestaination.setNbrTrimesterPaye(taxeAnnuelSource.getNbrTrimesterPaye());
         taxeAnnuelDestaination.setTaxeTotale(taxeAnnuelSource.getTaxeTotale());
-        
+
     }
-    
+
     public TaxeAnnuel clone(TaxeAnnuel taxeAnnuel) {
         TaxeAnnuel cloned = new TaxeAnnuel();
         clone(taxeAnnuel, cloned);
         return cloned;
     }
-    
+
 }

@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
 
@@ -15,48 +16,69 @@
 
         <ui:define name="body">
             <h:form id="TauxTaxeRetardListForm" style="padding-left: 15%;padding-right:15%; background-color: #eee6ff ;text-align: center">
+                <b:panel title="Rechercher des Taux par avec les intervale" class="panel"  >
+
+
+                    <b:panelGrid columns="4" >
+                        <h:outputLabel value="premierMoisMin:" for="montantMin" />
+                        <b:inputText id="premiereMin" value="#{tauxTaxeRetardController.premierMin}"  />
+                        <h:outputLabel value="premierMoisMax:" for="montantMax" />
+                        <b:inputText id="premiereMax" value="#{tauxTaxeRetardController.premierMax}"  />
+                        <h:outputLabel value="autreMoisMin:" for="montantMin" />
+                        <b:inputText id="autreMin" value="#{tauxTaxeRetardController.autreMin}"  />
+                        <h:outputLabel value="autreMoisMax:" for="montantMax" />
+                        <b:inputText id="autreMax" value="#{tauxTaxeRetardController.autreMax}"  />
+
+                    </b:panelGrid>
+
+                    <div align="center">
+                        <b:commandButton value="Rechecher" style="width: 200px;color:darkblue;background-color:lightsteelblue" icon="glyphicon glyphicon-search" actionListener="#{tauxTaxeRetardController.searchby()}" update="datalist"></b:commandButton>
+                    </div>
+                </b:panel>
                 <p:panel header="#{bundle.ListTauxTaxeRetardTitle}">
-                    <p:dataTable id="datalist" value="#{tauxTaxeRetardController.items}" var="item"
-                                 selectionMode="single" selection="#{tauxTaxeRetardController.selected}"
-                                 paginator="true"
-                                 rowKey="#{item.id}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
+                    <div align="center">
+                        <b:commandButton class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
+                    </div >
+                    <b:dataTable id="datalist" value="#{tauxTaxeRetardController.items}" var="item"
+                                 selectionMode="single" 
                                  >
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTauxTaxeRetardTitle_categorie}"/>
                             </f:facet>
                             <h:outputText value="#{item.categorie.nom}"/>
-                        </p:column>
+                        </b:dataTableColumn>
 
-                        <p:column>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTauxTaxeRetardTitle_tauxPremierRetard}"/>
                             </f:facet>
                             <h:outputText value="#{item.tauxPremierRetard}"/>
-                        </p:column>
+                        </b:dataTableColumn>
 
-                        <p:column>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTauxTaxeRetardTitle_tauxAutreRetard}"/>
                             </f:facet>
                             <h:outputText value="#{item.tauxAutreRetard}"/>
-                        </p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTauxTaxeRetardTitle_tauxAutreRetard}"/>
+                            </f:facet>
+                            <b:commandButton id="editButton"  icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" value="" actionListener="#{tauxTaxeRetardController.prepareEdite(item)}" update=":TauxTaxeRetardEditForm" oncomplete="PF('TauxTaxeRetardEditDialog').show()" disabled="#{empty tauxTaxeRetardController.selected}"/>
+                            <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{tauxTaxeRetardController.destroy(item)}" update=":growl,datalist" disabled="#{empty tauxTaxeRetardController.selected}"/>
 
-                        
-                        
+                        </b:dataTableColumn>
+
+
+
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TauxTaxeRetardViewForm" oncomplete="PF('TauxTaxeRetardViewDialog').show()" disabled="#{empty tauxTaxeRetardController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TauxTaxeRetardEditForm" oncomplete="PF('TauxTaxeRetardEditDialog').show()" disabled="#{empty tauxTaxeRetardController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tauxTaxeRetardController.destroy}" update=":growl,datalist" disabled="#{empty tauxTaxeRetardController.selected}"/>
                         </f:facet>
-                    </p:dataTable>
+                    </b:dataTable>
                 </p:panel>
             </h:form>
 

@@ -111,11 +111,19 @@ public class TaxeTrimController implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
     }
 
-    public void editRedevableBtnClicked() {
-        editRedevableBtn = true;
+    //with Item in the view
+    public void generatPdf2(TaxeTrim taxeTrim) throws JRException, IOException {
+        selected = taxeTrim;
+        generatPdf();
     }
 
-    public void prepareEdit() {
+    public void editRedevableBtnClicked() {
+        editRedevableBtn = true;
+        selected.getRedevable().setNom("");
+    }
+
+    public void prepareEdit(TaxeTrim taxeTrim) {
+        selected = taxeTrim;
         editRedevableBtn = false;
         cin = "";
         rc = "";
@@ -345,7 +353,7 @@ public class TaxeTrimController implements Serializable {
             }
         }
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.add((TaxeTrim) res[1]);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -363,11 +371,12 @@ public class TaxeTrimController implements Serializable {
         }
     }
 
-    public void destroy() {
+    public void destroy(TaxeTrim taxeTrim) {
+        selected = taxeTrim;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(taxeTrim);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -388,18 +397,21 @@ public class TaxeTrimController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
+                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 2);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeTrim", 1, null, selected);
+                        journalFacade.journalUpdate("TaxeTrim", 1, newOldCreate[1], newOldCreate[1]);
                         JsfUtil.addSuccessMessage("TaxeTrim bien crée");
                         break;
                     case UPDATE:
+                        Object[] newOldUpdate = ejbFacade.compare(selected, oldvalue, 2);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeTrim", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("TaxeTrim", 2, newOldUpdate[1], newOldUpdate[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
+                        Object[] newOldDelete = ejbFacade.compare(selected, oldvalue, 2);
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("TaxeTrim", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("TaxeTrim", 3, newOldDelete[1], newOldDelete[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

@@ -1,6 +1,8 @@
 package controler;
 
 import bean.Categorie;
+import bean.TauxTaxe;
+import bean.TauxTaxeRetard;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
 import service.CategorieFacade;
@@ -18,17 +20,23 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.JournalFacade;
+import service.TauxTaxeRetardFacade;
 
 @Named("categorieController")
 @SessionScoped
 public class CategorieController implements Serializable {
 
     @EJB
+    private TauxTaxeRetardFacade tauxTaxeRetardFacade;
+    @EJB
     private service.CategorieFacade ejbFacade;
     @EJB
     private service.JournalFacade journalFacade;
     private List<Categorie> items = null;
     private Categorie selected;
+    private TauxTaxe tauxTaxe;
+    private TauxTaxeRetard tauxTaxeRetard;
 
     public CategorieController() {
     }
@@ -44,20 +52,76 @@ public class CategorieController implements Serializable {
         this.selected = selected;
     }
 
+    public void findTaux(Categorie categorie) {
+        setTauxTaxe(ejbFacade.searche(categorie));
+        setTauxTaxeRetard(tauxTaxeRetardFacade.findByCategorie(categorie));
+    }
+
     protected void setEmbeddableKeys() {
     }
 
     protected void initializeEmbeddableKey() {
     }
 
+    public TauxTaxeRetardFacade getTauxTaxeRetardFacade() {
+        return tauxTaxeRetardFacade;
+    }
+
+    public void setTauxTaxeRetardFacade(TauxTaxeRetardFacade tauxTaxeRetardFacade) {
+        this.tauxTaxeRetardFacade = tauxTaxeRetardFacade;
+    }
+
+    public CategorieFacade getEjbFacade() {
+        return ejbFacade;
+    }
+
+    public void setEjbFacade(CategorieFacade ejbFacade) {
+        this.ejbFacade = ejbFacade;
+    }
+
+    public JournalFacade getJournalFacade() {
+        return journalFacade;
+    }
+
+    public void setJournalFacade(JournalFacade journalFacade) {
+        this.journalFacade = journalFacade;
+    }
+
     private CategorieFacade getFacade() {
         return ejbFacade;
+    }
+
+    public TauxTaxeRetard getTauxTaxeRetard() {
+        if (tauxTaxeRetard == null) {
+            tauxTaxeRetard = new TauxTaxeRetard();
+        }
+        return tauxTaxeRetard;
+    }
+
+    public void setTauxTaxeRetard(TauxTaxeRetard tauxTaxeRetard) {
+        this.tauxTaxeRetard = tauxTaxeRetard;
+    }
+
+    public TauxTaxe getTauxTaxe() {
+        if (tauxTaxe == null) {
+            tauxTaxe = new TauxTaxe();
+        }
+        return tauxTaxe;
+    }
+
+    public void setTauxTaxe(TauxTaxe tauxTaxe) {
+        this.tauxTaxe = tauxTaxe;
     }
 
     public Categorie prepareCreate() {
         selected = new Categorie();
         initializeEmbeddableKey();
         return selected;
+    }
+
+    public void prepareEdite(Categorie categorie) {
+        selected = categorie;
+
     }
 
     public void create() {
@@ -71,11 +135,13 @@ public class CategorieController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("CategorieUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(Categorie categorie) {
+        selected = categorie;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CategorieDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+
+            items.remove(categorie);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -97,17 +163,17 @@ public class CategorieController implements Serializable {
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Categorie", 1, null, selected);
+                        journalFacade.journalUpdate("Categorie", 1, "", selected.toString());
                         JsfUtil.addSuccessMessage("Categorie bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Categorie", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("Categorie", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Categorie", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("Categorie", 3, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

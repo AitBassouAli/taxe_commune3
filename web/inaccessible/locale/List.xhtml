@@ -79,15 +79,15 @@
                             <p:outputLabel value="Activite:" for="activite" />
                             <p:inputText id="activite" value="#{localeController.selected.activite}" title="Activite" />
                         </p:panelGrid>
-                          </div>
-                        <div class="col-lg-2"/>
-                            <div class="col-lg-3" style="margin-top: 2%">
-                                <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
-                            </div>
-                        <div class="col-lg-3" style="margin-top: 1%">
-                                <b:commandButton value="Afficher dans Map" class="form-control"  action="#{localeController.addItemsToMap()}"></b:commandButton>
-                            </div>
-                  
+                    </div>
+                    <div class="col-lg-2"/>
+                    <div class="col-lg-3" style="margin-top: 2%">
+                        <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
+                    </div>
+                    <div class="col-lg-3" style="margin-top: 1%">
+                        <b:commandButton value="Afficher dans Map" class="form-control"  action="#{localeController.addLocalesMarkersToMap1()}"></b:commandButton>
+                    </div>
+
                     <div class="col-lg-2"/>
                 </b:panel>
 
@@ -166,7 +166,7 @@
                             <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{localeController.preparUpdate(item)}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" style="color:#337ab7" />
                             <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{localeController.preparUpdate(item)}" update=":LocaleEditForm,:redevableEditForm" oncomplete="PF('LocaleEditDialog').show()" style="color:#f0ad4e" />
                             <p:growl id="message" showDetail="true" />
-                            <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.preparMap(item)}"  style="color:#337ab7" />
+                            <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.addOneLocaleMarkersToMap(item)}"  style="color:#337ab7" />
                         </b:dataTableColumn>
                         <f:facet name="footer"  >
 

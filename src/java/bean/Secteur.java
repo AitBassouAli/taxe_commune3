@@ -88,7 +88,7 @@ public class Secteur implements Serializable {
 
     @Override
     public String toString() {
-        return nomSecteur;
+        return abreviation+"-"+nomSecteur;
     }
     
 }

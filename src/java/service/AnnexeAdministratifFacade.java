@@ -24,7 +24,7 @@ public class AnnexeAdministratifFacade extends AbstractFacade<AnnexeAdministrati
     private EntityManager em;
 
     public void updateSecteur(Secteur secteur) {
-        String rqt = "UPDATE AnnexeAdministratif a set a.secteur = " + null + " WHERE a.secteurid =" + secteur.getId();
+        String rqt = "UPDATE AnnexeAdministratif a set a.secteur = " + null + " WHERE a.secteur.id =" + secteur.getId();
         System.out.println(rqt);
         em.createQuery(rqt).executeUpdate();
     }

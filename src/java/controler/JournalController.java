@@ -92,6 +92,10 @@ public class JournalController implements Serializable {
         }
         return items;
     }
+
+    public void setItems(List<Journal> items) {
+        this.items = items;
+    }
     
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {

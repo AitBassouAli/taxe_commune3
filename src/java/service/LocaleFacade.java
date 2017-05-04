@@ -15,6 +15,7 @@ import bean.Rue;
 import bean.Secteur;
 import controler.util.SearchUtil;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,14 +36,68 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     private SecteurFacade secteurFacade;
     @EJB
     private PositionLocaleFacade positionLocaleFacade;
+    @EJB
+    private RedevableFacade redevableFacade;
 
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
     public void updateRue(Rue rue) {
-        String rqt = "UPDATE Locale l set l.rue = " + null + " WHERE l.rue =" + rue.getId();
+        String rqt = "UPDATE Locale l set l.rue = " + null + " WHERE l.rue.id =" + rue.getId();
         System.out.println(rqt);
         em.createQuery(rqt).executeUpdate();
+    }
+
+    public List<Locale> findForMap(String complement, Redevable proprietaire, Redevable gerant, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
+        String requette = "SELECT l FROM Locale l WHERE 1=1";
+
+        if (proprietaire != null) {
+            if (!proprietaire.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "proprietaire.cin", "=", proprietaire.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "proprietaire.id", "=", proprietaire.getId());
+            }
+        }
+        if (gerant != null) {
+            if (!gerant.getCin().equals("")) {
+                requette += SearchUtil.addConstraint("l", "gerant.cin", "=", gerant.getCin());
+            } else {
+                requette += SearchUtil.addConstraint("l", "gerant.id", "=", gerant.getId());
+            }
+        }
+        requette += findByAdress(rue, quartier, annex, secteur);
+        if (!complement.equals("")) {
+            requette += SearchUtil.addConstraint("l", "complementAdresse", "=", complement);
+        }
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+    }
+
+    public List<Locale> mapByAdresse(Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
+        String requette = "SELECT l FROM Locale l WHERE 1=1";
+        requette += findByAdress(rue, quartier, annex, secteur);
+        System.out.println(requette);
+        return em.createQuery(requette).getResultList();
+    }
+
+    public String findByAdress(Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
+        String requette = " ";
+        if (rue == null) {
+            if (quartier == null) {
+                if (annex == null) {
+                    if (secteur != null) {
+                        requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.secteur.id", "=", secteur.getId());
+                    }
+                } else {
+                    requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.id", "=", annex.getId());
+                }
+            } else {
+                requette += SearchUtil.addConstraint("l", "rue.quartier.id", "=", quartier.getId());
+            }
+        } else {
+            requette += SearchUtil.addConstraint("l", "rue.id", "=", rue.getId());
+        }
+        return requette;
     }
 
     public Locale attachLocaleToPosition(Locale locale, double lat, double lng) {
@@ -113,21 +168,7 @@ public class LocaleFacade extends AbstractFacade<Locale> {
         if (!activite.equals("")) {
             requette += SearchUtil.addConstraint("l", "activite", "LIKE", "%" + activite + "%");
         }
-        if (rue == null) {
-            if (quartier == null) {
-                if (annex == null) {
-                    if (secteur != null) {
-                        requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.secteur.id", "=", secteur.getId());
-                    }
-                } else {
-                    requette += SearchUtil.addConstraint("l", "rue.quartier.annexeAdministratif.id", "=", annex.getId());
-                }
-            } else {
-                requette += SearchUtil.addConstraint("l", "rue.quartier.id", "=", quartier.getId());
-            }
-        } else {
-            requette += SearchUtil.addConstraint("l", "rue.id", "=", rue.getId());
-        }
+        requette += findByAdress(rue, quartier, annex, secteur);
         if (reference != null) {
             requette += SearchUtil.addConstraint("l", "id", "=", reference.getId());
         }
@@ -193,6 +234,43 @@ public class LocaleFacade extends AbstractFacade<Locale> {
 
     public LocaleFacade() {
         super(Locale.class);
+    }
+
+    public Object[] compare(Locale nouveau, Locale auncienne, int type) {
+        String newVal = "";
+        String oldVal = "";
+        switch (type) {
+            case 1:
+                newVal = "" + nouveau.getReference() + " " + nouveau.getNom();
+                break;
+            case 2:
+                if (!nouveau.getNom().equals(auncienne.getNom())) {
+                    oldVal += "Nom => " + auncienne.getNom();
+                    newVal += "Nom => " + nouveau.getNom();
+                }
+                if (!nouveau.getActivite().equals(auncienne.getActivite())) {
+                    oldVal += ", Activité =>" + auncienne.getActivite();
+                    newVal += ", Activité =>" + nouveau.getActivite();
+                }
+                if (!Objects.equals(nouveau.getProprietaire().getId(), auncienne.getProprietaire().getId())) {
+                    Redevable newprop = redevableFacade.find(nouveau.getProprietaire().getId());
+                    Redevable oldprop = redevableFacade.find(auncienne.getProprietaire().getId());
+                    oldVal += " , Proprietaire => : " + newprop.getNom();
+                    newVal += " , Proprietaire => : " + oldprop.getNom();
+                }
+                if (!Objects.equals(nouveau.getGerant().getId(), auncienne.getGerant().getId())) {
+                    Redevable newGerant = redevableFacade.find(nouveau.getGerant().getId());
+                    Redevable oldGerant = redevableFacade.find(auncienne.getGerant().getId());
+                    oldVal += " , Gerant => : " + newGerant.getNom();
+                    newVal += " , Gearnt => : " + oldGerant.getNom();
+                }
+                break;
+            case 3:
+                oldVal = "" + nouveau.getReference() + " " + nouveau.getNom();
+                ;
+                break;
+        }
+        return new Object[]{newVal, oldVal};
     }
 
     public void clone(Locale localeSource, Locale localeDestaination) {

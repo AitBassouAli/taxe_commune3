@@ -213,6 +213,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return login;
+        return login + "-" + nom + " " + prenom + "-" + email;
     }
 }

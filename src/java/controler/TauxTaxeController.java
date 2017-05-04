@@ -29,10 +29,16 @@ public class TauxTaxeController implements Serializable {
     private service.JournalFacade journalFacade;
     private List<TauxTaxe> items = null;
     private TauxTaxe selected;
+    private Double premierMin;
+    private Double premierMax;
 
     public TauxTaxeController() {
     }
 
+    public void searchby()
+    {
+       items=ejbFacade.findByInter(premierMin, premierMax);
+    }
     public TauxTaxe getSelected() {
         if (selected == null) {
             selected = new TauxTaxe();
@@ -60,22 +66,28 @@ public class TauxTaxeController implements Serializable {
         return selected;
     }
 
+    public void prepareEdite(TauxTaxe tauxTaxe) {
+        selected = tauxTaxe;
+    }
+
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items .add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeUpdated"));
+        items=null;
     }
 
-    public void destroy() {
+    public void destroy(TauxTaxe tauxTaxe) {
+        selected = tauxTaxe;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(tauxTaxe);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -96,9 +108,14 @@ public class TauxTaxeController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        getFacade().edit(selected);
-                        journalFacade.journalUpdate("TauxTaxe", 1, null, selected);
-                        JsfUtil.addSuccessMessage("TauxTaxe bien crée");
+                        if (ejbFacade.findByCategorie(selected.getCategorie()) == null) {
+                            getFacade().edit(selected);
+                            journalFacade.journalUpdate("TauxTaxe", 1, null, selected);
+                            JsfUtil.addSuccessMessage("TauxTaxe bien crée");
+                        } else {
+                            JsfUtil.addErrorMessage("Taux deja existe");
+                        }
+
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
@@ -133,6 +150,23 @@ public class TauxTaxeController implements Serializable {
     public TauxTaxe getTauxTaxe(java.lang.Long id) {
         return getFacade().find(id);
     }
+
+    public Double getPremierMin() {
+        return premierMin;
+    }
+
+    public void setPremierMin(Double premierMin) {
+        this.premierMin = premierMin;
+    }
+
+    public Double getPremierMax() {
+        return premierMax;
+    }
+
+    public void setPremierMax(Double premierMax) {
+        this.premierMax = premierMax;
+    }
+    
 
     public List<TauxTaxe> getItemsAvailableSelectMany() {
         return getFacade().findAll();

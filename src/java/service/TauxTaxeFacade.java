@@ -7,6 +7,7 @@ package service;
 
 import bean.Categorie;
 import bean.TauxTaxe;
+import controler.util.SearchUtil;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,9 +41,16 @@ public class TauxTaxeFacade extends AbstractFacade<TauxTaxe> {
             return null;
         }
     }
+    public List<TauxTaxe> findByInter(Double pMin,Double pMax) {
+        
+        String reqette = "SELECT t FROM TauxTaxe t WHERE 1=1 ";
+        
+        reqette+=SearchUtil.addConstraintMinMax("t","taux", pMin, pMax);
+        return em.createQuery(reqette).getResultList();
+        
+    }
 
     public void clone(TauxTaxe tauxTaxeSource, TauxTaxe tauxTaxeDestaination) {
-        tauxTaxeDestaination.setId(tauxTaxeSource.getId());
         tauxTaxeDestaination.setCategorie(tauxTaxeSource.getCategorie());
         tauxTaxeDestaination.setTaux(tauxTaxeSource.getTaux());
 

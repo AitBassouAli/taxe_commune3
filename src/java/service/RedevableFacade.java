@@ -106,8 +106,45 @@ public class RedevableFacade extends AbstractFacade<Redevable> {
         return null;
     }
 
+    public Object[] compare(Redevable nouveau, Redevable auncienne, int type) {
+        String newVal = "";
+        String oldVal = "";
+        switch (type) {
+            case 1:
+                newVal = "" + nouveau.getNom() + " " + nouveau.getPrenom();
+                break;
+            case 2:
+                if (!nouveau.getNom().equals(auncienne.getNom())) {
+                    oldVal += "Nom => " + auncienne.getNom();
+                    newVal += "Nom => " + nouveau.getNom();
+                }
+                if (!nouveau.getPrenom().equals(auncienne.getPrenom())) {
+                    oldVal += ", Prenom =>" + auncienne.getPrenom();
+                    newVal += ", prenom =>" + nouveau.getPrenom();
+                }
+                if (!nouveau.getCin().equals(auncienne.getCin())) {
+                    oldVal += " ,CIN => " + auncienne.getCin();
+                    newVal += " ,CIN => " + nouveau.getCin();
+                }
+                if (!nouveau.getRc().equals(auncienne.getRc())) {
+                    oldVal += ", RC =>" + auncienne.getRc();
+                    newVal += ", RC =>" + nouveau.getRc();
+                }
+                if (!nouveau.getEmail().equals(auncienne.getEmail())) {
+                    oldVal += ", Email =>" + auncienne.getEmail();
+                    newVal += ", Email =>" + nouveau.getEmail();
+                }
+
+                break;
+            case 3:
+                oldVal = "" + auncienne.getNom() + " " + auncienne.getPrenom();
+                ;
+                break;
+        }
+        return new Object[]{newVal, oldVal};
+    }
+
     public void clone(Redevable redevableSource, Redevable redevableDestaination) {
-        redevableDestaination.setId(redevableSource.getId());
         redevableDestaination.setAdresse(redevableSource.getAdresse());
         redevableDestaination.setNom(redevableSource.getNom());
         redevableDestaination.setCin(redevableSource.getCin());
