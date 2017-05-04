@@ -36,7 +36,7 @@
             <p:layoutUnit position="north" size="65" >
                 <h:form id="menuForm">
 
-                    <b:navBar inverse="true" fixed="top" sticky="true"  brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top "   >
+                    <b:navBar inverse="true" fixed="top" sticky="true"  brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top " style="background-color: darkblue"  >
                         <b:navbarLinks>
                             <b:navLink value="Adressage" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
                             <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >

@@ -55,7 +55,7 @@
                 <b:panel title="redevable" class="panel-primary"  >
 
                 <div align="center">
-                    <b:commandButton  id="createButton" style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{redevableController.prepareCreate}" update=":RedevableCreateForm" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
+                    <b:commandButton  id="createButton" style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{redevableController.prepareCreate}" update=":RedevableCreateForm" oncomplete="PF('RedevableCreateDialog').show()"/>
                 </div >
                 <b:dataTable id="datalist" value="#{redevableController.items}" var="item"
                              selectionMode="single" 
