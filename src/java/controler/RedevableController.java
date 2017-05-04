@@ -7,6 +7,8 @@ import service.RedevableFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -90,7 +92,8 @@ public class RedevableController implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("RedevableCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items.add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
+            items.add(ejbFacade.clone(selected));
+           // Invalidate list of items to trigger re-query.
         }
     }
 

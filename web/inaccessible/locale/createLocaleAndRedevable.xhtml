@@ -172,6 +172,7 @@
                                                 <f:selectItems value="#{localeController.quartier.rues}"
                                                                var="rueItem"
                                                                itemValue="#{rueItem}"/>
+                                                <p:ajax update="save"/>
                                             </p:selectOneMenu>
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_complementAdresse}" for="complementAdresse" />
                                             <b:inputText id="complementAdresse" value="#{localeController.selected.complementAdresse}" title="#{bundle.CreateLocaleTitle_complementAdresse}" />

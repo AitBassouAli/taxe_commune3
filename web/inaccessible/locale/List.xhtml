@@ -81,16 +81,16 @@
                     <div align="center">
                         <b:commandButton value="Rechecher"  style="color:lightseagreen" icon="glyphicon glyphicon-search"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
 
-                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addItemsToMap()}"></b:commandButton>
+                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addLocalesMarkersToMap1()}"></b:commandButton>
                     </div>
 
                 </b:panel>
                 <b:panel title=" locales " class="panel-primary"  >
                     <div align="center">
                         <b:commandButton id="createButton" icon="glyphicon glyphicon-plus"   value="#{bundle.Create}" actionListener="#{localeController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"
-                                          class=" btn btn-primary"  />
+                                         class=" btn btn-primary"  />
                         <b:commandButton id="createButton2" icon="glyphicon glyphicon-plus"   value="#{bundle.Create}" action="#{localeController.prepareCreateLocaleAndRedevable()}" 
-                                        class=" btn btn-primary"  />
+                                         class=" btn btn-primary"  />
                     </div>
                     <b:dataTable id="datalist" value="#{localeController.itemsRecherche}" var="item"
                                  selectionMode="single" 
