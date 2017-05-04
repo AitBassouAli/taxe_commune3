@@ -15,8 +15,8 @@
         </ui:define>
 
         <ui:define name="body">
-            <h:form id="TauxTaxeListForm" style="padding-left: 15%;padding-right:15%; background-color: #eee6ff ;text-align: center">
-                <b:panel title="Rechercher des Taux par des intervale" class="panel"  >
+            <h:form id="TauxTaxeListForm" style="padding-left: 15%;padding-right:15% ;text-align: center">
+                <b:panel title="Rechercher des Taux par des intervale" class="panel-primary"  >
 
 
                     <b:panelGrid columns="4" >
@@ -27,12 +27,12 @@
                         
                     </b:panelGrid>
                     <div align="center">
-                        <b:commandButton value="Rechecher" style="width: 200px;color:darkblue;background-color:lightsteelblue" icon="glyphicon glyphicon-search" actionListener="#{tauxTaxeController.searchby()}" update="datalist"></b:commandButton>
+                        <b:commandButton value="Rechecher" style="width: 200px;color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{tauxTaxeController.searchby()}" update="datalist"></b:commandButton>
                     </div>
                 </b:panel>
-                    <p:panel header="#{bundle.ListTauxTaxeTitle}">
+                    <b:panel title="des Taux Taxes" class="panel-primary" >
                         <div align="center">
-                            <b:commandButton class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()" />
+                            <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()" />
                         </div >
                         <b:dataTable id="datalist" value="#{tauxTaxeController.items}" var="item"
                                      selectionMode="single"
@@ -64,7 +64,7 @@
                                 <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TauxTaxeViewForm" oncomplete="PF('TauxTaxeViewDialog').show()" disabled="#{empty tauxTaxeController.selected}"/>
                             </f:facet>
                         </b:dataTable>
-                    </p:panel>
+                    </b:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

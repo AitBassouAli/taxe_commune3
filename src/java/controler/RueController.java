@@ -49,10 +49,14 @@ public class RueController implements Serializable {
     private User user;
     private List<Rue> items = null;
     private Rue selected;
+    private Rue oldRue;
     //pour la page adressage
     private Quartier quartier;
+    private Quartier oldQuartier;
     private AnnexeAdministratif annexeAdministratif;
+    private AnnexeAdministratif oldAnnexe;
     private Secteur secteur;
+    private Secteur oldSecteur;
     private String nomAnnex;
     private String nomQuartier;
     private String nomRue;
@@ -65,12 +69,15 @@ public class RueController implements Serializable {
     private List<Secteur> secteurs;
 
     public void saveSecteur() {
-        secteurFacade.create(secteurFacade.clone(secteur));
-        secteurs.add(secteurFacade.clone(secteur));
+        secteurFacade.create(secteur);
+        secteurs.add(secteurFacade.find(secteurFacade.generateId("Secteur", "id") - 1));
+        journalFacade.journalUpdate("Secteure", 1, "", secteur.toString());
     }
 
     public void editSecteur() {
         secteurFacade.edit(secteurCombo);
+        Secteur secteur1 = secteurFacade.find(secteurCombo.getId());
+        journalFacade.journalUpdate("Secteure", 2, oldSecteur.toString(), secteur1.toString());
     }
 
     public void prepareCreateSecteur() {
@@ -79,28 +86,31 @@ public class RueController implements Serializable {
 
     public void prepareEditSecteur(Secteur secteur1) {
         secteurCombo = secteur1;
+        oldSecteur = secteur1;
     }
 
     public void destroySecteur(Secteur secteur1) {
         annexeAdministratifFacade.updateSecteur(secteur1);
         secteurFacade.remove(secteur1);
         secteurs.remove(secteur1);
+        journalFacade.journalUpdate("Secteure", 3, secteur.toString(), "");
         secteur = new Secteur();
     }
 
     //les methodes concernant la foeme des annexeAdministaratifs
     public void saveAnnex() {
         annexeAdministratif.setSecteur(secteurCombo);
-        annexeAdministratifFacade.create(annexeAdministratifFacade.clone(annexeAdministratif));
-        long id = annexeAdministratifFacade.generateId("AnnexeAdministratif", "id");
-        secteurCombo.getAnnexeAdministratifs().add(annexeAdministratifFacade.find(id));
-        secteur.setAnnexeAdministratifs(secteurCombo.getAnnexeAdministratifs());
+        annexeAdministratifFacade.create(annexeAdministratif);
+        secteurCombo.setAnnexeAdministratifs(annexeAdministratifFacade.findBySecteur(secteurCombo));
         secteur = secteurCombo;
+        journalFacade.journalUpdate("AnnexeAdministrative", 1, "", annexeAdministratif.toString());
     }
 
     public void editAnnexe() {
         annexeAdministratifCombo.setSecteur(secteurCombo);
         annexeAdministratifFacade.edit(annexeAdministratifCombo);
+        AnnexeAdministratif annexeAdministratif1 = annexeAdministratifFacade.find(annexeAdministratifCombo.getId());
+        journalFacade.journalUpdate("AnnexeAdministrative", 2, oldAnnexe.toString(), annexeAdministratif1.toString());
     }
 
     public void showAllSecteurs() {
@@ -120,27 +130,30 @@ public class RueController implements Serializable {
         annexeAdministratifCombo = annexeAdministratif1;
         secteurCombo = annexeAdministratifCombo.getSecteur();
         allSecteursClicked = false;
+        oldAnnexe = annexeAdministratif1;
     }
 
     public void destroyAnnexe(AnnexeAdministratif annexeAdministratif1) {
         annexeAdministratifFacade.remove(annexeAdministratif1);
         secteur.getAnnexeAdministratifs().remove(annexeAdministratif1);
         annexeAdministratif = new AnnexeAdministratif();
+        journalFacade.journalUpdate("AnnexeAdministrative", 3, annexeAdministratif1.toString(), "");
     }
 //les methodes concernant la foeme des Quartiers
 
     public void saveQuartier() {
         quartier.setAnnexeAdministratif(annexeAdministratifCombo);
-        quartierFacade.create(quartierFacade.clone(quartier));
-        long id = annexeAdministratifFacade.generateId("Quartier", "id");
-        annexeAdministratifCombo.getQuartiers().add(quartierFacade.find(id));
-        annexeAdministratif.setQuartiers(annexeAdministratifCombo.getQuartiers());
+        quartierFacade.create(quartier);
+        annexeAdministratifCombo.setQuartiers(quartierFacade.findByAnnexe(annexeAdministratifCombo));
         annexeAdministratif = annexeAdministratifCombo;
+        journalFacade.journalUpdate("Quartier", 1, "", quartier.toString());
     }
 
     public void editQuartier() {
         quartierCombo.setAnnexeAdministratif(annexeAdministratifCombo);
         quartierFacade.edit(quartierCombo);
+        Quartier quartier1 = quartierFacade.find(quartierCombo.getId());
+        journalFacade.journalUpdate("Quartier", 2, oldQuartier.toString(), quartier1.toString());
     }
 
     public void showAllAnnexes() {
@@ -160,6 +173,7 @@ public class RueController implements Serializable {
         allAnnexesClicked = false;
         quartierCombo = quartier1;
         annexeAdministratifCombo = quartierCombo.getAnnexeAdministratif();
+        oldQuartier = quartier1;
     }
 
     public void destroyQuartier(Quartier quartier1) {
@@ -167,6 +181,7 @@ public class RueController implements Serializable {
         quartierFacade.remove(quartier1);
         annexeAdministratif.getQuartiers().remove(quartier1);
         quartier = new Quartier();
+        journalFacade.journalUpdate("Quartier", 3, quartier1.toString(), "");
     }
 
     public void showAllQuartiers() {
@@ -268,15 +283,15 @@ public class RueController implements Serializable {
         selected.setQuartier(quartierCombo);
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("RueCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            long id = annexeAdministratifFacade.generateId("Rue", "id");
-            quartierCombo.getRues().add(ejbFacade.find(id));
-            quartier.setRues(quartierCombo.getRues());
+            quartierCombo.setRues(ejbFacade.findByQuartier(quartierCombo));
+            quartier = quartierCombo;
         }
     }
 
     public void update() {
         selected.setQuartier(quartierCombo);
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RueUpdated"));
+        quartier.setRues((ejbFacade.findByQuartier(quartierCombo)));
     }
 
     public void destroy(Rue rue) {
@@ -307,17 +322,17 @@ public class RueController implements Serializable {
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Rue", 1, null, selected);
+                        journalFacade.journalUpdate("Rue", 1, "", selected.toString());
                         JsfUtil.addSuccessMessage("Rue bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Rue", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("Rue", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Rue", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("Rue", 3, oldvalue.toString(), "");
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

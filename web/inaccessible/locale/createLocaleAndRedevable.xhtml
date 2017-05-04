@@ -117,10 +117,10 @@
                                         <b:panelGrid columns="3" class="form-group-sm" rendered="#{localeController.selected != null}">
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" />
                                             <b:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm:proprietaire,:LocaleCreateForm:save,:growl" />
+                                            <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl" />
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
                                             <b:inputText id="gerant" value="#{localeController.gerantCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm:gerant,:LocaleCreateForm:save,:growl"/>
+                                            <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl"/>
                                         </b:panelGrid>
                                     </p:fieldset>
                                 </h:form>
@@ -133,7 +133,7 @@
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
                                             <h:outputText id="gerant" value="#{localeController.selected.gerant.nom}" />
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_categorie}" for="categorie" />
-                                            <p:selectOneMenu id="categorie" value="#{localeController.selected.categorie}" >
+                                            <p:selectOneMenu id="categorie" value="#{localeController.selected.categorie}"  class="form-control">
                                                 <f:selectItems value="#{categorieController.itemsAvailableSelectOne}"
                                                                var="categorieItem"
                                                                itemValue="#{categorieItem}"/>
@@ -143,7 +143,7 @@
                                             <h:outputLabel value="Nom" for="nom" />
                                             <b:inputText id="nom" value="#{localeController.selected.nom}"/>
                                             <h:outputLabel value="secteur" />
-                                            <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true" >
+                                            <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true"  class="form-control" >
                                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                                 <f:selectItems value="#{secteurController.items}"
                                                                var="secteurItem" 
@@ -151,7 +151,7 @@
                                                 <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
                                             </p:selectOneMenu>
                                             <h:outputLabel value="annexAdministratif" />
-                                            <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true" >
+                                            <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true"  class="form-control">
                                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                                 <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
                                                                var="annexAdministratifItem" 
@@ -159,7 +159,7 @@
                                                 <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
                                             </p:selectOneMenu>
                                             <h:outputLabel value="quartier" />
-                                            <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true" >
+                                            <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true"  class="form-control" >
                                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                                 <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
                                                                var="quartierItem" 
@@ -167,7 +167,7 @@
                                                 <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue" />
                                             </p:selectOneMenu>
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
-                                            <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" filter="true" >
+                                            <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" filter="true"  class="form-control" >
                                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                                 <f:selectItems value="#{localeController.quartier.rues}"
                                                                var="rueItem"

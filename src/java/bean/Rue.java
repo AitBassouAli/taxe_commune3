@@ -87,7 +87,7 @@ public class Rue implements Serializable {
 
     @Override
     public String toString() {
-        return nom;
+        return numAbreviation + "-" + nom;
     }
 
 }

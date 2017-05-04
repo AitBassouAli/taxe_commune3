@@ -77,12 +77,13 @@ public class TauxTaxeRetardController implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeRetardCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.add(ejbFacade.clone(selected));   // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeRetardUpdated"));
+        items = null;
     }
 
     public void destroy(TauxTaxeRetard tauxTaxeRetard) {
@@ -193,7 +194,6 @@ public class TauxTaxeRetardController implements Serializable {
     public void setAutreMax(Double autreMax) {
         this.autreMax = autreMax;
     }
-
 
     @FacesConverter(forClass = TauxTaxeRetard.class)
     public static class TauxTaxeRetardControllerConverter implements Converter {

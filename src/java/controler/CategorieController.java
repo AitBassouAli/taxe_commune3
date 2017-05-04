@@ -40,7 +40,7 @@ public class CategorieController implements Serializable {
 
     public CategorieController() {
     }
-    
+
     public Categorie getSelected() {
         if (selected == null) {
             selected = new Categorie();
@@ -52,11 +52,11 @@ public class CategorieController implements Serializable {
         this.selected = selected;
     }
 
-    public void findTaux(Categorie categorie)
-    {
+    public void findTaux(Categorie categorie) {
         setTauxTaxe(ejbFacade.searche(categorie));
         setTauxTaxeRetard(tauxTaxeRetardFacade.findByCategorie(categorie));
     }
+
     protected void setEmbeddableKeys() {
     }
 
@@ -87,15 +87,13 @@ public class CategorieController implements Serializable {
         this.journalFacade = journalFacade;
     }
 
-    
     private CategorieFacade getFacade() {
         return ejbFacade;
     }
 
     public TauxTaxeRetard getTauxTaxeRetard() {
-         if(tauxTaxeRetard==null)
-        {
-            tauxTaxeRetard=new TauxTaxeRetard();
+        if (tauxTaxeRetard == null) {
+            tauxTaxeRetard = new TauxTaxeRetard();
         }
         return tauxTaxeRetard;
     }
@@ -104,11 +102,9 @@ public class CategorieController implements Serializable {
         this.tauxTaxeRetard = tauxTaxeRetard;
     }
 
-    
     public TauxTaxe getTauxTaxe() {
-        if(tauxTaxe==null)
-        {
-            tauxTaxe=new TauxTaxe();
+        if (tauxTaxe == null) {
+            tauxTaxe = new TauxTaxe();
         }
         return tauxTaxe;
     }
@@ -122,9 +118,10 @@ public class CategorieController implements Serializable {
         initializeEmbeddableKey();
         return selected;
     }
-     public void prepareEdite(Categorie categorie) {
+
+    public void prepareEdite(Categorie categorie) {
         selected = categorie;
-       
+
     }
 
     public void create() {
@@ -139,11 +136,11 @@ public class CategorieController implements Serializable {
     }
 
     public void destroy(Categorie categorie) {
-        selected=categorie;
+        selected = categorie;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CategorieDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            
+
             items.remove(categorie);    // Invalidate list of items to trigger re-query.
         }
     }
@@ -166,17 +163,17 @@ public class CategorieController implements Serializable {
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Categorie", 1, null, selected);
+                        journalFacade.journalUpdate("Categorie", 1, "", selected.toString());
                         JsfUtil.addSuccessMessage("Categorie bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Categorie", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("Categorie", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Categorie", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("Categorie", 3, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -15,118 +16,156 @@
                 <h:form id="form">
                     <div class="row">
                         <div>
-                            <p:fieldset legend="Rechercher des locales " style="padding-left: 5%;padding-right: 5%; background-color: #eee6ff ">
-                                <p:panelGrid columns="10">
+                            <b:panel title="Search " class="panel-primary"  >
+                                <b:panelGrid columns="6">
                                     <p:outputLabel value="Proprietaire:" />
                                     <p:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
                                     <p:outputLabel value="Gerant:" />
                                     <p:inputText id="gerant" value="#{localeController.gerantCinRc}" />
+                                    <p:outputLabel value="Activite:" for="activite" />
+                                    <p:inputText id="activite" value="#{localeController.selected.activite}" title="Activite" />
+
                                     <p:outputLabel value="Categorie:"  />
-                                    <p:selectOneMenu id="categorie" value="#{localeController.categorie}" filter="true" >
+                                    <p:selectOneMenu id="categorie" value="#{localeController.categorie}" filter="true" class="form-control" >
                                         <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                         <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
                                     </p:selectOneMenu>
-                                    <p:outputLabel value="Reference:" for="reference" />
-                                    <p:inputText id="reference" value="#{localeController.selected.reference}" title="Reference" />
-                                </p:panelGrid>
+
+                                    <p:outputLabel value="secteur" />
+                                    <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true" class="form-control" >
+                                        <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                        <f:selectItems value="#{secteurController.items}"
+                                                       var="secteurItem" 
+                                                       itemValue="#{secteurItem}"/>
+                                        <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="annexAdministratif" />
+                                    <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true" class="form-control" >
+                                        <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                        <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
+                                                       var="annexAdministratifItem" 
+                                                       itemValue="#{annexAdministratifItem}"/>
+                                        <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="quartier" />
+                                    <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true" class="form-control" >
+                                        <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                        <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
+                                                       var="quartierItem" 
+                                                       itemValue="#{quartierItem}"/>
+                                        <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
+                                    <p:selectOneMenu id="rue" value="#{localeController.rue}" filter="true"  class="form-control">
+                                        <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                        <f:selectItems value="#{localeController.quartier.rues}"
+                                                       var="rueItem"
+                                                       itemValue="#{rueItem}"/>
+                                    </p:selectOneMenu>
+
+                                </b:panelGrid>
                                 <div align="center">
-                                    <p:commandButton value="Rechecher"  icon="ui-icon-search" actionListener="#{localeController.findByCreteria2()}" update="form:datalist" />
+                                    <b:commandButton icon="glyphicon glyphicon-search" value="Search" style="color: lightsteelblue" actionListener="#{localeController.findByCreteria()}" update="form:datalist" />
                                 </div>
 
-                            </p:fieldset>
+                            </b:panel>
                         </div>
 
                     </div>
 
                     <div class="row">
                         <div class="col-md-6" >
-                            <p:fieldset legend="Locales">
+                            <b:panel title="List du Locales" class="panel-primary"  >
 
-                                <p:dataTable value="#{localeController.itemsRecherche}" var="item" id="datalist">
-                                    <p:column>
+                                <b:dataTable value="#{localeController.itemsRecherche}" var="item" id="datalist">
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Reference"/>
                                         </f:facet>
                                         <h:outputText value="#{item.reference}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Proprietaire"/>
                                         </f:facet>
                                         <h:outputText value="#{item.proprietaire.nom}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Activite"/>
                                         </f:facet>
                                         <h:outputText value="#{item.activite}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Categorie"/>
                                         </f:facet>
                                         <h:outputText value="#{item.categorie.nom}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
 
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Rue"/>
                                         </f:facet>
                                         <h:outputText value="#{item.rue.nom}"/>
-                                    </p:column>
-                                    <p:column>
+                                    </b:dataTableColumn>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="Action"/>
                                         </f:facet>
-                                        <p:commandButton actionListener="#{localeController.findtaxes(item)}"  icon="ui-icon-search" update="form:taxedatalist" />
-                                    </p:column>
+                                        <b:commandButton actionListener="#{localeController.findtaxes(item)}"  icon="glyphicon glyphicon-search" value="" style="color: lightsteelblue" update="form:taxedatalist" />
+                                    </b:dataTableColumn>
 
 
-                                </p:dataTable>
+                                </b:dataTable>
 
-                            </p:fieldset>
+
+                            </b:panel>
+
                         </div>
                         <div class="col-md-6" >
-                            <p:fieldset legend="taxes" >
+                            <b:panel title=" les Taxes de Locale" class="panel-primary"  >
+                                <b:dataTable id="taxedatalist" value="#{localeController.taxeTrims}" var="item" >                                 
 
-                                <p:dataTable id="taxedatalist" value="#{localeController.taxeTrims}" var="item" >                                 
-
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
                                         </f:facet>
                                         <h:outputText value="#{item.datePaiement}">
                                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
                                         </h:outputText>
-                                    </p:column>
-                                    <p:column>
+                                    </b:dataTableColumn>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
                                         </f:facet>
                                         <h:outputText value="#{item.nombreNuit}"/>
-                                    </p:column>
-                                    <p:column>
+                                    </b:dataTableColumn>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreClients}"/>
                                         </f:facet>
                                         <h:outputText value="#{item.nombreClients}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
-                                    <p:column>
+                                    <b:dataTableColumn>
                                         <f:facet name="header">
                                             <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
                                         </f:facet>
                                         <h:outputText value="#{item.montantTotal}"/>
-                                    </p:column>
+                                    </b:dataTableColumn>
 
 
-                                </p:dataTable>
+                                </b:dataTable>
 
-                            </p:fieldset>
+                            </b:panel>
                         </div>
                     </div>
                 </h:form>

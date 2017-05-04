@@ -233,7 +233,7 @@ public class UserController implements Serializable {
         }
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.add(ejbFacade.find(selected.getLogin()));    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -271,17 +271,17 @@ public class UserController implements Serializable {
                 switch (persistAction) {
                     case CREATE:
                         getFacade().addUser(selected);
-                        journalFacade.journalUpdate("User", 1, null, selected);
+                        journalFacade.journalUpdate("User", 1, "", selected.toString());
                         JsfUtil.addSuccessMessage("User bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("User", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("User", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("User", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("User", 3, oldvalue.toString(), "");
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

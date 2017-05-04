@@ -36,7 +36,7 @@
             <p:layoutUnit position="north" size="65" >
                 <h:form id="menuForm">
 
-                    <b:navBar inverse="true" fixed="top" sticky="true" brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top" >
+                    <b:navBar inverse="true" fixed="top" sticky="true"  brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top " style="background-color: darkblue"  >
                         <b:navbarLinks>
                             <b:navLink value="Adressage" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
                             <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >
@@ -52,7 +52,7 @@
                                     <b:navLink value="TauxTaxe" href="../tauxTaxe/List.xhtml"></b:navLink>
                                     <b:navLink value="TauxTaxeRetard" href="../tauxTaxeRetard/List.xhtml"></b:navLink>
                                 </b:dropMenu>
-                                <b:navLink value="Categories" href="../categorie/List.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"></b:navLink>
+                                <b:navLink value="Categories" href="../categorie/Category_Taux.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"></b:navLink>
                             </b:dropMenu>
                             <b:navLink value="Statistiques" href="../charts/grapheCritere.xhtml"></b:navLink>
                             <b:dropMenu value="Configuration" rendered="#{userController.connectedUser.createUser==true}" >
@@ -62,8 +62,6 @@
                                 <b:navLink value="Device" href="../device/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
                             </b:dropMenu>
                             <b:dropMenu value="Recherches" >
-                                <b:navLink value="Redevables" href="../search/SearchRedevable.xhtml"></b:navLink>
-                                <b:navLink value="Locales" href="../search/SearchLocale.xhtml"></b:navLink>
                                 <b:navLink value="Taxes " href="../search/SearchTaxeTrim.xhtml"></b:navLink>
                                 <b:navLink value="Txes/Locales" href="../search/locale_taxes.xhtml"></b:navLink>
                             </b:dropMenu>
@@ -83,10 +81,7 @@
                 </h:form>
             </p:layoutUnit>
 
-            <p:layoutUnit position="south" size="60">
-                <ui:insert name="footer"/>
-            </p:layoutUnit>
-
+            
             <p:layoutUnit position="center">
                 <ui:insert name="body"/>
             </p:layoutUnit>

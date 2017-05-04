@@ -21,9 +21,9 @@
                 <div class="row">
                     <div class="col-md-4" >
                         <h:form id="CategorieListForm">
-                            <p:fieldset legend="Categorie">
+                <b:panel title=" Category" class="panel-primary">
                                 <div align="center">
-                                    <b:commandButton id="createButton" class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{categorieController.prepareCreate}" update=":CategorieCreateForm" oncomplete="PF('CategorieCreateDialog').show()"/>
+                                    <b:commandButton id="createButton"   style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{categorieController.prepareCreate}" update=":CategorieCreateForm" oncomplete="PF('CategorieCreateDialog').show()"/>
 
                                 </div >
 
@@ -47,15 +47,15 @@
 
                                     </b:dataTableColumn>
                                 </b:dataTable>
-                            </p:fieldset>
+                </b:panel>
                         </h:form>
                     </div>
 
                     <div class="col-md-4" >
                         <h:form id="TauxTaxeListForm">
-                            <p:fieldset legend="TauxTaxe" >
+                <b:panel title=" Taux Taxes " class="panel-primary">
                                 <div align="center">
-                                    <b:commandButton id="createButton" class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus" value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()"/>
+                                    <b:commandButton id="createButton"  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()"/>
 
 
                                 </div >
@@ -82,15 +82,15 @@
 
                                 </b:dataTable>
 
-                            </p:fieldset>
+                </b:panel>
                         </h:form>
                     </div>
 
                     <div class="col-md-4" >
                         <h:form id="TauxTaxeRetardListForm">
-                            <p:fieldset legend="TauxTaxeRetard" >
+                <b:panel title=" Taux Taxe Retard" class="panel-primary">
                                 <div align="center">
-                                    <b:commandButton id="createButton" class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus" value="Create" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
+                                    <b:commandButton id="createButton" style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"    value="Create" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
 
 
                                 </div >
@@ -124,7 +124,7 @@
                                     </b:dataTableColumn>
                                 </b:dataTable>
 
-                            </p:fieldset>
+                </b:panel>
                         </h:form>
                     </div>
                 </div>

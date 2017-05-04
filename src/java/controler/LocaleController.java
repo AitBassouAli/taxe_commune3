@@ -32,6 +32,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 import service.AnnexeAdministratifFacade;
 import service.QuartierFacade;
 import service.RedevableFacade;
@@ -56,6 +60,8 @@ public class LocaleController implements Serializable {
     private RedevableFacade redevableFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private service.PositionLocaleFacade positionLocaleFacade;
     private List<Locale> items = null;
     private List<Locale> itemsRecherche;
     private Locale selected;
@@ -81,6 +87,53 @@ public class LocaleController implements Serializable {
     private int typeRedevable = 1;
     private Redevable gerant;
     private Redevable proprietaire;
+    private MapModel emptyModel;
+
+    public String addLocalesMarkersToMap1() {
+        items = ejbFacade.findByGerantOrProprietaire(categorie, redevableFacade.findByCinRc(proprietaireCinRc), selected.getActivite(), redevableFacade.findByCinRc(gerantCinRc), rue, quartier, annexeAdministratif, secteur, locale);
+        MapModel localsModel = new DefaultMapModel();
+        if (items == null || items.isEmpty()) {
+            JsfUtil.addErrorMessage("Aucun locale trouvée");
+        }
+        for (Locale item : items) {
+            System.out.println(item.getId());
+            if (item.getPositionLocale() != null) {
+                PositionLocale positionLocale = positionLocaleFacade.find(item.getPositionLocale().getId());
+                if (positionLocale.getId() != null) {
+                    System.out.println(" lat :" + positionLocale.getLat() + ", lng :" + positionLocale.getLng());
+                    localsModel.addOverlay(new Marker(new LatLng(positionLocale.getLat(), positionLocale.getLng())));
+                }
+            }
+        }
+        setEmptyModel(localsModel);
+        return "MapByCretere?redirect=true";
+    }
+
+    public String addOneLocaleMarkersToMap(Locale item) {
+        MapModel localsModel = new DefaultMapModel();
+        System.out.println(item.getId());
+        if (item.getPositionLocale() != null) {
+            PositionLocale positionLocale = positionLocaleFacade.find(item.getPositionLocale().getId());
+            if (positionLocale.getId() != null) {
+                System.out.println(" lat :" + positionLocale.getLat() + ", lng :" + positionLocale.getLng());
+                localsModel.addOverlay(new Marker(new LatLng(positionLocale.getLat(), positionLocale.getLng())));
+            }
+        } else {
+            JsfUtil.addSuccessMessage("Veuillez selectinner une position pour le locale");
+        }
+        lat = 0D;
+        lng = 0D;
+        setEmptyModel(localsModel);
+        return "Search?redirect=true";
+    }
+
+    public MapModel getEmptyModel() {
+        return emptyModel;
+    }
+
+    public void setEmptyModel(MapModel emptyModel) {
+        this.emptyModel = emptyModel;
+    }
 
     public String prepareCreateLocaleAndRedevable() {
         prepareCreate();
@@ -124,8 +177,8 @@ public class LocaleController implements Serializable {
         context.addCallbackParam("saved", true);    //basic parameter
         context.addCallbackParam("user", getGson());     //pojo as json
         //execute javascript oncomplete
-        context.execute("createLocaleMarkerInOverlay(" + getGson() + ");");
-        context.execute("console.log('Hani Salit');");
+        context.execute("createLocalesMarkersInOverlay1(" + getGson() + ");");
+        context.execute("console.log('Hani Salit dyal 1 locale');");
     }
 
     public void attachPositionToLocale() {
@@ -134,6 +187,7 @@ public class LocaleController implements Serializable {
     }
 
     public void onPointSelect() {
+        JsfUtil.addSuccessMessage("succsess ");
         addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Point Selected", "Lat:" + getLat() + ", Lng:" + getLng()) + "");
         System.out.println(getLat());
         System.out.println(getLng());
@@ -151,11 +205,12 @@ public class LocaleController implements Serializable {
     }
 
     public List<PositionLocale> findPositionLocales() {
+        items = ejbFacade.findForMap(selected.getComplementAdresse(), redevableFacade.findByCinRc(proprietaireCinRc), redevableFacade.findByCinRc(gerantCinRc), selected.getRue(), quartier, annexeAdministratif, secteur);
         List<PositionLocale> positionLocales = new ArrayList<>();
-        if (itemsRecherche == null) {
+        if (items == null) {
             positionLocales.add(createNewPositionLocal());
         } else {
-            itemsRecherche.stream().filter((local) -> (local.getPositionLocale() != null)).forEach((local) -> {
+            items.stream().filter((local) -> (local.getPositionLocale() != null)).forEach((local) -> {
                 positionLocales.add(local.getPositionLocale());
             });
         }
@@ -208,13 +263,6 @@ public class LocaleController implements Serializable {
             JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
         }
         selected.setGerant(redevable);
-    }
-
-    public String addItemsToMap() {
-        findByCreteria();
-        addLocalesMarkersToMap();
-        System.out.println("redirect  yugtyudwd");
-        return "MapMarkerLocales?faces-redirect=true";
     }
 
     //la recherche des locale avec plusieurs criteres
@@ -351,9 +399,6 @@ public class LocaleController implements Serializable {
 
     public String preparMap(Locale locale) {
         selected = ejbFacade.find(locale.getId());
-        if (selected.getPositionLocale() != null && selected.getPositionLocale().getId() != null) {
-            mapOneLocale();
-        }
         return "Search?faces-redirect=true";
     }
 
@@ -386,43 +431,6 @@ public class LocaleController implements Serializable {
         return items;
     }
 
-    public Object[] compare(Locale nouveau, Locale auncienne, int type) {
-        String newVal = "";
-        String oldVal = "";
-        switch (type) {
-            case 1:
-                newVal = "" + nouveau.getReference() + " " + nouveau.getNom();
-                break;
-            case 2:
-                if (!nouveau.getNom().equals(auncienne.getNom())) {
-                    oldVal += "Nom => " + auncienne.getNom();
-                    newVal += "Nom => " + nouveau.getNom();
-                }
-                if (!nouveau.getActivite().equals(auncienne.getActivite())) {
-                    oldVal += ", Activité =>" + auncienne.getActivite();
-                    newVal += ", Activité =>" + nouveau.getActivite();
-                }
-                if (!Objects.equals(nouveau.getProprietaire().getId(), auncienne.getProprietaire().getId())) {
-                    Redevable newprop = redevableFacade.find(nouveau.getProprietaire().getId());
-                    Redevable oldprop = redevableFacade.find(auncienne.getProprietaire().getId());
-                    oldVal += " , Proprietaire => : " + newprop.getNom();
-                    newVal += " , Proprietaire => : " + oldprop.getNom();
-                }
-                if (!Objects.equals(nouveau.getGerant().getId(), auncienne.getGerant().getId())) {
-                    Redevable newGerant = redevableFacade.find(nouveau.getGerant().getId());
-                    Redevable oldGerant = redevableFacade.find(auncienne.getGerant().getId());
-                    oldVal += " , Gerant => : " + newGerant.getNom();
-                    newVal += " , Gearnt => : " + oldGerant.getNom();
-                }
-                break;
-            case 3:
-                oldVal = "" + nouveau.getReference() + " " + nouveau.getNom();
-                ;
-                break;
-        }
-        return new Object[]{newVal, oldVal};
-    }
-
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -433,19 +441,19 @@ public class LocaleController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        Object[] newOldCreate = compare(selected, oldvalue, 1);
+                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                         getFacade().edit(selected);
                         journalFacade.journalUpdate("Locale", 1, newOldCreate[1], newOldCreate[0]);
                         JsfUtil.addSuccessMessage("Locale bien crée");
                         break;
                     case UPDATE:
-                        Object[] newOldUpdate = compare(selected, oldvalue, 2);
+                        Object[] newOldUpdate = ejbFacade.compare(selected, oldvalue, 2);
                         getFacade().edit(selected);
                         journalFacade.journalUpdate("Locale", 2, newOldUpdate[1], newOldUpdate[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
-                        Object[] newOldDelete = compare(selected, oldvalue, 3);
+                        Object[] newOldDelete = ejbFacade.compare(selected, oldvalue, 3);
                         getFacade().remove(selected);
                         journalFacade.journalUpdate("Locale", 3, newOldDelete[1], newOldDelete[0]);
                         JsfUtil.addSuccessMessage(successMessage);

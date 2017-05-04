@@ -17,47 +17,45 @@
         <ui:define name="body">
             <h:form id="UserListForm">
 
-                <b:panel title="Rechercher des Utilisateurs par différents critères" class="panel-success" style="background-color:#d0e9c6 " >
-                    <div class="col-lg-1" />
-                    <div align="center" class="col-lg-9">
-                        <p:panelGrid columns="10" >
-                            <p:outputLabel value="Nom:" />
-                            <p:inputText id="nom" value="#{userController.selected.nom}" />
-                            <p:outputLabel value="Email:" />
-                            <p:inputText id="email" value="#{userController.selected.email}" />
-                            <p:outputLabel value="secteur" />
-                            <p:selectOneMenu id="secteur"  value="#{userController.secteur}" filter="true" class="form-control" >
-                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                <f:selectItems value="#{secteurController.items}"
-                                               var="secteurItem" 
-                                               itemValue="#{secteurItem}"/>
-                                <p:ajax process="secteur" listener="#{userController.findAnnexs()}" update="annexAdministratif" />
-                            </p:selectOneMenu>
+                <b:panel title="Rechercher des Utilisateurs par différents critères" class="panel-primary"  >
+                    <b:panelGrid columns="6" >
+                        <p:outputLabel value="Nom:" />
+                        <b:inputText id="nom" value="#{userController.selected.nom}" />
+                        <p:outputLabel value="Email:" />
+                        <b:inputText id="email" value="#{userController.selected.email}" />
+                        <p:outputLabel value="secteur" />
+                        <p:selectOneMenu id="secteur"  value="#{userController.secteur}" filter="true" class="form-control" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                            <f:selectItems value="#{secteurController.items}"
+                                           var="secteurItem" 
+                                           itemValue="#{secteurItem}"/>
+                            <p:ajax process="secteur" listener="#{userController.findAnnexs()}" update="annexAdministratif" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel value="annexAdministratif" />
-                            <p:selectOneMenu id="annexAdministratif"  value="#{userController.selected.annexeAdministratif}" filter="true" class="form-control" >
-                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                <f:selectItems value="#{userController.secteur.annexeAdministratifs}"
-                                               var="annexAdministratifItem" 
-                                               itemValue="#{annexAdministratifItem}"/>
-                            </p:selectOneMenu>
-                            <p:outputLabel value="Bloquer:"  />
-                            <p:selectOneMenu id="blocked" value="#{userController.selected.blocked}" filter="true"  class="form-control">
-                                <f:selectItem itemValue="-1" itemLabel="--SELECT--"/>
-                                <f:selectItem itemValue="0" itemLabel="NON"/>
-                                <f:selectItem itemValue="1" itemLabel="OUI"/>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                        <div align="center" class="col-sm-5 center-block" style="margin-left: 30%;font-size: 10pt" >
-                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{userController.findByCreteria()}" update="datalist"></b:commandButton>
-                            <b:commandButton value="Reafresher" class=" form-control"  actionListener="#{userController.refresh()}" update="UserListForm"></b:commandButton>
-                        </div>
+                        <p:outputLabel value="annexAdministratif" />
+                        <p:selectOneMenu id="annexAdministratif"  value="#{userController.selected.annexeAdministratif}" filter="true" class="form-control" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                            <f:selectItems value="#{userController.secteur.annexeAdministratifs}"
+                                           var="annexAdministratifItem" 
+                                           itemValue="#{annexAdministratifItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Bloquer:"  />
+                        <p:selectOneMenu id="blocked" value="#{userController.selected.blocked}" filter="true"  class="form-control">
+                            <f:selectItem itemValue="-1" itemLabel="--SELECT--"/>
+                            <f:selectItem itemValue="0" itemLabel="NON"/>
+                            <f:selectItem itemValue="1" itemLabel="OUI"/>
+                        </p:selectOneMenu>
+                    </b:panelGrid>
+                    <div align="center" class="col-sm-5 center-block" style="margin-left: 30%;font-size: 10pt" >
+                        <b:commandButton value="Rechecher"  icon="glyphicon glyphicon-search"  actionListener="#{userController.findByCreteria()}" update="datalist"></b:commandButton>
+                        <b:commandButton value="Reafresher" class=" form-control"  actionListener="#{userController.refresh()}" update="UserListForm"></b:commandButton>
                     </div>
-                    <div class="col-lg-2"/>
                 </b:panel>
 
-
-                <div class="table-responsive">
+                <b:panel title=" Utilisateurs " class="panel-primary"  >
+                    <div align="center">
+                        <b:commandButton id="createButton" style="width: 200px" value="Create" class="btn-primary" icon="glyphicon glyphicon-plus" actionListener="#{userController.prepareCreate}" update=":UserCreateForm" oncomplete="PF('UserCreateDialog').show()" />
+                    </div>
                     <b:dataTable id="datalist" value="#{userController.items}" var="item"
                                  selectionMode="single" 
                                  >
@@ -110,8 +108,8 @@
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{userController.preparUpdate(item)}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" style="color:#337ab7" />
-                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{userController.preparUpdate(item)}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" style="color:#f0ad4e" />
+                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{userController.preparUpdate(item)}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" style="color: lightsteelblue"  />
+                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{userController.preparUpdate(item)}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" style="color: lightsalmon"  />
                             <b:commandButton id="bloqueButton" value="" tooltip="#{item.blocked==0?'Bloquer':'Debloquer'}" icon="glyphicon glyphicon-minus-sign" actionListener="#{userController.bloquer(item)}" update="UserListForm,:growl"
                                              style="color:#d9534f" >
                             </b:commandButton>
@@ -121,13 +119,8 @@
                         </f:facet>
 
                     </b:dataTable>
-                </div>
-                <div class=" col-lg-3" />
-                <div class="col-lg-6 center-block">
-                    <b:commandButton id="createButton" icon="glyphicon glyphicon-plus"   value="#{bundle.Create}" actionListener="#{userController.prepareCreate}" update=":UserCreateForm" oncomplete="PF('UserCreateDialog').show()"
-                                     style="font-size: 10pt !important ;color: white !important" class="form-control btn btn-primary"  />
-                </div>
-                <div class=" col-lg-3"/>
+                </b:panel>
+
             </h:form>
 
             <ui:include src="Create.xhtml"/>

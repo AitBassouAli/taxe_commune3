@@ -14,10 +14,10 @@
 
         <ui:define name="body">
             <div style="width: 100%">
-                <div class="col-lg-3" style="margin-top: 4%;">
+                <div class="col-lg-3" style="margin-top: 1%;">
                     <h:form id="SecteurListForm">
                         <p:panel >
-                            <p:dataTable id="datalist" value="#{rueController.secteurs}" var="item"
+                            <p:dataTable     id="datalist" value="#{rueController.secteurs}" var="item"
                                          selectionMode="single" 
                                          paginator="true"
                                          rowKey="#{item.id}"
@@ -61,7 +61,7 @@
                         </p:panel>
                     </h:form>
                 </div>
-                <div class="col-lg-3" style="margin-top: 4%;">
+                <div class="col-lg-3" style="margin-top: 1%;">
 
                     <h:form id="AnnexeAdministratifListForm">
                         <p:panel class="form-group" >
@@ -105,7 +105,7 @@
                     </h:form>
 
                 </div>
-                <div class="col-lg-3" style="margin-top: 4%;">
+                <div class="col-lg-3" style="margin-top: 1%;">
                     <h:form id="QuartierListForm">
                         <p:panel >
                             <p:outputLabel value="Nom Quartier : "/>
@@ -156,7 +156,7 @@
                         </p:panel>
                     </h:form>
                 </div>
-                <div class="col-lg-3" style="margin-top: 4%;">
+                <div class="col-lg-3" style="margin-top: 1%;">
 
                     <h:form id="RueListForm">
                         <p:panel >

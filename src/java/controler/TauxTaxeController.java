@@ -61,7 +61,6 @@ public class TauxTaxeController implements Serializable {
     }
 
     public TauxTaxe prepareCreate() {
-
         selected = new TauxTaxe();
         initializeEmbeddableKey();
         return selected;
@@ -69,18 +68,18 @@ public class TauxTaxeController implements Serializable {
 
     public void prepareEdite(TauxTaxe tauxTaxe) {
         selected = tauxTaxe;
-
     }
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items .add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeUpdated"));
+        items=null;
     }
 
     public void destroy(TauxTaxe tauxTaxe) {

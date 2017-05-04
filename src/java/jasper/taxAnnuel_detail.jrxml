@@ -77,7 +77,7 @@ DES RESSOURCES FINANCIERES]]></text>
 				<text><![CDATA[ N° de la déclaration :]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="68903c79-5f4a-4aa0-9201-a2adbded2a96" x="493" y="78" width="59" height="21"/>
+				<reportElement uuid="68903c79-5f4a-4aa0-9201-a2adbded2a96" x="505" y="78" width="59" height="21"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>

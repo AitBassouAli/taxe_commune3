@@ -151,7 +151,7 @@ public class RedevableController implements Serializable {
                 selected.setPrenom("");
             }
             persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
-            items=null;
+            items = null;
         }
     }
 
@@ -190,21 +190,24 @@ public class RedevableController implements Serializable {
                 switch (persistAction) {
                     case CREATE:
                         if (getFacade().findByCinOrRc(selected).isEmpty()) {
+                            Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                             getFacade().edit(selected);
-                            journalFacade.journalUpdate("Redevable", 1, null, selected);
+                            journalFacade.journalUpdate("Redevable", 1, newOldCreate[1], newOldCreate[0]);
                             JsfUtil.addSuccessMessage("Redevable bien crée");
                         } else {
                             JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
                         }
                         break;
                     case UPDATE:
+                        Object[] newOldUpdate = ejbFacade.compare(selected, oldvalue, 2);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Redevable", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("Redevable", 2, newOldUpdate[1], newOldUpdate[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
+                        Object[] newOldDelete = ejbFacade.compare(selected, oldvalue, 3);
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Redevable", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("Redevable", 3, newOldDelete[1], newOldDelete[0]);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

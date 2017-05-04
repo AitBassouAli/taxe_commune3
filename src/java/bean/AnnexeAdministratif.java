@@ -113,7 +113,7 @@ public class AnnexeAdministratif implements Serializable {
 
     @Override
     public String toString() {
-        return nom;
+        return nom+"-"+abreviation;
     }
     
 }

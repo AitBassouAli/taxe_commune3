@@ -25,7 +25,7 @@ public class RueFacade extends AbstractFacade<Rue> {
     
     
     public void updateQuartier(Quartier quartier) {
-        String rqt = "UPDATE Rue r set r.quartier = " + null + " WHERE r.quartier =" + quartier.getId();
+        String rqt = "UPDATE Rue r set r.quartier = " + null + " WHERE r.quartier.id =" + quartier.getId();
         System.out.println(rqt);
         em.createQuery(rqt).executeUpdate();
     }

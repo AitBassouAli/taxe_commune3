@@ -421,6 +421,49 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         }
     }
 
+    public Object[] compare(TaxeTrim nouveau, TaxeTrim auncienne, int type) {
+        String newVal = "";
+        String oldVal = "";
+        switch (type) {
+            case 1:
+                newVal = "" + nouveau.getNumeroTrim() + "-" + nouveau.getTaxeAnnuel().getAnnee() + "-" + nouveau.getLocale().getNom() + "-" + nouveau.getMontantTotal();
+                break;
+            case 2:
+                if (nouveau.getNumeroTrim() != auncienne.getNumeroTrim()) {
+                    oldVal += "N° => " + auncienne.getNumeroTrim();
+                    newVal += "N° => " + nouveau.getNumeroTrim();
+                }
+
+                if (!Objects.equals(nouveau.getTaxeAnnuel().getId(), auncienne.getTaxeAnnuel().getId())) {
+                    TaxeAnnuel newAnnee = taxeAnnuelFacade.find(nouveau.getTaxeAnnuel().getId());
+                    TaxeAnnuel oldAnnee = taxeAnnuelFacade.find(auncienne.getTaxeAnnuel().getId());
+                    oldVal += " , Annee => : " + newAnnee.getAnnee();
+                    newVal += " , Annee => : " + oldAnnee.getAnnee();
+                }
+                if (!Objects.equals(nouveau.getLocale().getId(), auncienne.getLocale().getId())) {
+                    Locale newloc = localeFacade.find(nouveau.getLocale().getId());
+                    Locale oldLoc = localeFacade.find(auncienne.getLocale().getId());
+                    oldVal += " , Locale => : " + newloc.getNom();
+                    newVal += " , Locale => : " + oldLoc.getNom();
+                }
+
+                if (nouveau.getNombreNuit() != auncienne.getNombreNuit()) {
+                    oldVal += "NbrNuits => " + auncienne.getNombreNuit();
+                    newVal += "NbrNuits => " + nouveau.getNombreNuit();
+                }
+                if (!Objects.equals(nouveau.getMontantTotal(), auncienne.getMontantTotal())) {
+                    oldVal += "MontantTotal => " + auncienne.getMontantTotal();
+                    newVal += "MontantTotal => " + nouveau.getMontantTotal();
+                }
+                break;
+            case 3:
+                oldVal = "" + auncienne.getNumeroTrim() + "-" + auncienne.getTaxeAnnuel().getAnnee() + "-" + auncienne.getLocale().getNom() + "-" + auncienne.getMontantTotal();
+                ;
+                break;
+        }
+        return new Object[]{newVal, oldVal};
+    }
+
     public void clone(TaxeTrim taxeTrimSource, TaxeTrim taxeTrimDestaination) {
         taxeTrimDestaination.setId(taxeTrimSource.getId());
         taxeTrimDestaination.setAutresMoisRetard(taxeTrimSource.getAutresMoisRetard());

@@ -25,108 +25,102 @@
             });
             });
         </script>
+
         <ui:define name="body">
             <h:form id="RedevableListForm">
-                <b:panel title="Rechercher des redevable par différents critères" class="panel-success" style="background-color:#d0e9c6 " >
-                    <div class="col-lg-1" />
-                    <div align="center" class="col-lg-9">
-                        <p:panelGrid columns="12">
-                            <p:outputLabel value="Rc:" for="rc" />
-                        <p:inputText id="rc" value="#{redevableController.selected.rc}" title="Rc" />
-                        <p:outputLabel value="Cin:" for="cin" />
-                        <p:inputText id="cin" value="#{redevableController.selected.cin}" title="Cin" />
-                        <p:outputLabel value="Pattente:" for="pattente" />
-                        <p:inputText id="pattente" value="#{redevableController.selected.pattente}" title="Pattente" />
-                        <p:outputLabel value="Nom:" for="nom" />
-                        <p:inputText id="nom" value="#{redevableController.selected.nom}" title="Nom" />
-                        <p:outputLabel value="Nature:" for="nature" />
+                <b:panel title="Rechercher des redevable par différents critères" class="panel-primary"  >
+                    <b:panelGrid columns="6">
+                        <p:outputLabel value="Rc:"  />
+                        <b:inputText id="rc" value="#{redevableController.selected.rc}"  />
+                        <p:outputLabel value="Cin:"  />
+                        <b:inputText id="cin" value="#{redevableController.selected.cin}"  />
+                        <p:outputLabel value="Pattente:"  />
+                        <b:inputText id="pattente" value="#{redevableController.selected.pattente}"  />
+                        <p:outputLabel value="Nom:"  />
+                        <b:inputText id="nom" value="#{redevableController.selected.nom}"  />
+                        <p:outputLabel value="Nature:"  />
                         <p:selectOneMenu id="nature" value="#{redevableController.selected.nature}">
                             <f:selectItem itemValue="0" itemLabel="--SELECT--"/>
                             <f:selectItem itemValue="1" itemLabel="gerant"/>
                             <f:selectItem itemValue="2" itemLabel="proprietaire"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Email" for="email" />
-                        <p:inputText id="email" value="#{redevableController.selected.email}" title="Email" />
-                        </p:panelGrid>
-                        <div align="center" class="col-sm-5" style="margin-left: 35%;font-size: 10pt" >
-                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{redevableController.findByRCorCIN()}" update="datalist"></b:commandButton>
-                        </div>
+                        <p:outputLabel value="Email"  />
+                        <b:inputText id="email" value="#{redevableController.selected.email}"  />
+                    </b:panelGrid>
+                    <div align="center"  >
+                        <b:commandButton value="Rechecher" style="color:lightseagreen" icon="glyphicon glyphicon-search"  actionListener="#{redevableController.findByRCorCIN()}" update="datalist"></b:commandButton>
                     </div>
-                    <div class="col-lg-2"/>
-                 </b:panel>
-                
-                <div class="table-responsive">
-                    <b:dataTable id="datalist" value="#{redevableController.items}" var="item"
-                                 selectionMode="single" 
-                                 style="font-weight: 600 !important"
-                                 >
+                </b:panel>
 
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_rc}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.rc==''?'----------------':item.rc}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_cin}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.cin==''?'----------------':item.cin}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_nom}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nom}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_prenom}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.prenom}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_adresse}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.adresse}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_email}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.email}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_fax}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.fax}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRedevableTitle_pattente}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.pattente}"/>
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">
-                                <h:outputText value="Action"/>
-                            </f:facet>
-                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableViewForm" oncomplete="PF('RedevableViewDialog').show()" style="background:#337ab7" />
-                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableEditForm" oncomplete="PF('RedevableEditDialog').show()" style="background:#f0ad4e" />
-                            <p:growl id="message" showDetail="true" />
-                        </b:dataTableColumn>
-                        <f:facet name="footer">
-                            <div class=" col-lg-3" />
-                            <div class="col-lg-6 center-block">
-                                <b:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{redevableController.prepareCreate}" update=":LocaleCreateForm" oncomplete="PF('LocaleCreateDialog').show()"
-                                                 style="font-size: 10pt !important ;color: white !important" class="form-control btn btn-primary"  />
-                            </div>
-                            <div class=" col-lg-3"/>
+                <b:panel title="redevable" class="panel-primary"  >
+
+                <div align="center">
+                    <b:commandButton  id="createButton" style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{redevableController.prepareCreate}" update=":RedevableCreateForm" oncomplete="PF('RedevableCreateDialog').show()"/>
+                </div >
+                <b:dataTable id="datalist" value="#{redevableController.items}" var="item"
+                             selectionMode="single" 
+                             style="font-weight: 600 !important"
+                             >
+
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_rc}"/>
                         </f:facet>
-                    </b:dataTable>
-                </div>
+                        <h:outputText value="#{item.rc==''?'----------------':item.rc}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_cin}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cin==''?'----------------':item.cin}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_nom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_prenom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_adresse}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.adresse}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_email}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_fax}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fax}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListRedevableTitle_pattente}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.pattente}"/>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  style="color: lightsteelblue" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableViewForm" oncomplete="PF('RedevableViewDialog').show()" />
+                        <b:commandButton id="editButton"  value="" tooltip="Modifier"  icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableEditForm" oncomplete="PF('RedevableEditDialog').show()"  />
+                        <p:growl id="message" showDetail="true" />
+                    </b:dataTableColumn>
+
+                </b:dataTable>
+                </b:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>
