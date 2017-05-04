@@ -14,11 +14,11 @@
             <h:outputText value="#{bundle.ListTaxeTrimTitle}"></h:outputText>
         </ui:define>
 
-        <ui:define name="body">
-            <h:form id="TaxeTrimListForm" >
+        <ui:define name="body" >
+            <h:form id="TaxeTrimListForm"  >
 
 
-                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel"   >
+                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel-primary" >
 
 
                     <b:panelGrid columns="6" >
@@ -87,12 +87,12 @@
 
 
                     <div align="center">
-                        <b:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{taxeTrimController.findByCreteria()}" update="datalist"></b:commandButton>
+                        <b:commandButton value="Rechecher"  icon="glyphicon glyphicon-search" actionListener="#{taxeTrimController.findByCreteria()}" update="datalist"></b:commandButton>
                     </div>
 
                 </b:panel>
                 <div align="center">
-                <b:commandButton class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
+                <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
                </div >
                 <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
                              selectionMode="single" 

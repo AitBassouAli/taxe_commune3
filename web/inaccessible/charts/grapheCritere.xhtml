@@ -11,11 +11,10 @@
     </h:head>
     <ui:composition template="../template.xhtml">
         <ui:define name="body">
-                <h:form id="form">
-                    <div class="col-lg-2"/>
-                    <div class="col-lg-8">
-                    <p:fieldset class="center-block" >
-                    <p:panelGrid columns="8" >
+            <h:form id="form">
+                <b:panel title=" Cretéres de recherch pour les graph " class="panel-primary" >
+
+                    <b:panelGrid columns="6" >
                         <p:outputLabel value="secteur" />
                         <p:selectOneMenu id="secteur"  value="#{taxeTrimController.secteur}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
@@ -70,22 +69,20 @@
                             <f:selectItem itemValue="3" itemLabel="Circle"/>
                             <p:ajax update=":statistique" listener="#{taxeTrimController.createModel()}"></p:ajax>
                         </p:selectOneMenu>
-                    </p:panelGrid>
-                    </p:fieldset>
+                    </b:panelGrid>
+                    <div align="center">
+                        <p:commandButton update=":statistique" value="Search" icon="glyphicon glyphicon-search" style="color: lightskyblue"  actionListener="#{taxeTrimController.createModel()}"  ></p:commandButton>
                     </div>
-                    <div class="col-lg-4"/>
-                    <div class="col-lg-4 ">
-                        <p:commandButton update=":statistique" value="Rechecher" actionListener="#{taxeTrimController.createModel()}" class="form-control" ></p:commandButton>
-                    </div>
-                    <div class="col-lg-4"/>
-                </h:form>
-            <div class="col-lg-12" style="margin-top: 2%" >
+                </b:panel>
+            </h:form>
                 <h:form id="statistique" >
-                <p:chart type="bar" id="graphe" model="#{taxeTrimController.modele}"  rendered="#{taxeTrimController.typeGraphe==1}"/>
-                <p:chart type="donut" id="donut" model="#{taxeTrimController.donutChartModel}"  rendered="#{taxeTrimController.typeGraphe==3}" />
-                <p:chart type="line" id="line" model="#{taxeTrimController.lineModel}"  rendered="#{taxeTrimController.typeGraphe==2}" />
+                    <b:panel title=" Results by charts " class="panel-primary" >
+
+                        <p:chart type="bar" id="graphe" model="#{taxeTrimController.modele}"  rendered="#{taxeTrimController.typeGraphe==1}"/>
+                        <p:chart type="donut" id="donut" model="#{taxeTrimController.donutChartModel}"  rendered="#{taxeTrimController.typeGraphe==3}" />
+                        <p:chart type="line" id="line" model="#{taxeTrimController.lineModel}"  rendered="#{taxeTrimController.typeGraphe==2}" />
+                        </b:panel>
                 </h:form>
-</div>
         </ui:define>
     </ui:composition>   
 

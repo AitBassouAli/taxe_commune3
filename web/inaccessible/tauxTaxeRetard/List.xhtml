@@ -16,7 +16,7 @@
 
         <ui:define name="body">
             <h:form id="TauxTaxeRetardListForm" style="padding-left: 15%;padding-right:15%; background-color: #eee6ff ;text-align: center">
-                <b:panel title="Rechercher des Taux par avec les intervale" class="panel"  >
+                <b:panel title="Rechercher des Taux par avec les intervale" class="panel-primary"  >
 
 
                     <b:panelGrid columns="4" >
@@ -35,9 +35,9 @@
                         <b:commandButton value="Rechecher" style="width: 200px;color:darkblue;background-color:lightsteelblue" icon="glyphicon glyphicon-search" actionListener="#{tauxTaxeRetardController.searchby()}" update="datalist"></b:commandButton>
                     </div>
                 </b:panel>
-                <p:panel header="#{bundle.ListTauxTaxeRetardTitle}">
+                <b:panel title=" des Taux Taxe Retard" class="panel-primary">
                     <div align="center">
-                        <b:commandButton class="btn-default" style="width: 200px;background-color: darkgray" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
+                        <b:commandButton style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create"  actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
                     </div >
                     <b:dataTable id="datalist" value="#{tauxTaxeRetardController.items}" var="item"
                                  selectionMode="single" 
@@ -74,12 +74,9 @@
 
 
 
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tauxTaxeRetardController.prepareCreate}" update=":TauxTaxeRetardCreateForm" oncomplete="PF('TauxTaxeRetardCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TauxTaxeRetardViewForm" oncomplete="PF('TauxTaxeRetardViewDialog').show()" disabled="#{empty tauxTaxeRetardController.selected}"/>
-                        </f:facet>
+                        
                     </b:dataTable>
-                </p:panel>
+                </b:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

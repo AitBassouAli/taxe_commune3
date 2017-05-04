@@ -16,10 +16,8 @@
 
         <ui:define name="body">
             <h:form id="DeviceListForm">
-                <b:panel title="Rechercher des Devices par différents critères" class="panel-success" >
-                    <div class="col-lg-2" />
-                    <div align="center" class="col-lg-9">
-                        <p:panelGrid columns="7" >
+                <b:panel title="Rechercher des Devices par différents critères" class="panel-primary" >
+                        <b:panelGrid columns="4" >
                             <p:outputLabel value="Utilisateur" />
                             <p:selectOneMenu id="user" value="#{deviceController.user}" style="width: 150px" >
                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
@@ -39,14 +37,12 @@
                                 <f:selectItem itemLabel="Mobile" itemValue="mobile" />
                                 <f:selectItem itemLabel="Tablette" itemValue="tablette" />
                             </p:selectOneMenu>
-                        </p:panelGrid>
+                        </b:panelGrid>
                         <div align="center" class="col-sm-5" style="margin-left: 30%;font-size: 10pt" >
-                            <b:commandButton value="Rechecher" class="btn btn-success form-control"  actionListener="#{deviceController.search()}" update="datalist"></b:commandButton>
+                            <b:commandButton value="Search" icon="glyphicon glyphicon-search" style="color: lightskyblue"  actionListener="#{deviceController.search()}" update="datalist"></b:commandButton>
                         </div>
-                    </div>
-                    <div class="col-lg-2"/>
                 </b:panel>
-                <b:panel >
+                <b:panel title=" Devices " class="panel-primary" >
                     <b:dataTable id="datalist" value="#{deviceController.items}" var="item"
                                  selectionMode="single"  class="datatable"
 
@@ -93,7 +89,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{deviceController.destroy(item)}" update="DeviceListForm,:growl"  class="btn btn-danger center-block "  icon=" glyphicon glyphicon-trash">
+                            <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{deviceController.destroy(item)}" update="DeviceListForm,:growl"  style="color: lightcoral"  icon=" glyphicon glyphicon-trash">
                             </b:commandButton>
                         </b:dataTableColumn>
                     </b:dataTable>

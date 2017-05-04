@@ -4,7 +4,6 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
@@ -18,8 +17,8 @@
         </f:metadata>
         <ui:define name="body">
             <h:form id="TaxeAnnuelListForm" >
-               
-                <b:panel title="Rechercher des taxeAnnuelle par différents critères" class="panel"   >
+
+                <b:panel title="Rechercher des taxeAnnuelle par différents critères" class="panel-primary"   >
 
 
                     <b:panelGrid columns="6" >
@@ -38,10 +37,10 @@
                     </b:panelGrid>
                 </b:panel>
                 <div align="center">
-                    <b:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
-                    </div>
+                    <b:commandButton value="Rechecher" style="color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
+                </div>
 
-                <p:panel >
+                <b:panel title=" taxeAnnuelle " class="panel-primary"   >
                     <b:dataTable id="datalist" value="#{taxeAnnuelController.items}" var="item"
                                  selectionMode="single" 
                                  >
@@ -80,7 +79,7 @@
                         </b:dataTableColumn>
 
                     </b:dataTable>
-                </p:panel>
+                </b:panel>
             </h:form>
 
             <ui:include src="Create.xhtml"/>
