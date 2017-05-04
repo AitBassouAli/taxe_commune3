@@ -4,12 +4,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
         <ui:define name="body"> 
             <h:form id="TaxeTrimListForm">
-                <p:fieldset legend="Rechercher des taxeTrime par différents critères:">
+                <b:panel title="Rechercher des taxeTrime par différents critères" class="panel-success" >
+
 
                     <p:panelGrid columns="10" >
                         <p:outputLabel value="montantMin:" for="montantMin" />
@@ -23,7 +25,7 @@
 
                         <p:outputLabel value="Categorie:" for="categorie" />
                         <p:selectOneMenu id="categorie" value="#{taxeTrimController.categorie}" filter="true" >
-                            <f:selectItem itemValue="#{null}" itemLabel="----------SELECT---------"/>
+                            <f:selectItem itemValue="#{null}" itemLabel="------SELECT-----"/>
                             <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
 
                         </p:selectOneMenu>
@@ -76,85 +78,81 @@
                     <div align="center">
                         <p:commandButton value="Rechecher" style="color:darkblue" icon="ui-icon-search" actionListener="#{taxeTrimController.findByCreteria()}" update="datalist"></p:commandButton>
                     </div>
-                </p:fieldset>
+
+                </b:panel>
 
                 <p:panel header="#{bundle.ListTaxeTrimTitle}">
-                    <p:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
-                                 selectionMode="single" selection="#{taxeTrimController.selected}"
-                                 paginator="true"
-                                 rowKey="#{item.id}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
+                    <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
+                                 selectionMode="single"
+                                 class="datatable"
                                  >
-                        <p:column>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
                             </f:facet>
                             <h:outputText value="#{item.montantTotal}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montantRetard}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montant}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montant}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
                             </f:facet>
                             <h:outputText value="#{item.locale.reference}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
                             </f:facet>
                             <h:outputText value="#{item.redevable.nom}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
                             </f:facet>
                             <h:outputText value="#{item.datePaiement}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
                             </f:facet>
                             <h:outputText value="#{item.taxeAnnuel.annee}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="nbrMoisRetard"/>
                             </f:facet>
                             <h:outputText value="#{item.nbrMoisRetard}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
                             </f:facet>
                             <h:outputText value="#{item.nombreNuit}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreClients}"/>
                             </f:facet>
                             <h:outputText value="#{item.nombreClients}"/>
-                        </p:column>
-                        <p:column>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTaxeTrimTitle_user}"/>
                             </f:facet>
                             <h:outputText value="#{item.user.login}"/>
-                        </p:column>
-                    </p:dataTable>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <b:commandButton id="deleteButton" value="supprimer"  actionListener="#{taxeTrimController.destroy(item)}" update="TaxeTrimListForm,:growl"  class="btn btn-danger center-block" >
+                            </b:commandButton>
+
+                        </b:dataTableColumn>
+
+                    </b:dataTable>
                 </p:panel>
             </h:form>
         </ui:define>

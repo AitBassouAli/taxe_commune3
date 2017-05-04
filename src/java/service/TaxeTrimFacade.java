@@ -14,9 +14,12 @@ import bean.Rue;
 import bean.Secteur;
 import bean.TaxeAnnuel;
 import bean.TaxeTrim;
+import bean.User;
 import controler.util.DateUtil;
+import controler.util.FrenchNumberToWords;
 import controler.util.PdfUtil;
 import controler.util.SearchUtil;
+import controler.util.SessionUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +62,18 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     private TauxTaxeFacade tauxTaxeFacade;
     @EJB
     private TauxTaxeRetardFacade tauxTaxeRetardFacade;
+    @EJB
+    private LocaleFacade localeFacade;
+    @EJB
+    private UserFacade userFacade;
+
+    public List<TaxeTrim> findByTaxAnnuel(TaxeAnnuel t) {
+        if (t.getId() != null && t != null) {
+            return em.createQuery("SELECT taxe FROM TaxeTrim taxe WHERE taxe.taxeAnnuel.id=" + t.getId() + " order by taxe.numeroTrim").getResultList();
+
+        }
+        return null;
+    }
 
     //update taxeTrim   ali
     public TaxeTrim update(TaxeTrim taxeTrim) {
@@ -178,30 +193,32 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         }
     }
 
+    // jasper : imprimer une taxtrim selectionné
     public void printPdf(TaxeTrim t) throws JRException, IOException {
         List myList = new ArrayList();
         myList.add(t);
-        Quartier q = t.getLocale().getRue().getQuartier();
-        String nature;
-        if (t.getRedevable().getNature() == 1) {
-            nature = "Gerant";
+        User user = userFacade.find(SessionUtil.getConnectedUser().getLogin());
+
+        Rue r = t.getLocale().getRue();
+        String cinRc;
+        if (t.getLocale().getProprietaire().getCin().equals("")) {
+            cinRc = t.getRedevable().getRc();
         } else {
-            nature = "proprietaire";
-        }
-        String redevable;
-        if (!t.getRedevable().getCin().equals("")) {
-            redevable = t.getRedevable().getCin();
-        } else {
-            redevable = t.getRedevable().getRc();
+            cinRc = t.getRedevable().getCin();
         }
         Map<String, Object> params = new HashMap();
         params.put("nomLocale", t.getLocale().getNom());
-        params.put("adresse", t.getLocale().getRue() + " " + q + " " + q.getAnnexeAdministratif() + " " + q.getAnnexeAdministratif().getSecteur());
-        params.put("cinRc", redevable);
-        params.put("exploitant", nature);
+        params.put("adresse", r.getQuartier().getNom() + " " + r.getNom() + " " + t.getLocale().getComplementAdresse());
+        params.put("cin", cinRc);
+        params.put("exploitant", localeFacade.getPropGerant(t.getRedevable(), t.getLocale()));
         params.put("annee", t.getTaxeAnnuel().getAnnee());
         params.put("numTrim", t.getNumeroTrim());
         params.put("datePaiement", t.getDatePaiement());
+        params.put("somme", t.getMontantTotal());
+        params.put("user", user.getNom() + " " + user.getPrenom());
+        params.put("tel", t.getRedevable().getFax());
+        params.put("lettre", FrenchNumberToWords.convert(t.getMontantTotal()));
+        params.put("numDeclarat", t.getId());
         System.out.println(params);
         System.out.println(t);
         PdfUtil.generatePdf(myList, params, "recu" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");

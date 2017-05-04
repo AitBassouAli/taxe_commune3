@@ -13,7 +13,7 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{tauxTaxeController.selected != null}">
                         <p:outputLabel value="#{bundle.EditTauxTaxeLabel_categorie}" for="categorie" />
-                        <p:selectOneMenu id="categorie" value="#{tauxTaxeController.selected.categorie}" >
+                        <p:selectOneMenu id="categorie" value="#{tauxTaxeController.selected.categorie}" disabled="true" >
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
                             <f:selectItems value="#{categorieController.itemsAvailableSelectOne}"
                                            var="categorieItem"

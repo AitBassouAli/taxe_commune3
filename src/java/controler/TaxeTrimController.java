@@ -106,16 +106,18 @@ public class TaxeTrimController implements Serializable {
     private boolean editRedevableBtn;
 
     // jasper
-    public void generatPdf() throws JRException, IOException {
-        ejbFacade.printPdf(selected);
+    public void generatPdf(TaxeTrim taxeTrim) throws JRException, IOException {
+        ejbFacade.printPdf(taxeTrim);
         FacesContext.getCurrentInstance().responseComplete();
     }
 
     public void editRedevableBtnClicked() {
         editRedevableBtn = true;
+        selected.getRedevable().setNom("");
     }
 
-    public void prepareEdit() {
+    public void prepareEdit(TaxeTrim taxeTrim) {
+        selected=taxeTrim;
         editRedevableBtn = false;
         cin = "";
         rc = "";
@@ -363,11 +365,12 @@ public class TaxeTrimController implements Serializable {
         }
     }
 
-    public void destroy() {
+    public void destroy(TaxeTrim taxeTrim) {
+        selected=taxeTrim;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items.remove(taxeTrim);    // Invalidate list of items to trigger re-query.
         }
     }
 

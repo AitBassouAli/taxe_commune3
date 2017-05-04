@@ -14,7 +14,7 @@
                     <p:panelGrid columns="2" rendered="#{tauxTaxeRetardController.selected != null}">
                         
                         <p:outputLabel value="#{bundle.EditTauxTaxeRetardLabel_categorie}" for="categorie" />
-                        <p:selectOneMenu id="categorie" value="#{tauxTaxeRetardController.selected.categorie}" >
+                        <p:selectOneMenu id="categorie" value="#{tauxTaxeRetardController.selected.categorie}" disabled="true" >
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
                             <f:selectItems value="#{categorieController.itemsAvailableSelectOne}"
                                            var="categorieItem"

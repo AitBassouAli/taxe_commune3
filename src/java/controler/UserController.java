@@ -75,13 +75,13 @@ public class UserController implements Serializable {
     }
 
     public String genaratePasswrd() {
-        if (!selected.getLogin().equals("")) {
-            int res = ejbFacade.sendPW(selected.getLogin());
+        if (!selected.getEmail().equals("")) {
+            int res = ejbFacade.sendPW(selected.getEmail());
             if (res < 0) {
                 JsfUtil.addErrorMessage("there is a problem");
             } else {
                 JsfUtil.addSuccessMessage("loook your email");
-                return "/inaccessible/user/Home?faces-redirect=true";
+                return "/index?faces-redirect=true";
             }
         }
         return null;
@@ -239,7 +239,7 @@ public class UserController implements Serializable {
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("UserUpdated"));
-        items=null;
+        items = null;
 //        items.set(items.indexOf(oldUser), selected);
 //        oldUser = null;
     }

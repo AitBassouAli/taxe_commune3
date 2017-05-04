@@ -37,7 +37,7 @@
                                 <p:password id="password"  value="#{userController.selected.password}"  class="form-control" />                                           
                             </b:panelGrid>
                             <b:commandButton class="btn btn-primary  form-control" style="font-size: 11pt" icon="ui-icon-user" value="Sing in" action="#{userController.seConnecter()}"></b:commandButton><br></br><br></br>
-                            <p:commandLink  class="form-control"  value="Forgot password?" action="#{userController.genaratePasswrd()}" update=":growl"></p:commandLink><br></br>
+                            <p:commandLink  class="form-control"  value="Forgot password?" action="inaccessible/user/ForgotPassword?faces-redirect=true" update=":growl"></p:commandLink><br></br>
                         </h:form>
                     </p:panel>
                 </b:panel>
