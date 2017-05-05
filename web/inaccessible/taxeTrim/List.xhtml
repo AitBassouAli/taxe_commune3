@@ -13,7 +13,9 @@
         <ui:define name="title">
             <h:outputText value="#{bundle.ListTaxeTrimTitle}"></h:outputText>
         </ui:define>
-
+         <f:metadata>
+             <f:viewAction action="#{taxeTrimController.setItems(null)}"/>
+        </f:metadata>
         <ui:define name="body" >
             <h:form id="TaxeTrimListForm"  >
 
@@ -163,7 +165,7 @@
                         <b:commandButton id="viewButton" value=""  icon="glyphicon glyphicon-search"  actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimViewForm" oncomplete="PF('TaxeTrimViewDialog').show()" style="color: lightsteelblue" />
 
                         <b:commandButton id="editButton"   icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" value="" actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimEditForm" oncomplete="PF('TaxeTrimEditDialog').show()" />
-                        <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeTrimController.generatPdf2(item)}"   ajax="false"/>
+                        <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeTrimController.generatPdf(item)}" ajax="false"/>
                         <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeTrimController.destroy(item)}" update="TaxeTrimListForm,:growl" />
 
                     </b:dataTableColumn>
@@ -172,6 +174,7 @@
 
 
             </h:form>
+            
 
             <ui:include src="Create.xhtml"/>
             <ui:include src="View.xhtml"/>

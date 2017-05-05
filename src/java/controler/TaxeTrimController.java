@@ -106,15 +106,9 @@ public class TaxeTrimController implements Serializable {
     private boolean editRedevableBtn;
 
     // jasper
-    public void generatPdf() throws JRException, IOException {
-        ejbFacade.printPdf(selected);
+    public void generatPdf(TaxeTrim taxeTrim) throws JRException, IOException {
+        ejbFacade.printPdf(taxeTrim);
         FacesContext.getCurrentInstance().responseComplete();
-    }
-
-    //with Item in the view
-    public void generatPdf2(TaxeTrim taxeTrim) throws JRException, IOException {
-        selected = taxeTrim;
-        generatPdf();
     }
 
     public void editRedevableBtnClicked() {
@@ -262,7 +256,9 @@ public class TaxeTrimController implements Serializable {
         // redevable.setLocales(localeFacade.findByRedevableCin(cin));
         rc = "";
         redevable = findRedevable();
-        redevable.setLocales(localeFacade.findByRedevable(redevable));
+        if (redevable != null) {
+            redevable.setLocales(localeFacade.findByRedevable(redevable));
+        }
         rendred = false;
     }
 
@@ -271,7 +267,9 @@ public class TaxeTrimController implements Serializable {
         //redevable.setLocales(localeFacade.findByRedevableRc(rc));
         cin = "";
         redevable = findRedevable();
-        redevable.setLocales(localeFacade.findByRedevable(redevable));
+        if (redevable != null) {
+            redevable.setLocales(localeFacade.findByRedevable(redevable));
+        }
         rendred = false;
     }
 
@@ -282,10 +280,11 @@ public class TaxeTrimController implements Serializable {
             if (lst != null && !lst.isEmpty()) {
                 return lst.get(0);
             } else {
+                JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
                 return null;
             }
-
         } else {
+            JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
             return null;
         }
     }
@@ -353,12 +352,12 @@ public class TaxeTrimController implements Serializable {
             }
         }
         if (!JsfUtil.isValidationFailed()) {
-            items.add((TaxeTrim) res[1]);    // Invalidate list of items to trigger re-query.
+            items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
-        selected = ejbFacade.update(ejbFacade.clone(selected));
+        selected = ejbFacade.update(selected);
         if (selected != null) {
             TaxeTrim oldTaxeTrim = ejbFacade.find(selected.getId());
             persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimUpdated"));
@@ -387,6 +386,11 @@ public class TaxeTrimController implements Serializable {
         return items;
     }
 
+    public void setItems(List<TaxeTrim> items) {
+        this.items = items;
+    }
+
+    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -397,7 +401,7 @@ public class TaxeTrimController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 2);
+                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                         getFacade().edit(selected);
                         journalFacade.journalUpdate("TaxeTrim", 1, newOldCreate[1], newOldCreate[1]);
                         JsfUtil.addSuccessMessage("TaxeTrim bien crée");

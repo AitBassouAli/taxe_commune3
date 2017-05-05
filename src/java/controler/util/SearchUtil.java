@@ -33,9 +33,9 @@ public class SearchUtil {
 
     }
 
-    public static java.sql.Date convertUtilToSql(java.util.Date date) {
+    public static java.sql.Timestamp convertUtilToSql(java.util.Date date) {     //java.sql.Date type du retour
         if (date != null) {
-            return new java.sql.Date(date.getTime());
+            return new java.sql.Timestamp(date.getTime());
         } else {
             return null;
         }

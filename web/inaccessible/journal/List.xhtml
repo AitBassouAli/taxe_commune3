@@ -14,8 +14,8 @@
             <h:outputText value="#{bundle.ListJournalTitle}"></h:outputText>
         </ui:define>
 
-         <f:metadata>
-             <f:viewAction action="#{journalController.setItems(null)}"/>
+        <f:metadata>
+            <f:viewAction action="#{journalController.setItems(null)}"/>
         </f:metadata>
         <ui:define name="body">
             <h:form id="JournalListForm">
@@ -29,7 +29,7 @@
                             <f:selectItem itemLabel="Update" itemValue="2"/>
                             <f:selectItem itemLabel="Delete" itemValue="3"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="beanName:" for="beanName" />
+                        <p:outputLabel value="Nom Entité" for="beanName" />
                         <p:inputText id="beanName" value="#{journalController.beanName}"  />
                         <p:outputLabel value="DateMin:" for="dateMin" />
                         <p:calendar id="dateMin" pattern="MM/dd/yyyy" value="#{journalController.dateMin}"  showOn="button" />
@@ -42,63 +42,63 @@
                 </b:panel>
                 <b:panel title="journal" class="panel-primary" >
 
-                        <b:dataTable id="datalist" value="#{journalController.items}" var="item"
-                                     selectionMode="single" class="datatable"
+                    <b:dataTable id="datalist" value="#{journalController.items}" var="item"
+                                 selectionMode="single" class="datatable"
 
-                                     >
+                                 >
 
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="beanName"/>
-                                </f:facet>
-                                <h:outputText value="#{item.beanName}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_type}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.type}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_ancienValeur}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.ancienValeur}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_nouvelleValeur}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.nouvelleValeur}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_dateAction}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.dateAction}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                </h:outputText>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_user}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.user}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="#{bundle.ListJournalTitle_device}"/>
-                                </f:facet>
-                                <h:outputText value="#{item.device.deviceCategorie}"/>
-                            </b:dataTableColumn>
-                            <b:dataTableColumn>
-                                <f:facet name="header">
-                                    <h:outputText value="Action"/>
-                                </f:facet>
-                                <b:commandButton id="deleteButton" value="Rechecher"  style="color: lightcoral" actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"    icon=" glyphicon glyphicon-trash" />
-                            </b:dataTableColumn>
-                        </b:dataTable>
-                    </b:panel >
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="beanName"/>
+                            </f:facet>
+                            <h:outputText value="#{item.beanName}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_type}"/>
+                            </f:facet>
+                            <h:outputText value="#{journalController.typeOfJournal(item)}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_ancienValeur}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ancienValeur}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_nouvelleValeur}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nouvelleValeur}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_dateAction}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateAction}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_user}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.user}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJournalTitle_device}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.device.deviceCategorie}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <b:commandButton id="deleteButton" value="Supprimer"  style="color: lightcoral" actionListener="#{journalController.destroy(item)}" update="JournalListForm,:growl"    icon=" glyphicon glyphicon-trash" />
+                        </b:dataTableColumn>
+                    </b:dataTable>
+                </b:panel >
             </h:form>
         </ui:define>
     </ui:composition>

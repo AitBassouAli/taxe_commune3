@@ -1,8 +1,10 @@
 package controler;
 
 import bean.TaxeAnnuel;
+import bean.TaxeTrim;
 import controler.util.JsfUtil;
 import controler.util.JsfUtil.PersistAction;
+import java.io.IOException;
 import service.TaxeAnnuelFacade;
 
 import java.io.Serializable;
@@ -18,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import net.sf.jasperreports.engine.JRException;
 
 @Named("taxeAnnuelController")
 @SessionScoped
@@ -27,6 +30,8 @@ public class TaxeAnnuelController implements Serializable {
     private service.TaxeAnnuelFacade ejbFacade;
     @EJB
     private service.JournalFacade journalFacade;
+    @EJB
+    private service.TaxeTrimFacade taxeTrimFacade;
     private List<TaxeAnnuel> items = null;
     private TaxeAnnuel selected;
     private Double montantMin;
@@ -35,8 +40,28 @@ public class TaxeAnnuelController implements Serializable {
     private int nombreTaxetMax;
     private int annee;
     private String localeName;
+    private TaxeAnnuel taxeAnnuel;
+    private List<TaxeTrim> taxeTrims;
 
     public TaxeAnnuelController() {
+    }
+
+    public void findTaxTrim(TaxeAnnuel t) {
+        taxeAnnuel.setTaxeTrims(taxeTrimFacade.findByTaxAnnuel(t));
+    }
+
+    public  void refresh(){
+        montantMax=0D;
+        montantMin=0D;
+        nombreTaxeMin=0;
+        nombreTaxetMax=0;
+        annee=0;
+        localeName="";
+    }
+    // jasper
+    public void generatPdf(TaxeAnnuel t) throws JRException, IOException {
+        ejbFacade.printPdf(t);
+        FacesContext.getCurrentInstance().responseComplete();
     }
 
     public void findByCreteria() {
@@ -160,24 +185,18 @@ public class TaxeAnnuelController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                TaxeAnnuel oldvalue = new TaxeAnnuel();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
+
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 1, null, selected);
                         JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 3, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }
@@ -251,6 +270,25 @@ public class TaxeAnnuelController implements Serializable {
             }
         }
 
+    }
+
+    public TaxeAnnuel getTaxeAnnuel() {
+        if (taxeAnnuel == null) {
+            taxeAnnuel = new TaxeAnnuel();
+        }
+        return taxeAnnuel;
+    }
+
+    public void setTaxeAnnuel(TaxeAnnuel taxeAnnuel) {
+        this.taxeAnnuel = taxeAnnuel;
+    }
+
+    public List<TaxeTrim> getTaxeTrims() {
+        return taxeTrims;
+    }
+
+    public void setTaxeTrims(List<TaxeTrim> taxeTrims) {
+        this.taxeTrims = taxeTrims;
     }
 
 }

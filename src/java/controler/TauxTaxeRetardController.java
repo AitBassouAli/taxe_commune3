@@ -114,7 +114,7 @@ public class TauxTaxeRetardController implements Serializable {
                     case CREATE:
                         if (ejbFacade.findByCategorie(selected.getCategorie()) == null) {
                             getFacade().edit(selected);
-                            journalFacade.journalUpdate("TauxTaxeRetard", 1, null, selected);
+                            journalFacade.journalUpdate("TauxTaxeRetard", 1, "", selected.toString());
                             JsfUtil.addSuccessMessage("TauxTaxeRetard bien crée");
                         } else {
                             JsfUtil.addErrorMessage("Taux deja existe");
@@ -123,12 +123,12 @@ public class TauxTaxeRetardController implements Serializable {
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TauxTaxeRetard", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("TauxTaxeRetard", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("TauxTaxeRetard", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("TauxTaxeRetard", 3, oldvalue.toString(), "");
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

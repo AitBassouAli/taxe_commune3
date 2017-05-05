@@ -88,7 +88,7 @@ public class TauxTaxeRetard implements Serializable {
 
     @Override
     public String toString() {
-        return "bean.TauxTaxeRetard[ id=" + id + " ]";
+        return "Premier Mois :"+tauxPremierRetard+" ,Autre Mois :"+tauxAutreRetard;
     }
     
 }

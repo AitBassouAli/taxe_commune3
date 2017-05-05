@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b9b7cdfb-bf37-4317-9c39-fd9a7d3ea411">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="53"/>
+	<parameter name="adresse" class="java.lang.String"/>
+	<parameter name="nomLocale" class="java.lang.String"/>
+	<parameter name="somme" class="java.lang.Double"/>
+	<parameter name="lettre" class="java.lang.String"/>
+	<parameter name="numDeclarat" class="java.lang.Long"/>
+	<parameter name="cin" class="java.lang.String"/>
+	<parameter name="exploitant" class="java.lang.String"/>
+	<parameter name="datSystem" class="java.util.Date"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="tel" class="java.lang.String"/>
+	<parameter name="annee" class="java.lang.Integer"/>
+	<field name="numeroTrim" class="java.lang.Integer"/>
+	<field name="montant" class="java.lang.Double"/>
+	<field name="montantTotal" class="java.lang.Double"/>
+	<field name="nombreNuit" class="java.lang.Integer"/>
+	<field name="nbrMoisRetard" class="java.lang.Integer"/>
+	<field name="nombreClients" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="169" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c0c3a2d3-baf0-4c81-b9ed-03c73bba7160" x="409" y="21" width="98" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A COMPTER PAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="17" y="41" width="186" height="107"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[COMMUNE URBAINE DE
+MARRAKECH
+SECRETARIAT GENERAL
+DIVISION DE DEVELOPPEMENT
+DES RESSOURCES FINANCIERES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="23" y="10" width="174" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ROYAUME DU MAROC]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="bf7be476-a43c-42b4-bdc5-0173cf6ed406" x="361" y="30" width="48" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="4a9e97e6-23e0-4af2-8da1-7add008dd27c" x="361" y="41" width="191" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Service communal de sejour]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="d68cb0ee-d588-40be-a74a-fa7dd48962d6" x="505" y="30" width="48" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="49b7df7d-08fb-4546-a7e1-44d8a5ea5405" x="370" y="78" width="135" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ N° de la déclaration :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="68903c79-5f4a-4aa0-9201-a2adbded2a96" x="505" y="78" width="59" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numDeclarat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7c17ad84-67db-4fae-8f99-c9537e3e44e0" x="373" y="99" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Signature :]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="bf7be476-a43c-42b4-bdc5-0173cf6ed406" x="361" y="31" width="1" height="106"/>
+			</line>
+			<line>
+				<reportElement uuid="bf7be476-a43c-42b4-bdc5-0173cf6ed406" x="362" y="137" width="191" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="bf7be476-a43c-42b4-bdc5-0173cf6ed406" x="553" y="31" width="1" height="106"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="347" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ab3d8c05-0ca1-459a-9d97-b11abbe55e37" x="215" y="19" width="131" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[TAXE DE SEJOUR
+DECLARATION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ab3d8c05-0ca1-459a-9d97-b11abbe55e37" x="148" y="60" width="285" height="65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DES MONTANTS REALISES AU COURS
+DE L'ANNEE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7075dc2a-b5c5-444a-bf8b-171219471b3b" x="41" y="236" width="74" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[-Exploitant]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e2a7d30d-7f8d-425f-97d3-2a726b1e14c1" x="215" y="196" width="301" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomLocale}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="289b7f7e-d368-4ebd-a5c0-6083298b0dcb" x="215" y="236" width="200" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{exploitant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b989bf6f-027f-455a-80d2-de400cc233da" x="40" y="196" width="145" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[- Nom ou Raison sociale :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d4b5d1ef-1812-42a2-8241-3c19b62eb8c3" x="215" y="296" width="182" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9e66b293-e4f1-4251-88c6-1611d03c5eae" x="41" y="266" width="74" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[-CIN ou RC :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0414763d-a66f-4132-ab39-f97c202c6946" x="41" y="296" width="145" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[- N ° Téléphone ou Fax :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7075dc2a-b5c5-444a-bf8b-171219471b3b" x="40" y="159" width="74" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[- Adresse :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="91d0fffb-23be-44da-a25e-66a307546d05" x="206" y="159" width="304" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{adresse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6fe7b5cc-bf93-471f-8f9d-11605877ad49" x="344" y="91" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{annee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e5ca4c69-a8b2-405d-8aeb-e493ff42e63f" x="215" y="266" width="210" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c26a75c7-ae3b-4d9c-9ebc-f53909ec604d" x="17" y="0" width="75" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[N° trimestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4f04474c-16f5-4ce8-b364-89d0dc32a9b9" x="92" y="0" width="105" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre des nuitées]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="828b20d1-c51f-4796-a086-05306fb34829" x="196" y="0" width="90" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre de client]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="828b20d1-c51f-4796-a086-05306fb34829" x="398" y="0" width="110" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Montant de la taxe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="828b20d1-c51f-4796-a086-05306fb34829" x="286" y="0" width="112" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre de mois retard]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a0a316c4-7801-4e20-af40-96d7cdecef59" x="398" y="0" width="110" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montantTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="32c4ea1a-31d6-45d4-b7d9-ae106096b5bc" x="92" y="0" width="105" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombreNuit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d46a0556-ce8e-4d3b-839b-32a39cd106ab" x="197" y="0" width="89" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombreClients}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f7d74c04-399f-4c42-916d-2632debe62d7" x="286" y="0" width="112" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nbrMoisRetard}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9b7fb36a-f7b5-4fc0-b0f7-a247fd5fcb27" x="17" y="0" width="75" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numeroTrim}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0414763d-a66f-4132-ab39-f97c202c6946" x="20" y="0" width="183" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Total Annuel des taxes versées :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="041970dd-b96a-4b1b-b751-e5ab1dede7a4" x="196" y="0" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{somme}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="286" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MAD]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="270" y="20" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[A Marrakech le :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7395ca10-202a-466b-8100-f8a6a222fd17" x="361" y="20" width="191" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{datSystem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3161b4db-6956-4f7f-ad57-32e3f3b5bd28" x="351" y="0" width="201" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{user}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="270" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Le déclarant :]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="5" splitType="Stretch"/>
+	</summary>
+</jasperReport>

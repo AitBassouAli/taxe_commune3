@@ -16,22 +16,18 @@
                                 <div class="col-lg-12" >
                                     <div class="col-lg-6" >
                                         <b:panelGrid columns="2" rendered="#{userController.selected != null}">
-                                            <p:outputLabel value="admin :" />
-                                            <p:selectBooleanCheckbox id="isAdmin" value="#{userController.selected.admine}" >
-                                                <p:ajax update="UserEditForm"/>
-                                            </p:selectBooleanCheckbox>
                                             <p:outputLabel value="Utilisateurs:" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateUser" value="#{userController.selected.createUser}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>
                                             <p:outputLabel value="Taxes :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateTaxes" value="#{userController.selected.createTaxes}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>
                                             <p:outputLabel value="Redevable :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateRedevable" value="#{userController.selected.createRedevable}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>
@@ -40,17 +36,17 @@
                                     <div class="col-lg-6" >
                                         <b:panelGrid columns="2" rendered="#{userController.selected != null}">
                                             <p:outputLabel value="Locales :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateLocale" value="#{userController.selected.createLocale}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>
                                             <p:outputLabel value="Taux :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateCtegorieTaux" value="#{userController.selected.createCtegorieTaux}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>
                                             <h:outputLabel value="Adressage :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:fieldset style="width: 80px">
                                                 <p:outputLabel value="Acceder:" />
                                                 <p:selectBooleanCheckbox id="CtegorieAdresse" value="#{userController.selected.createAdresse}" disabled="#{userController.selected.admine==true}"/>
                                             </p:fieldset>

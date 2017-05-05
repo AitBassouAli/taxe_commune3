@@ -179,7 +179,7 @@
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_description}" for="description" />
                                             <b:inputText id="description" value="#{localeController.selected.description}" title="#{bundle.CreateLocaleTitle_description}" />
                                         </b:panelGrid>
-                                        <b:commandButton id="save" actionListener="#{localeController.create}" value="#{bundle.Save}" update=":growl"  
+                                        <b:commandButton id="save" action="#{localeController.create}" value="#{bundle.Save}" update=":growl"  
                                                          disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id or empty localeController.selected.rue.id}"/>
                                     </p:fieldset>
                                 </h:form>

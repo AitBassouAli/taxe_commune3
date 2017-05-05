@@ -178,7 +178,7 @@ public class UserController implements Serializable {
         } else {
             SessionUtil.registerUser(selected);
             historiqueFacade.create(new Historique(new Date(), 1, ejbFacade.clone(selected), deviceFacade.curentDevice(selected, DeviceUtil.getDevice())));
-            return "/inaccessible/user/Home?faces-redirect=true";
+            return "/inaccessible/home/Home?faces-redirect=true";
         }
     }
 //    public String seConnecter() {
@@ -231,7 +231,14 @@ public class UserController implements Serializable {
         if (selected.isAdmine() == true) {
             adminCheaked();
         }
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
+        Object[] res = getFacade().addUser(selected);
+        if ((int) res[0] < 0) {
+            JsfUtil.addErrorMessage("problem !!!!");
+            System.out.println("problem !!!!" + (int) res[0]);
+        } else {
+            selected = (User) res[1];
+            persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
+        }
         if (!JsfUtil.isValidationFailed()) {
             items.add(ejbFacade.find(selected.getLogin()));    // Invalidate list of items to trigger re-query.
         }
@@ -270,7 +277,7 @@ public class UserController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        getFacade().addUser(selected);
+                        ejbFacade.edit(selected);
                         journalFacade.journalUpdate("User", 1, "", selected.toString());
                         JsfUtil.addSuccessMessage("User bien crée");
                         break;
