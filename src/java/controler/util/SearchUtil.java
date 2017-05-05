@@ -5,8 +5,6 @@ package controler.util;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import static controler.util.SearchUtil.decimalFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -22,6 +20,18 @@ import javafx.scene.control.ButtonType;
  * @author HP
  */
 public class SearchUtil {
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 
     public static Date convertStringToDate(String date) {
         try {
@@ -81,7 +91,7 @@ public class SearchUtil {
         }
 
     }
-   
+
     public static String MyconvertDateToString(Date date) throws ParseException {
         if (date != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
@@ -108,15 +118,17 @@ public class SearchUtil {
             return null;
         }
     }
-     public static Optional<ButtonType> alerter(Alert.AlertType type, String title, String header, String content) {
+
+    public static Optional<ButtonType> alerter(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         return alert.showAndWait();
     }
-     public static Double decimalFormat(Double number){
-         DecimalFormat format=new DecimalFormat("#.##");
-         return new Double(format.format(number));
-     } 
+
+    public static Double decimalFormat(Double number) {
+        DecimalFormat format = new DecimalFormat("#.##");
+        return new Double(format.format(number));
+    }
 }

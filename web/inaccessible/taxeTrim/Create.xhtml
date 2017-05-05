@@ -35,7 +35,7 @@
                         <p:outputLabel value="categorie" />
                         <h:outputText id="categorie"  value="#{taxeTrimController.selected.locale.categorie.nom}" />
 
-                        <p:outputLabel value="Numero de trimester" for="numeroTrim" />
+                        <p:outputLabel value="N° trimestre" for="numeroTrim" />
                         <p:selectOneMenu id="numeroTrim" value="#{taxeTrimController.selected.numeroTrim}" >
                             <f:selectItem itemLabel="1" itemValue="1"/>
                             <f:selectItem itemLabel="2" itemValue="2"/>
@@ -45,13 +45,14 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Annee" />
-                        <p:inputText id="annee" value="#{taxeTrimController.annee}" />
+                        <p:inputText id="annee" value="#{taxeTrimController.annee}" maxlength="4" required="true" requiredMessage="Veuillez remplir le champ 'Année'" >
+                        </p:inputText>
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_nombreNuit}" for="nombreNuit" />
-                        <p:inputText id="nombreNuit" value="#{taxeTrimController.selected.nombreNuit}" title="#{bundle.CreateTaxeTrimTitle_nombreNuit}" />
+                        <p:inputText id="nombreNuit" value="#{taxeTrimController.selected.nombreNuit}" title="#{bundle.CreateTaxeTrimTitle_nombreNuit}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de nuit'" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_nombreClients}" for="nombreClients" />
-                        <p:inputText id="nombreClients" value="#{taxeTrimController.selected.nombreClients}" title="#{bundle.CreateTaxeTrimTitle_nombreClients}" />
+                        <p:inputText id="nombreClients" value="#{taxeTrimController.selected.nombreClients}" title="#{bundle.CreateTaxeTrimTitle_nombreClients}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de client'" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_datePaiement}" for="datePaiement" />
                         <p:calendar id="datePaiement" disabled="true" pattern="dd/MM/yyyy HH:mm" value="#{taxeTrimController.selected.datePaiement}" title="#{bundle.EditTaxeTrimTitle_datePaiement}" />

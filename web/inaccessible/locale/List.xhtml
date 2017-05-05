@@ -81,7 +81,7 @@
                     <div align="center">
                         <b:commandButton value="Rechecher"  style="color:lightseagreen" icon="glyphicon glyphicon-search"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
 
-                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addItemsToMap()}"></b:commandButton>
+                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addLocalesMarkersToMap1()}" update=":growl"></b:commandButton>
                     </div>
 
                 </b:panel>
@@ -166,7 +166,7 @@
                             <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{localeController.preparUpdate(item)}" update=":LocaleViewForm" oncomplete="PF('LocaleViewDialog').show()" style="color:#337ab7" />
                             <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{localeController.preparUpdate(item)}" update=":LocaleEditForm,:redevableEditForm" oncomplete="PF('LocaleEditDialog').show()" style="color:#f0ad4e" />
                             <p:growl id="message" showDetail="true" />
-                            <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.addOneLocaleMarkersToMap(item)}"  style="color:#337ab7" />
+                            <b:commandButton id="mapButton"  value="" icon="glyphicon glyphicon-map-marker" tooltip="Maps"   action="#{localeController.addOneLocaleMarkersToMap(item)}" update=":growl" style="color:#337ab7" />
                         </b:dataTableColumn>
                         <f:facet name="footer"  >
 

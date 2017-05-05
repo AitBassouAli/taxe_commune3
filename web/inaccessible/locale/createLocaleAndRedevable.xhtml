@@ -24,7 +24,7 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" style="float: right" >
                                         <h:form id="ProprietaireCreateForm"  >
-                                            <p:fieldset legend="Information du Proprietaire" style="background-color:lightyellow" >
+                                            <p:fieldset legend="Informations du Proprietaire" style="background-color:lightyellow" >
                                                 <b:panelGrid columns="2" class="form-group-sm" >
                                                     <h:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
@@ -33,19 +33,25 @@
                                                         <p:ajax update="ProprietaireCreateForm" />
                                                     </p:selectOneMenu>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_rc}" for="rc" rendered="#{localeController.typeRedevable==2}" />
-                                                    <b:inputText id="rc" value="#{localeController.proprietaire .rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{localeController.typeRedevable==2}"/>
+                                                    <b:inputText id="rc" value="#{localeController.proprietaire .rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{localeController.typeRedevable==2}" required="true" requiredMessage="S'il vous plait replir le champ 'RC'"/>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_cin}" for="cin" rendered="#{localeController.typeRedevable==1}" />
-                                                    <b:inputText id="cin" value="#{localeController.proprietaire .cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{localeController.typeRedevable==1}"/>
+                                                    <b:inputText id="cin" value="#{localeController.proprietaire .cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{localeController.typeRedevable==1}" required="true" requiredMessage="S'il vous plait remplir le champ'CIN'"/>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_nom}" for="nom" />
-                                                    <b:inputText id="nom" value="#{localeController.proprietaire .nom}" title="#{bundle.CreateRedevableTitle_nom}" />
+                                                    <b:inputText id="nom" value="#{localeController.proprietaire .nom}" title="#{bundle.CreateRedevableTitle_nom}" requiredMessage="S'il vous plait remplir le champ 'nom'"
+                                                                 required="true"  validatorMessage="Format du 'nom' invalide" >
+                                                        <f:validateRegex
+                                                            pattern="[A-Za-z]*"/></b:inputText>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_prenom}" for="prenom" rendered="#{localeController.typeRedevable==1}" />
-                                                    <b:inputText id="prenom" value="#{localeController.proprietaire .prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{localeController.typeRedevable==1}" />
+                                                    <b:inputText id="prenom" value="#{localeController.proprietaire .prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{localeController.typeRedevable==1}" requiredMessage="S'il vous plait remplir le champ prenom"
+                                                                 required="true"  validatorMessage="Format du 'prenom' invalide" >
+                                                        <f:validateRegex
+                                                            pattern="[A-Za-z]*"/></b:inputText>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_adresse}" for="adresse" />
                                                     <b:inputText id="adresse" value="#{localeController.proprietaire .adresse}" title="#{bundle.CreateRedevableTitle_adresse}" />
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_email}" for="email" />
                                                     <b:inputText id="email" required="true" 
-                                                                 requiredMessage="Please enter your email address."
-                                                                 validatorMessage="Invalid email format"
+                                                                 requiredMessage="S'il vous plait entrez votre email."
+                                                                 validatorMessage="format d'email invalide"
                                                                  value="#{localeController.proprietaire .email}">
                                                         <f:validateRegex
                                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
@@ -67,7 +73,7 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" >
                                         <h:form id="GerantCreateForm">
-                                            <p:fieldset legend="Information du Gerant" style="background-color:lightyellow" >
+                                            <p:fieldset legend="Informations du Gerant" style="background-color:lightyellow" >
                                                 <b:panelGrid columns="2" class="form-group-sm" >
                                                     <h:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
@@ -76,19 +82,27 @@
                                                         <p:ajax update="GerantCreateForm" />
                                                     </p:selectOneMenu>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_rc}" for="rc" rendered="#{localeController.typeRedevable==2}" />
-                                                    <b:inputText id="rc" value="#{localeController.gerant .rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{localeController.typeRedevable==2}"/>
+                                                    <b:inputText id="rc" value="#{localeController.gerant .rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{localeController.typeRedevable==2}" required="true" requiredMessage="S'il vous plait remplir le champ 'RC'"/>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_cin}" for="cin" rendered="#{localeController.typeRedevable==1}" />
-                                                    <b:inputText id="cin" value="#{localeController.gerant .cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{localeController.typeRedevable==1}"/>
+                                                    <b:inputText id="cin" value="#{localeController.gerant .cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{localeController.typeRedevable==1}" required="true" requiredMessage="S'il vous plait remplir le champ 'CIN'"/>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_nom}" for="nom" />
-                                                    <b:inputText id="nom" value="#{localeController.gerant .nom}" title="#{bundle.CreateRedevableTitle_nom}" />
+                                                    <b:inputText id="nom" value="#{localeController.gerant .nom}" title="#{bundle.CreateRedevableTitle_nom}" requiredMessage="S'il vous plait remplir le champ 'nom'"
+                                                                 required="true"  validatorMessage="Format du 'nom' invalide" >
+                                                        <f:validateRegex
+                                                            pattern="[A-Za-z]+"/>
+                                                    </b:inputText>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_prenom}" for="prenom" rendered="#{localeController.typeRedevable==1}" />
-                                                    <b:inputText id="prenom" value="#{localeController.gerant .prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{localeController.typeRedevable==1}" />
+                                                    <b:inputText id="prenom" value="#{localeController.gerant .prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{localeController.typeRedevable==1}" requiredMessage="S'il vous plait remplir le champ 'prenom'"
+                                                                 validatorMessage="Format du 'prenom' invalide" >
+                                                        <f:validateRegex
+                                                            pattern="[A-Za-z]+"/>
+                                                    </b:inputText>
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_adresse}" for="adresse" />
                                                     <b:inputText id="adresse" value="#{localeController.gerant .adresse}" title="#{bundle.CreateRedevableTitle_adresse}" />
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_email}" for="email" />
                                                     <b:inputText id="email" required="true" 
-                                                                 requiredMessage="Please enter your email address."
-                                                                 validatorMessage="Invalid email format"
+                                                                 requiredMessage="S'il vous plait entrez votre email"
+                                                                 validatorMessage="Format d'email invalide"
                                                                  value="#{localeController.gerant .email}">
                                                         <f:validateRegex
                                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />

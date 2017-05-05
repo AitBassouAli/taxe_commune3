@@ -17,7 +17,7 @@
                                     <p:outputLabel value="#{bundle.CreateUserLabel_login}" for="login"  />
                                     <p:inputText id="login" value="#{userController.selected.login}" title="#{bundle.CreateUserTitle_login}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_password}" for="password" />
-                                    <p:inputText id="password" value="#{userController.selected.password}" title="#{bundle.CreateUserTitle_password}"  />
+                                    <p:inputText id="password" value="#{userController.selected.password}" title="#{bundle.CreateUserTitle_password}"/>
                                     <p:outputLabel value="#{bundle.CreateUserLabel_nom}" for="nom" />
                                     <p:inputText id="nom" value="#{userController.selected.nom}" title="#{bundle.CreateUserTitle_nom}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_prenom}" for="prenom" />
@@ -36,7 +36,7 @@
                                         <p:panelGrid columns="2" rendered="#{userController.selected != null}">
                                             <p:outputLabel value="admin :" />
                                             <p:selectBooleanCheckbox id="isAdmin" value="#{userController.selected.admine}" >
-                                                <p:ajax update="UserCreateForm"/>
+
                                             </p:selectBooleanCheckbox>
                                             <p:outputLabel value="Utilisateurs:" />
                                             <p:fieldset style="width: 70px">

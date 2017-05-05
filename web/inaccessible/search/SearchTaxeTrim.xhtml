@@ -22,13 +22,13 @@
 
 
                     <b:panelGrid columns="6" >
-                        <h:outputLabel value="montantMin:" for="montantMin" />
+                        <h:outputLabel value="Montant min:" for="montantMin" />
                         <b:inputText id="montantMin" value="#{taxeTrimController.montantMin}"  />
-                        <h:outputLabel value="montantMax:" for="montantMax" />
+                        <h:outputLabel value="Montant max:" for="montantMax" />
                         <b:inputText id="montantMax" value="#{taxeTrimController.montantMax}"  />
-                        <h:outputLabel value="nombreNuitMin:" for="nombreNuitMin" />
+                        <h:outputLabel value="Nombre nuit min:" for="nombreNuitMin" />
                         <b:inputText id="nombreNuitMin" value="#{taxeTrimController.nombreNuitMin}"  />
-                        <h:outputLabel value="nombreNuitMax:" for="nombreNuitMax" />
+                        <h:outputLabel value="Nombre nuit max:" for="nombreNuitMax" />
                         <b:inputText id="nombreNuitMax" value="#{taxeTrimController.nombreNuitMax}"  />
 
                         <h:outputLabel value="Categorie:" for="categorie" />
@@ -37,7 +37,7 @@
                             <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
 
                         </p:selectOneMenu>
-                        <h:outputLabel value="secteur" />
+                        <h:outputLabel value="Secteur" />
                         <p:selectOneMenu id="secteur"  value="#{taxeTrimController.secteur}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{secteurController.items}"
@@ -46,7 +46,7 @@
                             <p:ajax process="secteur" listener="#{taxeTrimController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="annexAdministratif" />
+                        <h:outputLabel value="Annexe administratif" />
                         <p:selectOneMenu id="annexAdministratif"  value="#{taxeTrimController.annexeAdministratif}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.secteur.annexeAdministratifs}"
@@ -55,7 +55,7 @@
                             <p:ajax process="annexAdministratif" listener="#{taxeTrimController.findQuartiers()}" update="quartier,rue" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="quartier" />
+                        <h:outputLabel value="Quartier" />
                         <p:selectOneMenu id="quartier"  value="#{taxeTrimController.quartier}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.annexeAdministratif.quartiers}"
@@ -78,9 +78,9 @@
                         <b:inputText id="proprietaire" value="#{taxeTrimController.redevableName}"  />                        
                         <h:outputLabel value="Locale Référence:" for="localeName" />
                         <b:inputText id="localeName" value="#{taxeTrimController.localeName}"  />
-                        <h:outputLabel value="DateMin:" for="dateMin" />
+                        <h:outputLabel value="Date Min:" for="dateMin" />
                         <p:calendar id="dateMin" pattern="MM/dd/yyyy" value="#{taxeTrimController.dateMin}"  showOn="button" />
-                        <h:outputLabel value="DateMin:" for="dateMax"  />
+                        <h:outputLabel value="Date Max:" for="dateMax"  />
                         <p:calendar id="dateMax" pattern="MM/dd/yyyy" value="#{taxeTrimController.dateMax}" showOn="button"/>
 
                     </b:panelGrid>
@@ -92,8 +92,8 @@
 
                 </b:panel>
                 <div align="center">
-                <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
-               </div >
+                    <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
+                </div >
                 <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
                              selectionMode="single" 
                              >
@@ -101,9 +101,9 @@
 
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
+                            <h:outputText value="N°"/>
                         </f:facet>
-                        <h:outputText value="#{item.montantTotal}"/>
+                        <h:outputText value="#{item.numeroTrim}"/>
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
@@ -117,23 +117,12 @@
                         </f:facet>
                         <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
                     </b:dataTableColumn>
+
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="Numero"/>
-                        </f:facet>
-                        <h:outputText value="#{item.numeroTrim}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
+                            <h:outputText value="Année"/>
                         </f:facet>
                         <h:outputText value="#{item.taxeAnnuel.annee}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.montantRetard}"/>
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
@@ -143,19 +132,25 @@
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
+                            <h:outputText value="montant retard"/>
                         </f:facet>
-                        <h:outputText value="#{item.datePaiement}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                        </h:outputText>
+                        <h:outputText value="#{item.montantRetard}"/>
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
+                            <h:outputText value="date paiement"/>
                         </f:facet>
-                        <h:outputText value="#{item.nombreNuit}"/>
+                        <h:outputText value="#{item.datePaiement}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
                     </b:dataTableColumn>
 
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="montant total"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantTotal}"/>
+                    </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
                             <h:outputText value="Action"/>

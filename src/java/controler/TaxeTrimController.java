@@ -332,7 +332,19 @@ public class TaxeTrimController implements Serializable {
         }
     }
 
+    public int eroors(TaxeTrim taxeTrim) {
+        if (annee < 1990 && annee > new Date().getYear()) {
+            JsfUtil.addErrorMessage("invalid format");
+            System.out.println("invalid format");
+
+            return 0;
+        }
+        return 1;
+    }
+
     public void create() throws JRException, IOException {
+        //int ers = eroors(selected);
+       // System.out.println("========  " + ers);
         Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, false);
         if ((int) res[0] == 1) {
             System.out.println("persiting...");
@@ -349,6 +361,7 @@ public class TaxeTrimController implements Serializable {
         if (!JsfUtil.isValidationFailed()) {
             items.add((TaxeTrim) res[1]);    // Invalidate list of items to trigger re-query.
         }
+
     }
 
     public void update() {
