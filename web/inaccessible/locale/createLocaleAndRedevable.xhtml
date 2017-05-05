@@ -15,6 +15,7 @@
         </ui:define>
 
         <ui:define name="body" >
+
             <b:tabView id="tabview"  >
                 <b:tab title="Creation du Redevable" id="tab" >
 
@@ -24,9 +25,10 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" style="float: right" >
                                         <h:form id="ProprietaireCreateForm"  >
-                                            <p:fieldset legend="Information du Proprietaire" style="background-color:lightyellow" >
+                                            <b:panel title=" Information du Proprietaire " class="panel-primary"  >
+
                                                 <b:panelGrid columns="2" class="form-group-sm" >
-                                                    <h:outputLabel value="Type d'entité" />
+                                                    <p:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
                                                         <f:selectItem itemValue="1" itemLabel="Personne Physique"/>
                                                         <f:selectItem itemValue="2" itemLabel="Personne morale"/>
@@ -55,8 +57,10 @@
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />
                                                     <b:inputText id="pattente" value="#{localeController.proprietaire .pattente}" title="#{bundle.CreateRedevableTitle_pattente}" />
                                                 </b:panelGrid>
-                                                <b:commandButton actionListener="#{localeController.createProprietaire()}" value="#{bundle.Save}" update=":growl" />
-                                            </p:fieldset>
+                                                <div align="center">
+                                                    <b:commandButton actionListener="#{localeController.createProprietaire()}" class="btn-primary" icon="glyphicon glyphicon-plus" value="#{bundle.Save}" update=":growl" />
+                                                </div>
+                                            </b:panel>
                                         </h:form>
                                     </div>
                                 </div>
@@ -67,7 +71,8 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" >
                                         <h:form id="GerantCreateForm">
-                                            <p:fieldset legend="Information du Gerant" style="background-color:lightyellow" >
+                                            <b:panel title=" Information du Gerant " class="panel-primary"  >
+
                                                 <b:panelGrid columns="2" class="form-group-sm" >
                                                     <h:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
@@ -98,8 +103,10 @@
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />
                                                     <b:inputText id="pattente" value="#{localeController.gerant .pattente}" title="#{bundle.CreateRedevableTitle_pattente}" />
                                                 </b:panelGrid>
-                                                <b:commandButton actionListener="#{localeController.createGerant()}" value="#{bundle.Save}" update=":growl" />
-                                            </p:fieldset>
+                                                <div align="center">
+                                                    <b:commandButton actionListener="#{localeController.createGerant()}" class="btn-primary" value="#{bundle.Save}" update=":growl" icon="glyphicon glyphicon-plus" />
+                                                </div>
+                                            </b:panel>
                                         </h:form>
                                     </div>
                                 </div>
@@ -112,82 +119,87 @@
                     <div Class="ui-grid ui-grid-responsive" style="margin-top: 2%">
                         <div Class="ui-grid-row">
                             <div Class="ui-grid-col-6 center-block">
-                                <h:form id="redevableCreateForm">
-                                    <p:fieldset style="background-color: lightyellow" >
-                                        <b:panelGrid columns="3" class="form-group-sm" rendered="#{localeController.selected != null}">
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" />
-                                            <b:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl" />
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
-                                            <b:inputText id="gerant" value="#{localeController.gerantCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl"/>
-                                        </b:panelGrid>
-                                    </p:fieldset>
-                                </h:form>
-                                <br/>
-                                <h:form id="LocaleCreateForm">
-                                    <p:fieldset style="background-color: lightyellow">
-                                        <b:panelGrid columns="2" rendered="#{localeController.selected != null}">
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire} " for="proprietaire" />
-                                            <h:outputText id="proprietaire" value="#{localeController.selected.proprietaire.nom}"/>
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
-                                            <h:outputText id="gerant" value="#{localeController.selected.gerant.nom}" />
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_categorie}" for="categorie" />
-                                            <p:selectOneMenu id="categorie" value="#{localeController.selected.categorie}"  class="form-control">
-                                                <f:selectItems value="#{categorieController.itemsAvailableSelectOne}"
-                                                               var="categorieItem"
-                                                               itemValue="#{categorieItem}"/>
-                                            </p:selectOneMenu>
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_activite}" for="activite" />
-                                            <b:inputText id="activite" value="#{localeController.selected.activite}" title="#{bundle.CreateLocaleTitle_activite}" />
-                                            <h:outputLabel value="Nom" for="nom" />
-                                            <b:inputText id="nom" value="#{localeController.selected.nom}"/>
-                                            <h:outputLabel value="secteur" />
-                                            <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true"  class="form-control" >
-                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                                <f:selectItems value="#{secteurController.items}"
-                                                               var="secteurItem" 
-                                                               itemValue="#{secteurItem}"/>
-                                                <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
-                                            </p:selectOneMenu>
-                                            <h:outputLabel value="annexAdministratif" />
-                                            <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true"  class="form-control">
-                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                                <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
-                                                               var="annexAdministratifItem" 
-                                                               itemValue="#{annexAdministratifItem}"/>
-                                                <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
-                                            </p:selectOneMenu>
-                                            <h:outputLabel value="quartier" />
-                                            <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true"  class="form-control" >
-                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                                <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
-                                                               var="quartierItem" 
-                                                               itemValue="#{quartierItem}"/>
-                                                <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue" />
-                                            </p:selectOneMenu>
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
-                                            <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" filter="true"  class="form-control" >
-                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                                <f:selectItems value="#{localeController.quartier.rues}"
-                                                               var="rueItem"
-                                                               itemValue="#{rueItem}"/>
-                                            </p:selectOneMenu>
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_complementAdresse}" for="complementAdresse" />
-                                            <b:inputText id="complementAdresse" value="#{localeController.selected.complementAdresse}" title="#{bundle.CreateLocaleTitle_complementAdresse}" />
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_description}" for="description" />
-                                            <b:inputText id="description" value="#{localeController.selected.description}" title="#{bundle.CreateLocaleTitle_description}" />
-                                        </b:panelGrid>
-                                        <b:commandButton id="save" actionListener="#{localeController.create}" value="#{bundle.Save}" update=":growl"  
-                                                         disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id or empty localeController.selected.rue.id}"/>
-                                    </p:fieldset>
-                                </h:form>
+                                <b:panel title=" Locale " class="panel-primary"  >
+
+                                    <h:form id="redevableCreateForm">
+
+                                        <p:fieldset style="background-color: lightyellow" >
+                                            <b:panelGrid columns="3" class="form-group-sm" rendered="#{localeController.selected != null}">
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" />
+                                                <b:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
+                                                <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl" />
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
+                                                <b:inputText id="gerant" value="#{localeController.gerantCinRc}" />
+                                                <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl"/>
+                                            </b:panelGrid>
+                                        </p:fieldset>
+                                    </h:form>
+                                    <br/>
+                                    <h:form id="LocaleCreateForm">
+                                        <p:fieldset style="background-color: lightyellow">
+                                            <b:panelGrid columns="2" rendered="#{localeController.selected != null}">
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire} " for="proprietaire" />
+                                                <h:outputText id="proprietaire" value="#{localeController.selected.proprietaire.nom}"/>
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
+                                                <h:outputText id="gerant" value="#{localeController.selected.gerant.nom}" />
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_categorie}" for="categorie" />
+                                                <p:selectOneMenu id="categorie" value="#{localeController.selected.categorie}"  class="form-control">
+                                                    <f:selectItems value="#{categorieController.itemsAvailableSelectOne}"
+                                                                   var="categorieItem"
+                                                                   itemValue="#{categorieItem}"/>
+                                                </p:selectOneMenu>
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_activite}" for="activite" />
+                                                <b:inputText id="activite" value="#{localeController.selected.activite}" title="#{bundle.CreateLocaleTitle_activite}" />
+                                                <h:outputLabel value="Nom" for="nom" />
+                                                <b:inputText id="nom" value="#{localeController.selected.nom}"/>
+                                                <h:outputLabel value="secteur" />
+                                                <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true"  class="form-control" >
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                    <f:selectItems value="#{secteurController.items}"
+                                                                   var="secteurItem" 
+                                                                   itemValue="#{secteurItem}"/>
+                                                    <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
+                                                </p:selectOneMenu>
+                                                <h:outputLabel value="annexAdministratif" />
+                                                <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true"  class="form-control">
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                    <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
+                                                                   var="annexAdministratifItem" 
+                                                                   itemValue="#{annexAdministratifItem}"/>
+                                                    <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
+                                                </p:selectOneMenu>
+                                                <h:outputLabel value="quartier" />
+                                                <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true"  class="form-control" >
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                    <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
+                                                                   var="quartierItem" 
+                                                                   itemValue="#{quartierItem}"/>
+                                                    <p:ajax process="quartier" listener="#{localeController.findRues()}" update="rue" />
+                                                </p:selectOneMenu>
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_rue}" for="rue" />
+                                                <p:selectOneMenu id="rue" value="#{localeController.selected.rue}" filter="true"  class="form-control" >
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                    <f:selectItems value="#{localeController.quartier.rues}"
+                                                                   var="rueItem"
+                                                                   itemValue="#{rueItem}"/>
+                                                </p:selectOneMenu>
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_complementAdresse}" for="complementAdresse" />
+                                                <b:inputText id="complementAdresse" value="#{localeController.selected.complementAdresse}" title="#{bundle.CreateLocaleTitle_complementAdresse}" />
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_description}" for="description" />
+                                                <b:inputText id="description" value="#{localeController.selected.description}" title="#{bundle.CreateLocaleTitle_description}" />
+                                            </b:panelGrid>
+                                            <b:commandButton id="save" actionListener="#{localeController.create}" value="#{bundle.Save}" update=":growl"  
+                                                             disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id or empty localeController.selected.rue.id}"/>
+                                        </p:fieldset>
+                                    </h:form>
+                                    </b:panel>
                             </div>
                         </div>
                     </div>
 
                 </b:tab>
             </b:tabView>
+
         </ui:define>
     </ui:composition>
 
