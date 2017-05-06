@@ -10,7 +10,7 @@
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListTaxeAnnuelTitle}"></h:outputText>
+            <h:outputText value="Taxes Annuels"></h:outputText>
         </ui:define>
         <f:metadata>
             <f:viewAction action="#{taxeAnnuelController.setItems(null)}"/>
@@ -36,7 +36,7 @@
                         <b:inputText id="a" value="#{taxeAnnuelController.annee}"  />
                     </b:panelGrid>
                 </b:panel>
-                <div align="center">
+                <div align="center" >
                     <b:commandButton value="Rechecher" style="color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
                 </div>
 

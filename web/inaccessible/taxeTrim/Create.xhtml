@@ -13,11 +13,11 @@
                     <p:panelGrid columns="2" rendered="#{taxeTrimController.selected != null}">
 
                         <p:outputLabel value="CIN"/>
-                        <p:inputText id="cin" value="#{taxeTrimController.cin}">
+                        <p:inputText id="cin" value="#{taxeTrimController.cin}"  placeholder="Entrer un Cin">
                             <p:commandButton actionListener="#{taxeTrimController.findRedevableByCin()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="RC"/>
-                        <p:inputText id="rc" value="#{taxeTrimController.rc}">
+                        <p:inputText id="rc" value="#{taxeTrimController.rc}"  placeholder="Entrer un Rc">
                             <p:commandButton actionListener="#{taxeTrimController.findRedevableByRc()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_locale}" for="locale" />
@@ -44,8 +44,8 @@
                             <p:ajax update="TaxeTrimCreateForm" listener="#{taxeTrimController.itemSelect()}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Annee" />
-                        <p:inputText id="annee" value="#{taxeTrimController.annee}" />
+                        <p:outputLabel value="Annee *" />
+                        <p:inputText id="annee" maxlength="4"  placeholder="annee du trimestre..." value="#{taxeTrimController.annee}" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_nombreNuit}" for="nombreNuit" />
                         <p:inputText id="nombreNuit" value="#{taxeTrimController.selected.nombreNuit}" title="#{bundle.CreateTaxeTrimTitle_nombreNuit}" />
@@ -74,7 +74,7 @@
                         <h:outputText id="nbrMoisRetard"  value="#{taxeTrimController.selected.nbrMoisRetard}" rendered="#{taxeTrimController.rendred==true}" />
 
                     </p:panelGrid>
-                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}"  />
+                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm,:growl" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}"  />
                     <p:commandButton id="save" actionListener="#{taxeTrimController.create}" value="#{bundle.Save}" update="display,:TaxeTrimListForm:datalist,:growl" 
                                      disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}" oncomplete="handleSubmit(args,'TaxeTrimCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="TaxeTrimCreateDialog.hide()"/>

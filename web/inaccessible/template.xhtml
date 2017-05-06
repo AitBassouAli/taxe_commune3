@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link  src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>
     <link src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
-
+    <link rel="shortout icon" type="image/x-icon" href="#{resource['img/logo.png']}" />
 
     <h:head>
         <title><ui:insert name="title">Default Title</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>       
         <h:outputStylesheet library="css" name="css/bootstrap.css"/>       
+        <h:outputStylesheet library="css" name="materialize/css/materialize.css"/>       
         <h:outputScript library="js" name="jsfcrud.js"/>
     </h:head>
     <h:body>
@@ -36,14 +37,14 @@
             <p:layoutUnit position="north" size="65" >
                 <h:form id="menuForm">
 
-                    <b:navBar inverse="true" fixed="top" sticky="true"  brand-img="../user/logoapp.png" brand-img-style="width:35px;height:30px;margin-right:10px;margin-left:-30px" brand="HOME" brandHref="../user/Home.xhtml" class=" navbar navbar-fixed-top " style="background-color: darkblue"  >
+                    <b:navBar inverse="true" fixed="top" sticky="true"  brand-img="../user/logo.png" brand-img-style="width:35px;height:40px;margin-top:-10px;margin-right:60px;margin-left:-30px" brand="Menu" brandHref="../home/Home.xhtml" class=" navbar navbar-fixed-top " >
                         <b:navbarLinks>
-                            <b:navLink value="Adressage" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
-                            <b:dropMenu value="Locales/Redevables" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >
+                            <b:navLink value="Adressage" icon-awesome="fa-thumb-tack" icon-size="lg" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
+                            <b:dropMenu value="Locales/Redevables"  icon-awesome="fa-list"  icon-size="lg" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >
                                 <b:navLink value="Redevables" href="../redevable/List.xhtml"></b:navLink>
                                 <b:navLink value="Locales" href="../locale/List.xhtml"></b:navLink>
                             </b:dropMenu>
-                            <b:dropMenu value="Services de Paiement" iconAwesome="birthday-cake" rendered="#{userController.connectedUser.createCtegorieTaux==true or userController.connectedUser.createTaxes==true}">
+                            <b:dropMenu value="Services de Paiement"  icon-awesome="fa-money" icon-size="lg" rendered="#{userController.connectedUser.createCtegorieTaux==true or userController.connectedUser.createTaxes==true}">
                                 <b:dropMenu value="Taxe" rendered="#{userController.connectedUser.createTaxes==true}" >
                                     <b:navLink value="Taxes Trimistrielles" href="../taxeTrim/List.xhtml"></b:navLink>
                                     <b:navLink value="Taxes Anuelles" href="../taxeAnnuel/List.xhtml"></b:navLink>
@@ -54,14 +55,14 @@
                                 </b:dropMenu>
                                 <b:navLink value="Categories" href="../categorie/Category_Taux.xhtml" rendered="#{userController.connectedUser.createCtegorieTaux==true}"></b:navLink>
                             </b:dropMenu>
-                            <b:navLink value="Statistiques" href="../charts/grapheCritere.xhtml"></b:navLink>
-                            <b:dropMenu value="Configuration" rendered="#{userController.connectedUser.createUser==true}" >
-                                <b:navLink value="Utilisateures" href="../user/List.xhtml"></b:navLink>
-                                <b:navLink value="Histouriques" href="../historique/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
-                                <b:navLink value="Journal" href="../journal/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
-                                <b:navLink value="Device" href="../device/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
+                            <b:navLink value="Statistiques" href="../charts/grapheCritere.xhtml" icon-awesome="fa-bar-chart-o"  icon-size="lg"></b:navLink>
+                            <b:dropMenu value="Configuration" rendered="#{userController.connectedUser.createUser==true}" icon-awesome="cog" icon-spin="true" icon-size="lg" >
+                                <b:navLink value="Utilisateures" icon-awesome="fa-users" href="../user/List.xhtml"></b:navLink>
+                                <b:navLink value="Histouriques" icon-awesome="fa-history" href="../historique/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
+                                <b:navLink value="Journal" icon-awesome="fa-list-alt" href="../journal/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
+                                <b:navLink value="Device" icon-awesome="fa-desktop" href="../device/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
                             </b:dropMenu>
-                            <b:dropMenu value="Recherches" >
+                            <b:dropMenu value="Recherches" icon-awesome="fa-search" icon-size="lg" >
                                 <b:navLink value="Taxes " href="../search/SearchTaxeTrim.xhtml"></b:navLink>
                                 <b:navLink value="Txes/Locales" href="../search/locale_taxes.xhtml"></b:navLink>
                                 <b:navLink value="Annuel/Trimistre" href="../search/Annuel_Trim.xhtml"></b:navLink>
@@ -71,10 +72,9 @@
 
 
                         <!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
-                        <b:navbarLinks pull="right"><b:navLink value="    " href="#"/></b:navbarLinks>
                         <b:navbarLinks pull="right" styleClass="hidden-xs">
-                            <b:dropMenu value="#{userController.connectedUser.login}" iconAwesome="envelope">
-                                <b:navLink value="Profile" icon="glyphicon glyphicon-euro"  href="../user/Profil.xhtml"></b:navLink>
+                            <b:dropMenu value="#{userController.connectedUser.login}" iconAwesome="fa-user-secret" icon-size="2x" >
+                                <b:navLink value="Profile" iconAwesome="fa-reorder"   href="../user/Profil.xhtml"></b:navLink>
                                 <b:navCommandLink value="Deconnexion" icon="glyphicon glyphicon-off"  action="#{historiqueController.deconnection()}"></b:navCommandLink>
                             </b:dropMenu>
                         </b:navbarLinks>
