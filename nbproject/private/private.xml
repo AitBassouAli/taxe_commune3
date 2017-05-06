@@ -3,13 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
-        <group/>
-        <group/>
         <group>
             <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/locale_taxes.xhtml</file>
             <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/Annuel_Trim.xhtml</file>
             <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeAnnuel/List.xhtml</file>
         </group>
         <group/>
+        <group>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/home/Home.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/template.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/View.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/redevable/Create.xhtml</file>
+        </group>
+        <group>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/home/Home.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/template.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/View.xhtml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/redevable/Create.xhtml</file>
+        </group>
     </open-files>
 </project-private>
