@@ -106,6 +106,7 @@ public class TaxeTrimController implements Serializable {
     private boolean editRedevableBtn;
 
     // jasper
+    
     public void generatPdf(TaxeTrim taxeTrim) throws JRException, IOException {
         ejbFacade.printPdf(taxeTrim);
         FacesContext.getCurrentInstance().responseComplete();

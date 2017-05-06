@@ -42,6 +42,7 @@ public class TaxeAnnuelController implements Serializable {
     private String localeName;
     private TaxeAnnuel taxeAnnuel;
     private List<TaxeTrim> taxeTrims;
+    private TaxeTrim taxeTrim;
 
     public TaxeAnnuelController() {
     }
@@ -50,25 +51,35 @@ public class TaxeAnnuelController implements Serializable {
         taxeAnnuel.setTaxeTrims(taxeTrimFacade.findByTaxAnnuel(t));
     }
 
-    public  void refresh(){
-        montantMax=0D;
-        montantMin=0D;
-        nombreTaxeMin=0;
-        nombreTaxetMax=0;
-        annee=0;
-        localeName="";
+    public void refresh() {
+        montantMax = 0D;
+        montantMin = 0D;
+        nombreTaxeMin = 0;
+        nombreTaxetMax = 0;
+        annee = 0;
+        localeName = "";
     }
+
     // jasper
     public void generatPdf(TaxeAnnuel t) throws JRException, IOException {
         ejbFacade.printPdf(t);
         FacesContext.getCurrentInstance().responseComplete();
     }
 
+    public void generatPdf2(TaxeTrim taxe) throws JRException, IOException {
+        taxeTrimFacade.printPdf(taxe);
+        FacesContext.getCurrentInstance().responseComplete();
+    }
     public void findByCreteria() {
         //appelle 3la lmethode dyal recherch     
         items = ejbFacade.findTaxeAnnuelByCretere(montantMin, montantMax, nombreTaxeMin, nombreTaxetMax, localeName, annee);
     }
 
+     public void prepareView2(TaxeTrim taxe) {
+        taxeTrim = taxe;
+
+        
+    }
     public void prepareView(TaxeAnnuel taxeAnnuel) {
         selected = taxeAnnuel;
 
@@ -100,6 +111,17 @@ public class TaxeAnnuelController implements Serializable {
 
     public void setMontantMax(Double montantMax) {
         this.montantMax = montantMax;
+    }
+
+    public TaxeTrim getTaxeTrim() {
+        if (taxeTrim == null) {
+            taxeTrim = new TaxeTrim();
+        }
+        return taxeTrim;
+    }
+
+    public void setTaxeTrim(TaxeTrim taxeTrim) {
+        this.taxeTrim = taxeTrim;
     }
 
     public int getNombreTaxeMin() {

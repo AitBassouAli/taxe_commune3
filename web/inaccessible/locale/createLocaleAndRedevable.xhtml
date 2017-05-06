@@ -15,6 +15,7 @@
         </ui:define>
 
         <ui:define name="body" >
+
             <b:tabView id="tabview"  >
                 <b:tab title="Creation du Redevable" id="tab" >
 
@@ -24,9 +25,10 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" style="float: right" >
                                         <h:form id="ProprietaireCreateForm"  >
-                                            <p:fieldset legend="Information du Proprietaire" style="background-color:lightyellow" >
+                                            <b:panel title=" Information du Proprietaire " class="panel-primary"  >
+
                                                 <b:panelGrid columns="2" class="form-group-sm" >
-                                                    <h:outputLabel value="Type d'entité" />
+                                                    <p:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
                                                         <f:selectItem itemValue="1" itemLabel="Personne Physique"/>
                                                         <f:selectItem itemValue="2" itemLabel="Personne morale"/>
@@ -55,8 +57,10 @@
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />
                                                     <b:inputText id="pattente" value="#{localeController.proprietaire .pattente}" title="#{bundle.CreateRedevableTitle_pattente}" />
                                                 </b:panelGrid>
-                                                <b:commandButton actionListener="#{localeController.createProprietaire()}" value="#{bundle.Save}" update=":growl" />
-                                            </p:fieldset>
+                                                <div align="center">
+                                                    <b:commandButton actionListener="#{localeController.createProprietaire()}" class="btn-primary" icon="glyphicon glyphicon-plus" value="#{bundle.Save}" update=":growl" />
+                                                </div>
+                                            </b:panel>
                                         </h:form>
                                     </div>
                                 </div>
@@ -67,7 +71,8 @@
                                 <div Class="ui-grid-row" >
                                     <div Class="ui-grid-col-6 center-block" >
                                         <h:form id="GerantCreateForm">
-                                            <p:fieldset legend="Information du Gerant" style="background-color:lightyellow" >
+                                            <b:panel title=" Information du Gerant " class="panel-primary"  >
+
                                                 <b:panelGrid columns="2" class="form-group-sm" >
                                                     <h:outputLabel value="Type d'entité" />
                                                     <p:selectOneMenu id="typeEntite" value="#{localeController.typeRedevable}" >
@@ -98,8 +103,10 @@
                                                     <h:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />
                                                     <b:inputText id="pattente" value="#{localeController.gerant .pattente}" title="#{bundle.CreateRedevableTitle_pattente}" />
                                                 </b:panelGrid>
-                                                <b:commandButton actionListener="#{localeController.createGerant()}" value="#{bundle.Save}" update=":growl" />
-                                            </p:fieldset>
+                                                <div align="center">
+                                                    <b:commandButton actionListener="#{localeController.createGerant()}" class="btn-primary" value="#{bundle.Save}" update=":growl" icon="glyphicon glyphicon-plus" />
+                                                </div>
+                                            </b:panel>
                                         </h:form>
                                     </div>
                                 </div>
@@ -189,6 +196,7 @@
 
                 </b:tab>
             </b:tabView>
+
         </ui:define>
     </ui:composition>
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TaxeTrimViewDlg" widgetVar="TaxeTrimViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTaxeTrimTitle}">
+            <h:form id="TaxeTrimViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{taxeAnnuelController.taxeTrim != null}">
+
+                        <h:outputText value="Numero de trimister"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.numeroTrim}" />
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_redevable}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.redevable}" title="#{bundle.ViewTaxeTrimTitle_redevable}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_locale}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.locale}" title="#{bundle.ViewTaxeTrimTitle_locale}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantTotal}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.montantTotal}" title="#{bundle.ViewTaxeTrimTitle_montantTotal}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montant}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.montant}" title="#{bundle.ViewTaxeTrimTitle_montant}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantRetard}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.montantRetard}" title="#{bundle.ViewTaxeTrimTitle_montantRetard}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_datePaiement}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.datePaiement}" title="#{bundle.ViewTaxeTrimTitle_datePaiement}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_nombreNuit}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.nombreNuit}" title="#{bundle.ViewTaxeTrimTitle_nombreNuit}"/>
+
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_nombreClients}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.nombreClients}" title="#{bundle.ViewTaxeTrimTitle_nombreClients}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TaxeTrimViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

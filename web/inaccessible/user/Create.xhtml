@@ -13,66 +13,50 @@
                 <h:panelGroup id="display" >
                     <div class="col-lg-12">
                         <div class="col-lg-4" >
-                            <p:fieldset  legend="Info Utilisateur:" style=" background-color: #eee6ff ;margin-bottom: 20px" toggleable="false" toggleSpeed="500" >
-                                <p:panelGrid columns="2" rendered="#{userController.selected != null}"  style="height: 285px">
+                            <b:panel title=" Info Utilisateur: " class="panel-primary" style="height: 285px;background-color: #eee6ff" >
+
+                                <b:panelGrid columns="2" rendered="#{userController.selected != null}"  style="height: 285px">
                                     <p:outputLabel value="#{bundle.CreateUserLabel_login}" for="login"  />
-                                    <p:inputText id="login" value="#{userController.selected.login}" title="#{bundle.CreateUserTitle_login}" />
+                                    <b:inputText id="login" value="#{userController.selected.login}" title="#{bundle.CreateUserTitle_login}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_password}" for="password" />
                                     <p:password id="password" value="#{userController.selected.password}" title="#{bundle.CreateUserTitle_password}"  />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_nom}" for="nom" />
-                                    <p:inputText id="nom" value="#{userController.selected.nom}" title="#{bundle.CreateUserTitle_nom}" />
+                                    <b:inputText id="nom" value="#{userController.selected.nom}" title="#{bundle.CreateUserTitle_nom}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_prenom}" for="prenom" />
-                                    <p:inputText id="prenom" value="#{userController.selected.prenom}" title="#{bundle.CreateUserTitle_prenom}"  />
+                                    <b:inputText id="prenom" value="#{userController.selected.prenom}" title="#{bundle.CreateUserTitle_prenom}"  />
                                     <p:outputLabel value="Email:" for="email" />
-                                    <p:inputText id="email" value="#{userController.selected.email}" title="Email"  />
+                                    <b:inputText id="email" value="#{userController.selected.email}" title="Email"  />
                                     <p:outputLabel value="Tel:" for="tel" />
-                                    <p:inputText id="tel" value="#{userController.selected.tel}" title="Tel"  />                                 
-                                </p:panelGrid>
-                            </p:fieldset>
+                                    <b:inputText id="tel" value="#{userController.selected.tel}" title="Tel"  />                                 
+                                </b:panelGrid>
+                            </b:panel>
                         </div>
                         <div class="col-lg-7" >
-                            <p:fieldset  legend="Privileges:" style=" background-color: #eee6ff;margin-bottom:20px" toggleable="false" >
+                            <b:panel title=" Privileges: " class="panel-primary" style=" background-color: #eee6ff;margin-bottom:20px"   >
+
                                 <div class="col-lg-12" >
                                     <div class="col-lg-6" >
-                                        <p:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -30px">
+                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -30px">
                                             <p:outputLabel value="admin :" />
                                             <p:selectBooleanCheckbox id="isAdmin" value="#{userController.selected.admine}" >
                                                 <p:ajax update="UserCreateForm"/>
                                             </p:selectBooleanCheckbox>
                                             <p:outputLabel value="Utilisateurs:" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateUser" value="#{userController.selected.createUser}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
                                             <p:outputLabel value="Taxes :" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateTaxes" value="#{userController.selected.createTaxes}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
-                                            <p:outputLabel value="Redevable :" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder :" />
+                                            <p:outputLabel value="Redevable:" />
                                                 <p:selectBooleanCheckbox id="isCreateRedevable" value="#{userController.selected.createRedevable}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
-                                        </p:panelGrid>
+                                        </b:panelGrid>
                                     </div>
                                     <div class="col-lg-6" >
-                                        <p:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -50px" >
+                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -50px" >
                                             <p:outputLabel value="Locales :" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateLocale" value="#{userController.selected.createLocale}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
                                             <p:outputLabel value="Taux :" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder :" />
                                                 <p:selectBooleanCheckbox id="isCreateCtegorieTaux" value="#{userController.selected.createCtegorieTaux}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
-                                            <p:outputLabel value="Adressage :" />
-                                            <p:fieldset style="width: 70px">
-                                                <p:outputLabel value="Acceder:" />
+                                            <p:outputLabel value="Adressage:" />
                                                 <p:selectBooleanCheckbox id="CtegorieAdresse" value="#{userController.selected.createAdresse}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
 
                                             <p:outputLabel value="secteur" rendered="#{userController.selected.admine==true}" />
                                             <p:selectOneMenu id="secteur"  value="#{userController.secteur}" filter="true" rendered="#{userController.selected.admine==true}" >
@@ -91,16 +75,19 @@
                                                                itemValue="#{annexAdministratifItem}"/>
                                                 <p:ajax update="save" />
                                             </p:selectOneMenu>
-                                        </p:panelGrid>
+                                        </b:panelGrid>
                                     </div>
                                 </div>
-                            </p:fieldset>
+                            </b:panel>
+
                         </div>
                     </div>
-                    <b:growl id="gr" />
-                    <p:commandButton id="save" actionListener="#{userController.create}" value="#{bundle.Save}" update="display,:UserListForm:datalist,gr"
-                                     disabled="#{empty userController.selected.annexeAdministratif.id and userController.selected.admine}" oncomplete="handleSubmit(args,'UserCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="UserCreateDialog.hide()"/>
+                    <div align="center">
+                        <b:growl id="gr" />
+                        <p:commandButton id="save" actionListener="#{userController.create}" value="#{bundle.Save}" update="display,:UserListForm:datalist,gr"
+                                         disabled="#{empty userController.selected.annexeAdministratif.id and userController.selected.admine}" oncomplete="handleSubmit(args,'UserCreateDialog');"/>
+                        <p:commandButton value="#{bundle.Cancel}" onclick="UserCreateDialog.hide()"/>
+                    </div>
                 </h:panelGroup>
             </h:form>
         </p:dialog>
