@@ -20,18 +20,16 @@
             <h:form id="TaxeAnnuelListForm" >
 
                 <b:panel title="Rechercher des taxeAnnuelle par différents critères" class="panel-primary"   >
-
-
                     <b:panelGrid columns="6" >
-                        <h:outputLabel value="montantMin:" for="montantMin" />
+                        <h:outputLabel value="Montant min:" for="montantMin" />
                         <b:inputText id="montantMin" value="#{taxeAnnuelController.montantMin}"  />
-                        <h:outputLabel value="montantMax:" for="montantMax" />
+                        <h:outputLabel value="Montant max:" for="montantMax" />
                         <b:inputText id="montantMax" value="#{taxeAnnuelController.montantMax}"  />
                         <h:outputLabel value="Locale Référence:" for="localeName" />
                         <b:inputText id="localeName" value="#{taxeAnnuelController.localeName}"  />
-                        <h:outputLabel value="TrimPayeMin:" for="tMin" />
+                        <h:outputLabel value="Payé après:" for="tMin" />
                         <b:inputText id="tMin" value="#{taxeAnnuelController.nombreTaxeMin}"  />
-                        <h:outputLabel value="TrimPayeMax:" for="tMax" />
+                        <h:outputLabel value="Payé avant:" for="tMax" />
                         <b:inputText id="tMax" value="#{taxeAnnuelController.nombreTaxetMax}"  />
                         <h:outputLabel value="Annee:" for="a" />
                         <b:inputText id="a" value="#{taxeAnnuelController.annee}"  />

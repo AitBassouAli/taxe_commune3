@@ -36,6 +36,7 @@ import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import service.AnnexeAdministratifFacade;
+import service.CategorieFacade;
 import service.LocaleFacade;
 import service.QuartierFacade;
 import service.RedevableFacade;
@@ -67,6 +68,8 @@ public class TaxeTrimController implements Serializable {
     @EJB
     private UserFacade userFacade;
     @EJB
+    private CategorieFacade categorieFacade;
+    @EJB
     private service.JournalFacade journalFacade;
     private User connectedUser;
 
@@ -95,9 +98,11 @@ public class TaxeTrimController implements Serializable {
     private Categorie categorie;
     //recherche pour le graph de fatima
     private List<String> activities;
+    private List<Categorie> categories;
     private String activite;
-    private int firstYear;
-    private int secondYear;
+    private int firstYear=2016;
+    private int secondYear=2017;
+    private Categorie categorie1;
     private BarChartModel modele = null;
     private LineChartModel lineModel;
     private DonutChartModel donutChartModel;
@@ -163,7 +168,7 @@ public class TaxeTrimController implements Serializable {
 
     //apl au methode de recherches destaxTrm par criter pour construire un graphe
     public void createBarModel() {
-        taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
+        taxes = ejbFacade.findTaxByCritere(categorie1,activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
         modele = ejbFacade.initBarModel(taxes, firstYear, secondYear);
         modele.setTitle("Statistique");
         modele.setLegendPosition("ne");
@@ -177,7 +182,7 @@ public class TaxeTrimController implements Serializable {
 
     // bar de graphe
     public void createModel() {
-        taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
+        taxes = ejbFacade.findTaxByCritere(categorie1,activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
         switch (typeGraphe) {
             case 3:
                 donutChartModel = ejbFacade.initDonuModel(taxes, firstYear, secondYear);
@@ -256,7 +261,9 @@ public class TaxeTrimController implements Serializable {
         // redevable.setLocales(localeFacade.findByRedevableCin(cin));
         rc = "";
         redevable = findRedevable();
-        redevable.setLocales(localeFacade.findByRedevable(redevable));
+        if (redevable != null) {
+            redevable.setLocales(localeFacade.findByRedevable(redevable));
+        }
         rendred = false;
     }
 
@@ -265,7 +272,9 @@ public class TaxeTrimController implements Serializable {
         //redevable.setLocales(localeFacade.findByRedevableRc(rc));
         cin = "";
         redevable = findRedevable();
-        redevable.setLocales(localeFacade.findByRedevable(redevable));
+        if (redevable != null) {
+            redevable.setLocales(localeFacade.findByRedevable(redevable));
+        }
         rendred = false;
     }
 
@@ -276,10 +285,11 @@ public class TaxeTrimController implements Serializable {
             if (lst != null && !lst.isEmpty()) {
                 return lst.get(0);
             } else {
+                JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
                 return null;
             }
-
         } else {
+            JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
             return null;
         }
     }
@@ -342,9 +352,8 @@ public class TaxeTrimController implements Serializable {
         return 1;
     }
 
+
     public void create() throws JRException, IOException {
-        //int ers = eroors(selected);
-       // System.out.println("========  " + ers);
         Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, false);
         if ((int) res[0] == 1) {
             System.out.println("persiting...");
@@ -352,20 +361,26 @@ public class TaxeTrimController implements Serializable {
             selected.setRedevable(redevable);
             selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
+            JsfUtil.addSuccessMessage("Vous avez bien creé une taxe trimestrielle");
+
         } else {
             switch ((int) res[0]) {
                 case -1:
-                    JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
+                    JsfUtil.addErrorMessage("la trimester deja payée");
+                case -3:
+                    JsfUtil.addErrorMessage("la trimester n'est pas encore terminée");
+                case -4:
+                    JsfUtil.addErrorMessage("la trimester n'est pas encore terminée");
             }
         }
         if (!JsfUtil.isValidationFailed()) {
-            items.add((TaxeTrim) res[1]);    // Invalidate list of items to trigger re-query.
+            items = null;    // Invalidate list of items to trigger re-query.
         }
 
     }
 
     public void update() {
-        selected = ejbFacade.update(ejbFacade.clone(selected));
+        selected = ejbFacade.update(selected);
         if (selected != null) {
             TaxeTrim oldTaxeTrim = ejbFacade.find(selected.getId());
             persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimUpdated"));
@@ -394,6 +409,10 @@ public class TaxeTrimController implements Serializable {
         return items;
     }
 
+    public void setItems(List<TaxeTrim> items) {
+        this.items = items;
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -404,7 +423,7 @@ public class TaxeTrimController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 2);
+                        Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                         getFacade().edit(selected);
                         journalFacade.journalUpdate("TaxeTrim", 1, newOldCreate[1], newOldCreate[1]);
                         JsfUtil.addSuccessMessage("TaxeTrim bien crée");
@@ -808,5 +827,25 @@ public class TaxeTrimController implements Serializable {
     public void setEditRedevableBtn(boolean editRedevableBtn) {
         this.editRedevableBtn = editRedevableBtn;
     }
+
+    public Categorie getCategorie1() {
+        if(categorie1==null){
+            categorie1=new Categorie();
+        }
+        return categorie1;
+    }
+
+    public void setCategorie1(Categorie categorie1) {
+        this.categorie1 = categorie1;
+    }
+
+    public List<Categorie> getCategories() {
+        return categories=categorieFacade.findAll();
+    }
+
+    public void setCategories(List<Categorie> categories) {
+        this.categories = categories;
+    }
+    
 
 }

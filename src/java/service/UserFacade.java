@@ -58,20 +58,32 @@ public class UserFacade extends AbstractFacade<User> {
         return null;
     }
 
+    @Override
+    public List<User> findAll() {
+        AnnexeAdministratif annexeAdministratif = find(SessionUtil.getConnectedUser().getLogin()).getAnnexeAdministratif();
+        if (annexeAdministratif != null && annexeAdministratif.getId() != null) {
+            return em.createQuery("SELECT u FROM User u WHERE  u.annexeAdministratif.id=" + annexeAdministratif.getId()).getResultList();
+        }
+        return new ArrayList();
+    }
+
     public List<User> findByCreteria(User selected, Secteur secteur) {
+        AnnexeAdministratif annexeAdministratif = find(SessionUtil.getConnectedUser().getLogin()).getAnnexeAdministratif();
         String requette = "SELECT u FROM User u WHERE 1=1";
-        if (selected.getBlocked() > 0) {
+        if (selected.getBlocked() >= 0) {
             requette += SearchUtil.addConstraint("u", "blocked", "=", selected.getBlocked());
         }
         if (!selected.getNom().equals("")) {
             requette += SearchUtil.addConstraint("u", "nom", "=", selected.getNom());
         }
-         if (!selected.getEmail().equals("")) {
-            requette += SearchUtil.addConstraint("u", "email", "LIKE", "%"+selected.getEmail()+"%");
+        if (!selected.getEmail().equals("")) {
+            requette += SearchUtil.addConstraint("u", "email", "LIKE", "%" + selected.getEmail() + "%");
         }
         if (selected.getAnnexeAdministratif() == null) {
             if (secteur != null) {
                 requette += SearchUtil.addConstraint("u", "annexeAdministratif.secteur.id", "=", secteur.getId());
+            } else {
+                requette += " And u.annexeAdministratif.id=" + annexeAdministratif.getId();
             }
         } else {
             requette += SearchUtil.addConstraint("u", "annexeAdministratif.id", "=", selected.getAnnexeAdministratif().getId());
@@ -192,7 +204,7 @@ public class UserFacade extends AbstractFacade<User> {
     }
 
     public List<User> findByAnnexe(User connectedUser) {
-        AnnexeAdministratif annexeAdministratif=find(connectedUser.getLogin()).getAnnexeAdministratif();
+        AnnexeAdministratif annexeAdministratif = find(connectedUser.getLogin()).getAnnexeAdministratif();
         if (annexeAdministratif != null && annexeAdministratif.getId() != null) {
             return em.createQuery("SELECT u FROM User u WHERE  u.annexeAdministratif.id=" + annexeAdministratif.getId()).getResultList();
         }
@@ -212,21 +224,13 @@ public class UserFacade extends AbstractFacade<User> {
         return clone;
     }
 
-    @Override
-    public void create(User user) {
-        user.setAnnexeAdministratif(SessionUtil.getCurrentAnnexe());
-        super.create(user);
-        SessionUtil.getCurrentAnnexe().getUsers().add(user);
-
-    }
-
     public String findLogin(User user) {
         return (String) em.createQuery("SELECT u.login FROM User u WHERE u.login='" + user.getLogin() + "'").getSingleResult();
     }
 
     //-----------------------------------------------------------------------------------
     public Object[] addUser(User user) {
-
+        User connectedUser = find(SessionUtil.getConnectedUser().getLogin());
         if ("".equals(user.getLogin()) || user.getLogin() == null) {
             return new Object[]{-1, null};
         } else if ("".equals(user.getPassword()) || user.getPassword() == null) {
@@ -239,7 +243,12 @@ public class UserFacade extends AbstractFacade<User> {
             user.setNbrCnx(0);
             user.setBlocked(0);
             user.setPassword(HashageUtil.sha256(user.getPassword()));
-            create(user);
+            if (connectedUser.getAnnexeAdministratif() == null || connectedUser.getAnnexeAdministratif().getId() == null) {
+                return new Object[]{-4, null};
+            }
+            if (!user.isAdmine()) {
+                user.setAnnexeAdministratif(connectedUser.getAnnexeAdministratif());
+            }
             return new Object[]{1, user};
         }
 

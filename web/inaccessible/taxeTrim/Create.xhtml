@@ -14,11 +14,11 @@
 
                         <p:outputLabel value="CIN"/>
                         <p:inputText id="cin" value="#{taxeTrimController.cin}">
-                            <p:commandButton actionListener="#{taxeTrimController.findRedevableByCin()}" icon="ui-icon-search" update="TaxeTrimCreateForm"/>
+                            <p:commandButton actionListener="#{taxeTrimController.findRedevableByCin()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="RC"/>
                         <p:inputText id="rc" value="#{taxeTrimController.rc}">
-                            <p:commandButton actionListener="#{taxeTrimController.findRedevableByRc()}" icon="ui-icon-search" update="TaxeTrimCreateForm"/>
+                            <p:commandButton actionListener="#{taxeTrimController.findRedevableByRc()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_locale}" for="locale" />
                         <p:selectOneMenu id="locale" value="#{taxeTrimController.selected.locale}" >

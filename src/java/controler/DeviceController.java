@@ -100,24 +100,17 @@ public class DeviceController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                Device oldvalue = new Device();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Device", 1, null, selected);
                         JsfUtil.addSuccessMessage("Device bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Device", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Device", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

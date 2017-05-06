@@ -116,25 +116,18 @@ public class AnnexeAdministratifController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                AnnexeAdministratif oldvalue = new AnnexeAdministratif();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("AnnexeAdministratif", 1, null, selected);
                         JsfUtil.addSuccessMessage("AnnexeAdministratif bien crée");
                         break;
                     case UPDATE:
 
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("AnnexeAdministratif", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("AnnexeAdministratif", 3, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

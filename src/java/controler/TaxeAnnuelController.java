@@ -49,7 +49,15 @@ public class TaxeAnnuelController implements Serializable {
     public void findTaxTrim(TaxeAnnuel t) {
         taxeAnnuel.setTaxeTrims(taxeTrimFacade.findByTaxAnnuel(t));
     }
-    
+
+    public  void refresh(){
+        montantMax=0D;
+        montantMin=0D;
+        nombreTaxeMin=0;
+        nombreTaxetMax=0;
+        annee=0;
+        localeName="";
+    }
     // jasper
     public void generatPdf(TaxeAnnuel t) throws JRException, IOException {
         ejbFacade.printPdf(t);
@@ -177,24 +185,18 @@ public class TaxeAnnuelController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                TaxeAnnuel oldvalue = new TaxeAnnuel();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
+
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 1, null, selected);
                         JsfUtil.addSuccessMessage("TaxeAnnuel bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("TaxeAnnuel", 3, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

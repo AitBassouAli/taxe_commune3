@@ -13,7 +13,9 @@
         <ui:define name="title">
             <h:outputText value="#{bundle.ListTaxeTrimTitle}"></h:outputText>
         </ui:define>
-
+        <f:metadata>
+            <f:viewAction action="#{taxeTrimController.setItems(null)}"/>
+        </f:metadata>
         <ui:define name="body" >
             <h:form id="TaxeTrimListForm"  >
 
@@ -92,19 +94,19 @@
 
                 </b:panel>
                 <div align="center">
-                <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
-               </div >
+                    <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
+                </div >
                 <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
                              selectionMode="single" 
                              >
 
-
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
+                            <h:outputText value="N°"/>
                         </f:facet>
-                        <h:outputText value="#{item.montantTotal}"/>
+                        <h:outputText value="#{item.numeroTrim}"/>
                     </b:dataTableColumn>
+
                     <b:dataTableColumn>
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
@@ -117,25 +119,14 @@
                         </f:facet>
                         <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
                     </b:dataTableColumn>
+
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="Numero"/>
-                        </f:facet>
-                        <h:outputText value="#{item.numeroTrim}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
+                            <h:outputText value="Année"/>
                         </f:facet>
                         <h:outputText value="#{item.taxeAnnuel.annee}"/>
                     </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.montantRetard}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
+                     <b:dataTableColumn>
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListTaxeTrimTitle_montant}"/>
                         </f:facet>
@@ -143,19 +134,25 @@
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
+                            <h:outputText value="Nbr mois retard"/>
                         </f:facet>
-                        <h:outputText value="#{item.datePaiement}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                        </h:outputText>
+                        <h:outputText value="#{item.nbrMoisRetard}"/>
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
+                            <h:outputText value="Total"/>
                         </f:facet>
-                        <h:outputText value="#{item.nombreNuit}"/>
+                        <h:outputText value="#{item.montantTotal}"/>
                     </b:dataTableColumn>
-
+                   
+                    <b:dataTableColumn>
+                        <f:facet name="header">
+                            <h:outputText value="Date paiement"/>
+                        </f:facet>
+                        <h:outputText value="#{item.datePaiement}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">
                             <h:outputText value="Action"/>
@@ -172,7 +169,7 @@
 
 
             </h:form>
-            
+
 
             <ui:include src="Create.xhtml"/>
             <ui:include src="View.xhtml"/>

@@ -35,10 +35,10 @@ public class TauxTaxeController implements Serializable {
     public TauxTaxeController() {
     }
 
-    public void searchby()
-    {
-       items=ejbFacade.findByInter(premierMin, premierMax);
+    public void searchby() {
+        items = ejbFacade.findByInter(premierMin, premierMax);
     }
+
     public TauxTaxe getSelected() {
         if (selected == null) {
             selected = new TauxTaxe();
@@ -73,13 +73,13 @@ public class TauxTaxeController implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items .add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
+            items.add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TauxTaxeUpdated"));
-        items=null;
+        items = null;
     }
 
     public void destroy(TauxTaxe tauxTaxe) {
@@ -110,7 +110,7 @@ public class TauxTaxeController implements Serializable {
                     case CREATE:
                         if (ejbFacade.findByCategorie(selected.getCategorie()) == null) {
                             getFacade().edit(selected);
-                            journalFacade.journalUpdate("TauxTaxe", 1, null, selected);
+                            journalFacade.journalUpdate("TauxTaxe", 1, "", selected.toString());
                             JsfUtil.addSuccessMessage("TauxTaxe bien crée");
                         } else {
                             JsfUtil.addErrorMessage("Taux deja existe");
@@ -119,12 +119,12 @@ public class TauxTaxeController implements Serializable {
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TauxTaxe", 2, oldvalue, selected);
+                        journalFacade.journalUpdate("TauxTaxe", 2, oldvalue.toString(), selected.toString());
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("TauxTaxe", 3, oldvalue, selected);
+                        journalFacade.journalUpdate("TauxTaxe", 3, oldvalue.toString(), "");
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }
@@ -166,7 +166,6 @@ public class TauxTaxeController implements Serializable {
     public void setPremierMax(Double premierMax) {
         this.premierMax = premierMax;
     }
-    
 
     public List<TauxTaxe> getItemsAvailableSelectMany() {
         return getFacade().findAll();

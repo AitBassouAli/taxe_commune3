@@ -18,7 +18,6 @@ import service.LocaleFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,6 +88,17 @@ public class LocaleController implements Serializable {
     private Redevable proprietaire;
     private MapModel emptyModel;
 
+    public  void refresh(){
+        selected=null;
+        rue=null;
+        quartier=null;
+        annexeAdministratif=null;
+        secteur=null;
+        categorie=null;
+        locale=null;
+        proprietaireCinRc="";
+        gerantCinRc="";
+    }
     public String addLocalesMarkersToMap1() {
         items = ejbFacade.findByGerantOrProprietaire(categorie, redevableFacade.findByCinRc(proprietaireCinRc), selected.getActivite(), redevableFacade.findByCinRc(gerantCinRc), rue, quartier, annexeAdministratif, secteur, locale);
         MapModel localsModel = new DefaultMapModel();
@@ -110,6 +120,7 @@ public class LocaleController implements Serializable {
     }
 
     public String addOneLocaleMarkersToMap(Locale item) {
+        selected = item;
         MapModel localsModel = new DefaultMapModel();
         System.out.println(item.getId());
         if (item.getPositionLocale() != null) {
@@ -147,9 +158,10 @@ public class LocaleController implements Serializable {
     public void createGerant() {
         if (gerant != null) {
             if (redevableFacade.redevableHasRcOrCin(gerant).isEmpty()) {
+                Object[] newOldCreate = redevableFacade.compare(gerant, new Redevable(), 1);
                 gerant.setNature(1);
                 redevableFacade.edit(gerant);
-                journalFacade.journalUpdate("Redevable", 1, null, gerant);
+                journalFacade.journalUpdate("Redevable", 1, newOldCreate[1], newOldCreate[0]);
                 JsfUtil.addSuccessMessage("Gerant bien crée");
             } else {
                 JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
@@ -160,9 +172,10 @@ public class LocaleController implements Serializable {
     public void createProprietaire() {
         if (proprietaire != null) {
             if (redevableFacade.redevableHasRcOrCin(proprietaire).isEmpty()) {
+                Object[] newOldCreate = redevableFacade.compare(proprietaire, new Redevable(), 1);
                 gerant.setNature(2);
                 redevableFacade.edit(proprietaire);
-                journalFacade.journalUpdate("Redevable", 1, null, proprietaire);
+                journalFacade.journalUpdate("Redevable", 1, newOldCreate[1], newOldCreate[0]);
                 JsfUtil.addSuccessMessage("Proprietaire bien crée");
             } else {
                 JsfUtil.addErrorMessage("redevable existe deja dans la base !!");
@@ -383,13 +396,14 @@ public class LocaleController implements Serializable {
         return selected;
     }
 
-    public void create() {
-        //selected=ejbFacade.attachLocaleToPosition(ejbFacade.clone(selected),lat,lng);
+    public String create() {
         getFacade().generateReference(selected.getRue(), selected);
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("LocaleCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            itemsRecherche = null;
+            return "List?faces-redirect=true";// Invalidate list of items to trigger re-query.
         }
+        return null;
     }
 
     public void editGerant() {

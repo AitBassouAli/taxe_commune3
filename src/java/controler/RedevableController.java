@@ -7,6 +7,8 @@ import service.RedevableFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -87,7 +89,7 @@ public class RedevableController implements Serializable {
         return selected;
     }
 
-     public int showError() {
+    public int showError() {
 
         if (selected.getPrenom().equals("")) {
             JsfUtil.addErrorMessage("Inserer le prenom");
@@ -115,6 +117,7 @@ public class RedevableController implements Serializable {
         }
 
     }
+
     public void preparUpdate(Redevable redevable) {
         selected = ejbFacade.find(redevable.getId());
         oldRedevable = ejbFacade.find(redevable.getId());
@@ -169,6 +172,10 @@ public class RedevableController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
+    }
+
+    public void setItems(List<Redevable> items) {
+        this.items = items;
     }
 
     public int getTypeEntite() {

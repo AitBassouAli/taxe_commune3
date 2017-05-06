@@ -75,6 +75,11 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         return null;
     }
 
+    @Override
+    public List<TaxeTrim> findAll() {
+        return em.createQuery("SELECT taxe FROM TaxeTrim taxe ORDER BY taxe.datePaiement DESC ").getResultList();
+    }
+
     //update taxeTrim   ali
     public TaxeTrim update(TaxeTrim taxeTrim) {
         System.out.println("updating...");
@@ -83,45 +88,44 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
             if (!Objects.equals(loadedTaxe.getId(), taxeTrim.getId())) {
                 System.out.println("nulll  2");
                 return null;
-            } else {
-                System.out.println("switch ...");
-                int mois = DateUtil.calculerMois(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
-                taxeTrim = calculerRetard(taxeTrim, mois);
-                if (taxeTrim == null) {
-                    return null;//impossible de payer trimester nest pas encore terminee!!
-                }
-                System.out.println("setters ...");
-                taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
-                taxeTrim.setNbrMoisRetard(mois - 1);
-                TaxeTrim oldTaxeTrim = find(taxeTrim.getId());
-
-                taxeAnnuelFacade.create(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//si il n'existe une taxeAnnuel avec ce locale et l'annee il va le creer 
-                TaxeAnnuel taxeAnnuel = taxeAnnuelFacade.findByLocaleAndAnnee(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//100% taxeTrim existe dans la base de donnees
-                if (!Objects.equals(taxeAnnuel.getId(), oldTaxeTrim.getTaxeAnnuel().getId())) {
-                    if (taxeAnnuel.getNbrTrimesterPaye() >= 4) {//tous les taxeTrim sont paye pour cette annee e ce locale
-                        System.out.println("3ndha kter mn 3 deja mkhlsinn");
-                        return null;
-                    } else {
-                        System.out.println("incrementation");
-                        taxeAnnuel.setNbrTrimesterPaye(taxeAnnuel.getNbrTrimesterPaye() + 1);
-                        taxeAnnuel.setTaxeTotale(taxeAnnuel.getTaxeTotale() + taxeTrim.getMontantTotal());
-                        oldTaxeTrim.getTaxeAnnuel().setNbrTrimesterPaye(oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() - 1);
-                        oldTaxeTrim.getTaxeAnnuel().setTaxeTotale(oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() - oldTaxeTrim.getMontantTotal());
-                        taxeAnnuelFacade.edit(oldTaxeTrim.getTaxeAnnuel());
-                        taxeAnnuelFacade.edit(taxeAnnuel);
-                    }
-                    taxeTrim.setTaxeAnnuel(taxeAnnuel);
-                } else {
-                    System.out.println(" meme taxe Anuull ");
-                    TaxeAnnuel taxeAnuel = taxeTrim.getTaxeAnnuel();
-                    taxeAnuel.setTaxeTotale(taxeAnuel.getTaxeTotale() + (taxeTrim.getMontantTotal() - oldTaxeTrim.getMontantTotal()));
-                    taxeAnnuelFacade.edit(taxeAnuel);
-                    //2 b7ql b7qll
-                }
             }
-            return taxeTrim;
+        } else {
+            System.out.println("switch ...");
+            TaxeTrim oldTaxeTrim = find(taxeTrim.getId());
+            int mois = DateUtil.calculerMois(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
+            taxeTrim = calculerRetard(taxeTrim, mois);
+            if (taxeTrim == null) {
+                return null;//impossible de payer trimester nest pas encore terminee!!
+            }
+            System.out.println("setters ...");
+            taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
+            taxeTrim.setNbrMoisRetard(mois - 1);
+
+            taxeAnnuelFacade.create(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//si il n'existe une taxeAnnuel avec ce locale et l'annee il va le creer 
+            TaxeAnnuel taxeAnnuel = taxeAnnuelFacade.findByLocaleAndAnnee(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//100% taxeTrim existe dans la base de donnees
+            if (!Objects.equals(taxeAnnuel.getId(), oldTaxeTrim.getTaxeAnnuel().getId())) {
+                if (taxeAnnuel.getNbrTrimesterPaye() >= 4) {//tous les taxeTrim sont paye pour cette annee e ce locale
+                    System.out.println("3ndha kter mn 3 deja mkhlsinn");
+                    return null;
+                } else {
+                    System.out.println("incrementation");
+                    taxeAnnuel.setNbrTrimesterPaye(taxeAnnuel.getNbrTrimesterPaye() + 1);
+                    taxeAnnuel.setTaxeTotale(taxeAnnuel.getTaxeTotale() + taxeTrim.getMontantTotal());
+                    oldTaxeTrim.getTaxeAnnuel().setNbrTrimesterPaye(oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() - 1);
+                    oldTaxeTrim.getTaxeAnnuel().setTaxeTotale(oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() - oldTaxeTrim.getMontantTotal());
+                    taxeAnnuelFacade.edit(oldTaxeTrim.getTaxeAnnuel());
+                    taxeAnnuelFacade.edit(taxeAnnuel);
+                }
+                taxeTrim.setTaxeAnnuel(taxeAnnuel);
+            } else {
+                System.out.println(" meme taxe Anuull ");
+                TaxeAnnuel taxeAnuel = taxeTrim.getTaxeAnnuel();
+                taxeAnuel.setTaxeTotale(taxeAnuel.getTaxeTotale() + (taxeTrim.getMontantTotal() - oldTaxeTrim.getMontantTotal()));
+                taxeAnnuelFacade.edit(taxeAnuel);
+                //2 b7ql b7qll
+            }
         }
-        return null;
+        return taxeTrim;
     }
     //creation d'une taxeTrim  ali
 
@@ -201,7 +205,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
 
         Rue r = t.getLocale().getRue();
         String cinRc;
-        if (t.getLocale().getProprietaire().getCin().equals("")) {
+        if (t.getRedevable().getCin().equals("")) {
             cinRc = t.getRedevable().getRc();
         } else {
             cinRc = t.getRedevable().getCin();
@@ -213,7 +217,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         params.put("exploitant", localeFacade.getPropGerant(t.getRedevable(), t.getLocale()));
         params.put("annee", t.getTaxeAnnuel().getAnnee());
         params.put("numTrim", t.getNumeroTrim());
-        params.put("datePaiement", t.getDatePaiement());
+        params.put("datePaiement", new Date());
         params.put("somme", t.getMontantTotal());
         params.put("user", user.getNom() + " " + user.getPrenom());
         params.put("tel", t.getRedevable().getFax());
@@ -221,7 +225,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         params.put("numDeclarat", t.getId());
         System.out.println(params);
         System.out.println(t);
-        PdfUtil.generatePdf(myList, params, "recu" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");
+        PdfUtil.generatePdf(myList, params, "recu_Trimestre" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");
     }
 
 //la recherche d'une taxeTrim avec TaxeAnnuel,locale,numero
@@ -240,14 +244,17 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     }
 
     public List<TaxeTrim> findTaxesByLocale(Locale locale) {
-        return em.createQuery("SELECT tax FROM TaxeTrim tax where tax.locale.id='" + locale.getId() + "'").getResultList();
+        return em.createQuery("SELECT tax FROM TaxeTrim tax where tax.locale.id='" + locale.getId() + "' ORDER BY tax.datePaiement DESC").getResultList();
     }
 
     // recherche des taxes pour extraire un graphe
-    public List<TaxeTrim> findTaxByCritere(String activite, int firstYear, int secondYear, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
+    public List<TaxeTrim> findTaxByCritere(Categorie categorie,String activite, int firstYear, int secondYear, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
         String rqt = "SELECT tax FROM TaxeTrim tax where 1=1 ";
         if (activite != null) {
             rqt += SearchUtil.addConstraint("tax.locale", "activite", "=", activite);
+        }
+        if (categorie != null) {
+            rqt += SearchUtil.addConstraint("tax.locale", "categorie.id", "=", categorie.getId());
         }
         if (firstYear > 0 && secondYear > 0) {
             rqt += "AND tax.taxeAnnuel.annee in (" + firstYear + "," + secondYear + ")";
@@ -416,6 +423,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
             if (nombreNuitMax > 0) {
                 requete += " AND ta.nombreNuit <='" + nombreNuitMax + "'";
             }
+            requete += " ORDER BY ta.datePaiement DESC";
             System.out.println(requete);
             return em.createQuery(requete).getResultList();
         }
@@ -448,12 +456,12 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
                 }
 
                 if (nouveau.getNombreNuit() != auncienne.getNombreNuit()) {
-                    oldVal += "NbrNuits => " + auncienne.getNombreNuit();
-                    newVal += "NbrNuits => " + nouveau.getNombreNuit();
+                    oldVal += " , NbrNuits => " + auncienne.getNombreNuit();
+                    newVal += " , NbrNuits => " + nouveau.getNombreNuit();
                 }
                 if (!Objects.equals(nouveau.getMontantTotal(), auncienne.getMontantTotal())) {
-                    oldVal += "MontantTotal => " + auncienne.getMontantTotal();
-                    newVal += "MontantTotal => " + nouveau.getMontantTotal();
+                    oldVal += " , MontantTotal => " + auncienne.getMontantTotal();
+                    newVal += " , MontantTotal => " + nouveau.getMontantTotal();
                 }
                 break;
             case 3:
@@ -465,7 +473,6 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     }
 
     public void clone(TaxeTrim taxeTrimSource, TaxeTrim taxeTrimDestaination) {
-        taxeTrimDestaination.setId(taxeTrimSource.getId());
         taxeTrimDestaination.setAutresMoisRetard(taxeTrimSource.getAutresMoisRetard());
         taxeTrimDestaination.setPremierMoisRetard(taxeTrimSource.getPremierMoisRetard());
         taxeTrimDestaination.setLocale(taxeTrimSource.getLocale());

@@ -17,11 +17,11 @@
         <ui:define name="body">
             <h:form id="DeviceListForm">
                 <b:panel title="Rechercher des Devices par différents critères" class="panel-primary" >
-                        <b:panelGrid columns="4" >
+                        <b:panelGrid columns="6" >
                             <p:outputLabel value="Utilisateur" />
                             <p:selectOneMenu id="user" value="#{deviceController.user}" style="width: 150px" >
                                 <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
-                                <f:selectItems value="#{userController.items}" itemValue="#{item}" var="item" />
+                                <f:selectItems value="#{userController.items}" itemValue="#{item}" itemLabel="#{item.login}" var="item" />
                             </p:selectOneMenu>
                             <p:outputLabel value="Browser :" for="browser" />
                             <p:selectOneMenu id="browser" value="#{deviceController.browser}" style="width: 150px" >
