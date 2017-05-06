@@ -143,11 +143,6 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
             taxeTrim = calculerRetard(taxeTrim, mois);
             if (taxeTrim == null) {
                 return new Object[]{-4, null};//impossible de payer trimester nest pas encore terminee!!
-            } else {
-                System.out.println("les setters");
-                taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
-                taxeTrim.setNbrMoisRetard(mois - 1);
-                System.out.println("salaw les setters");
             }
             if (simuler == false) {
                 taxeTrim = attachToTaxeAnnuel(taxeTrim, annee);
@@ -183,7 +178,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
                 return null;//impossible de payer trimester nest pas encore terminee!!
             }
             default: {
-                System.out.println("montant   mois  " + mois);
+                System.out.println("montant   mois +1 " + mois);
                 taxeTrim.setMontant(tauxTaxeFacade.findByCategorie(taxeTrim.getLocale().getCategorie()).getTaux() * taxeTrim.getNombreNuit() / 1D);
                 taxeTrim.setMontantRetard(0D);
                 if (mois > 1) {
@@ -192,6 +187,10 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
                     taxeTrim.setAutresMoisRetard(tauxTaxeRetardFacade.findByCategorie(taxeTrim.getLocale().getCategorie()).getTauxAutreRetard() * taxeTrim.getNombreNuit() * (mois - 2) / 1D);
                     taxeTrim.setMontantRetard((taxeTrim.getAutresMoisRetard() + taxeTrim.getPremierMoisRetard()) / 1D);
                 }
+                System.out.println("les setters");
+                taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
+                taxeTrim.setNbrMoisRetard(mois - 1);
+                System.out.println("salaw les setters");
             }
             return taxeTrim;
         }

@@ -12,20 +12,23 @@
             <h:form id="RedevableCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{redevableController.selected != null}">
-                        
+
                         <p:outputLabel value="Type d'entité" />
                         <p:selectOneMenu id="typeEntite" value="#{redevableController.typeEntite}" >
                             <f:selectItem itemValue="1" itemLabel="Personne Physique"/>
                             <f:selectItem itemValue="2" itemLabel="Personne morale"/>
                             <p:ajax update="RedevableCreateForm" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_rc}" for="rc" rendered="#{redevableController.typeEntite==2}" />
                         <p:inputText id="rc" value="#{redevableController.selected.rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{redevableController.typeEntite==2}"/>
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_cin}" for="cin" rendered="#{redevableController.typeEntite==1}" />
                         <p:inputText id="cin" value="#{redevableController.selected.cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{redevableController.typeEntite==1}"/>
-                        <p:outputLabel value="#{bundle.CreateRedevableLabel_nom}" for="nom" />
-                        <p:inputText id="nom" value="#{redevableController.selected.nom}" title="#{bundle.CreateRedevableTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateRedevableLabel_nom}" for="nom"  />
+                        <p:inputText id="nom" value="#{redevableController.selected.nom}" required="true"
+                                     requiredMessage="Please enter your Name." validatorMessage="Invalid name format" >
+                            <f:validateRegex pattern="^[_A-Za-z-\+]+(\.[_A-Za-z-]+)*" />
+                        </p:inputText>
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_prenom}" for="prenom" rendered="#{redevableController.typeEntite==1}" />
                         <p:inputText id="prenom" value="#{redevableController.selected.prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{redevableController.typeEntite==1}" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_nature}" for="nature" />
@@ -36,8 +39,8 @@
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_adresse}" for="adresse" />
                         <p:inputText id="adresse" value="#{redevableController.selected.adresse}" title="#{bundle.CreateRedevableTitle_adresse}" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_email}" for="email" />
-                       
-                         <p:inputText id="email" required="true" label="email" size="40"
+
+                        <p:inputText id="email" required="true" label="email"
                                      requiredMessage="Please enter your email address."
                                      validatorMessage="Invalid email format"
                                      value="#{redevableController.selected.email}">
@@ -48,7 +51,7 @@
                         </p:inputText>
                         <p:watermark for="email" value="Email Address *" />
                         <p:message for="email" />
-                        
+
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_fax}" for="fax" />
                         <p:inputText id="fax" value="#{redevableController.selected.fax}" title="#{bundle.CreateRedevableTitle_fax}" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />

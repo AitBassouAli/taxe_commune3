@@ -320,17 +320,33 @@ public class TaxeTrimController implements Serializable {
         return selected;
     }
 
+    public void erorMessage(int res) {
+        switch (res) {
+            case -1:
+                JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
+                break;
+            case -2:
+                JsfUtil.addErrorMessage("Toutes le trimestre de ce annee ont été payé  !!");
+                break;
+            case -3:
+                JsfUtil.addErrorMessage("la trimester nest pas encore terminee !!");
+                break;
+            case -4:
+                JsfUtil.addErrorMessage("impossible de payer ce trimester !!");
+                break;
+            default:
+                JsfUtil.addErrorMessage("une probleme a été rencontrée");
+        }
+    }
+
     public void simuler() {
-        rendred = true;
         Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, true);
         if ((int) res[0] == 1) {
+            rendred = true;
             System.out.println("simulation ...");
             selected = ejbFacade.clone((TaxeTrim) res[1]);
         } else {
-            switch ((int) res[0]) {
-                case -1:
-                    JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
-            }
+            erorMessage((int) res[0]);
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -346,10 +362,7 @@ public class TaxeTrimController implements Serializable {
             selected.setUser(getConnectedUser());
             persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
         } else {
-            switch ((int) res[0]) {
-                case -1:
-                    JsfUtil.addErrorMessage("TaxeTrim deja payé !!");
-            }
+            erorMessage((int) res[0]);
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -390,7 +403,6 @@ public class TaxeTrimController implements Serializable {
         this.items = items;
     }
 
-    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
