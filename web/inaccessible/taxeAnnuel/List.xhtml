@@ -4,14 +4,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="../template.xhtml">
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListTaxeAnnuelTitle}"></h:outputText>
+            <h:outputText value="Taxes Annuels"></h:outputText>
         </ui:define>
         <f:metadata>
             <f:viewAction action="#{taxeAnnuelController.setItems(null)}"/>
@@ -35,7 +34,7 @@
                         <b:inputText id="a" value="#{taxeAnnuelController.annee}"  />
                     </b:panelGrid>
                 </b:panel>
-                <div align="center">
+                <div align="center" >
                     <b:commandButton value="Rechecher" style="color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
                 </div>
 
@@ -73,85 +72,14 @@
                                 <h:outputText value="Action"/>
                             </f:facet>
                             <b:commandButton id="viewButton"   value=""  icon="glyphicon glyphicon-search" style="color: lightsteelblue"  actionListener="#{taxeAnnuelController.prepareView(item)}" update=":TaxeAnnuelViewForm" oncomplete="PF('TaxeAnnuelViewDialog').show()" />
+                            <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
+
                             <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeAnnuelController.destroy(item)}" update="TaxeAnnuelListForm,:growl" />
-                            <p:commandButton id="detail" icon="ui-icon-plus"   value="detail" actionListener="#{taxeAnnuelController.findTaxTrim(item)}" update=":TaxTrimListForm:datalist2"/>
-                            <p:commandButton id="printButton" icon="ui-icon-"  value="Exporter" action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
+
                         </b:dataTableColumn>
+
                     </b:dataTable>
                 </b:panel>
-            </h:form>
-            <h:form id="TaxTrimListForm">
-                <p:fieldset legend="Taxes trimestrielle d'une année">
-
-                    <p:dataTable id="datalist2" value="#{taxeAnnuelController.taxeAnnuel.taxeTrims}" var="item"
-                                 selectionMode="single" 
-                                 paginator="true"
-                                 rowKey="#{item.id}"  rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="N° taxetrimestrielle"/>
-                            </f:facet>
-                            <h:outputText value="#{item.numeroTrim}"/>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreClients}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nombreClients}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nombreNuit}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montant}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montant}"/>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.locale.toString()}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montantRetard}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.datePaiement}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-                            </h:outputText>
-                        </p:column>
-
-
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.montantTotal}"/>
-                        </p:column>
-                    </p:dataTable >
-                </p:fieldset>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

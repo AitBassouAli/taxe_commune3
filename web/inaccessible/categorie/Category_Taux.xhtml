@@ -53,14 +53,14 @@
 
                     <div class="col-md-4" >
                         <h:form id="TauxTaxeListForm">
-                <b:panel title=" Taux Taxes " class="panel-primary">
+                <b:panel title=" Taux Taxes " class="panel-heading panel-primary ">
                                 <div align="center">
                                     <b:commandButton id="createButton"  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{tauxTaxeController.prepareCreate}" update=":TauxTaxeCreateForm" oncomplete="PF('TauxTaxeCreateDialog').show()"/>
 
 
                                 </div >
                                 <b:dataTable id="datalist" value="#{categorieController.tauxTaxe}" var="item"
-                                             selectionMode="single" 
+                                             selectionMode="single" searching="false" paginated="false" 
                                              >
 
 

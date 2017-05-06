@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,10 +92,6 @@ public class RedevableController implements Serializable {
 
     public int showError() {
 
-        if (selected.getPrenom().equals("")) {
-            JsfUtil.addErrorMessage("Inserer le prenom");
-            return 1;
-        }
         if (selected.getNom().equals("")) {
             JsfUtil.addErrorMessage("Inserer le nom");
             return 2;
@@ -102,6 +99,9 @@ public class RedevableController implements Serializable {
         if (selected.getPattente().equals("")) {
             JsfUtil.addErrorMessage("Inserer la pattente");
             return 3;
+        }
+        if (chowMessage() < 0) {
+            return 4;
         }
         return 0;
     }
@@ -130,31 +130,55 @@ public class RedevableController implements Serializable {
 
     public int chowMessage() {
         if (typeEntite == 1) {
-            if (selected.getCin().equals("") || selected.getEmail().equals("")) {
-                JsfUtil.addErrorMessage("cin  or email  requaredddd !!!!!!");
+            if (selected.getCin().equals("")) {
+                JsfUtil.addErrorMessage("Inserer le Cin");
                 return -1;
+            }
+            if (selected.getPrenom().equals("")) {
+                JsfUtil.addErrorMessage("Inserer le prenom");
+                return -3;
             }
             return 1;
         } else {
-            if (selected.getRc().equals("") || selected.getEmail().equals("")) {
-                JsfUtil.addErrorMessage("rc  or email  requaredddd !!!!!!");
+            if (selected.getRc().equals("")) {
+                JsfUtil.addErrorMessage("Inserer le Rc");
                 return -2;
             }
             return 2;
         }
     }
 
+    public void viderCinRcPrenom(int type) {
+        if (type == 1) {
+            selected.setRc("");
+        } else {
+            selected.setCin("");
+            selected.setPrenom("");
+        }
+    }
+
     public void update() {
         int res = chowMessage();
         if (res > 0) {
-            if (typeEntite == 1) {
-                selected.setRc("");
+            viderCinRcPrenom(typeEntite);
+            int result = verify();
+            if (result > 0) {
+                persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
+                items = null;
             } else {
-                selected.setCin("");
-                selected.setPrenom("");
+                JsfUtil.addErrorMessage("Redevable existe deja avec ces donnee !!");
             }
-            persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("RedevableUpdated"));
-            items = null;
+        }
+    }
+
+    public int verify() {
+        List<Redevable> redevables = ejbFacade.redevableHasRcOrCin(selected);
+        if (redevables == null || redevables.isEmpty()) {
+            return 1;
+        } else if (Objects.equals(redevables.get(0).getId(), oldRedevable.getId())) {
+            return 2;
+        } else {
+            return -1;
         }
     }
 
@@ -196,7 +220,7 @@ public class RedevableController implements Serializable {
                 }
                 switch (persistAction) {
                     case CREATE:
-                        if (getFacade().findByCinOrRc(selected).isEmpty()) {
+                        if (getFacade().redevableHasRcOrCin(selected).isEmpty()) {
                             Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                             getFacade().edit(selected);
                             journalFacade.journalUpdate("Redevable", 1, newOldCreate[1], newOldCreate[0]);

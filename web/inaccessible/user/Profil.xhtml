@@ -15,140 +15,97 @@
         </ui:define>
 
         <ui:define name="body" >
-            <b:tabView id="tabview"  >
-                <b:tab title="Profile" id="tab" >
-                    <div class="col-lg-2">
-                        <p:fieldset style="margin-left: -15px;height:500px" >
-                            <b:listLinks class="center-block" style="margin-top: 100px;background:lightgoldenrodyellow">
-                                <b:navCommandLink value="Mon Compte" actionListener="#{userController.aficherProfil(true, false, false)}" update="changeAutreInfosForm,changePWForm,profileForm" />
-                                <b:navCommandLink value="Mofier mes infos" actionListener="#{userController.aficherProfil(false, false, true)}" update="changeAutreInfosForm,changePWForm,profileForm" />
-                                <b:navCommandLink value="Changer Password" actionListener="#{userController.aficherProfil(false, true, false)}" update="changeAutreInfosForm,changePWForm,profileForm" />
-                            </b:listLinks>
-                        </p:fieldset>
-                    </div>
-                    <div class="col-lg-10" >
-                        <div Class="ui-grid ui-grid-responsive" >
-                            <div Class="ui-grid-row" >
-                                <div Class="ui-grid-col-6 center-block">
-                                    <h:form id="profileForm"  >
-                                        <p:fieldset legend="profile de '#{userController.connectedUser.login}'"  style="background: lightyellow; margin-top: 10%" class="center-block" rendered="#{userController.afficheProfile==true}" >
-                                            <b:panelGrid columns="2" rendered="#{userController.selected != null}">
 
-                                                <h:outputLabel value="#{bundle.CreateUserLabel_nom}"  style="margin: 10px;margin-left: 40px" />
-                                                <h:outputText id="nom" value="#{userController.connectedUser.nom}" class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="#{bundle.CreateUserLabel_prenom}" style="margin: 10px;margin-left: 40px" />
-                                                <h:outputText id="prenom" value="#{userController.connectedUser.prenom}" class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="E-mail" style="margin: 10px;margin-left: 40px" />
-                                                <h:outputText id="email" value="#{userController.connectedUser.email}" class="form-control" style="margin-bottom: 10px"  />
-                                                <h:outputLabel value="Telephone" style="margin: 10px;margin-left: 40px" />
-                                                <h:outputText id="tel" value="#{userController.connectedUser.tel}" class="form-control" style="margin-bottom: 10px" />
+            <div class="col-lg-2">
+                <p:fieldset style="margin-left: -15px;height:500px" >
+                    <b:listLinks class="center-block" style="margin-top: 100px;background:lightgoldenrodyellow">
+                        <b:navCommandLink value="Mon Compte" actionListener="#{userController.aficherProfil(true, false, false)}" update="changeAutreInfosForm,changePWForm,profileForm" />
+                        <b:navCommandLink value="Mofier mes infos" actionListener="#{userController.aficherProfil(false, false, true)}" update="changeAutreInfosForm,changePWForm,profileForm" />
+                        <b:navCommandLink value="Changer Password" actionListener="#{userController.aficherProfil(false, true, false)}" update="changeAutreInfosForm,changePWForm,profileForm" />
+                    </b:listLinks>
+                </p:fieldset>
+            </div>
+            <div class="col-lg-10" >
+                <div Class="ui-grid ui-grid-responsive" >
+                    <div Class="ui-grid-row" >
+                        <div Class="ui-grid-col-6 center-block">
+                            <h:form id="profileForm"  >
+                                <b:panel title="profile de '#{userController.connectedUser.login}'" class="panel-primary center-block"  rendered="#{userController.afficheProfile==true}" >
 
-                                            </b:panelGrid>
-                                        </p:fieldset>
-                                    </h:form>
-                                </div>
-                            </div>
+                                    <b:panelGrid columns="2" rendered="#{userController.selected != null}">
+
+                                        <h:outputLabel value="#{bundle.CreateUserLabel_nom}"  style="margin: 10px;margin-left: 40px" />
+                                        <h:outputText id="nom" value="#{userController.connectedUser.nom}" class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="#{bundle.CreateUserLabel_prenom}" style="margin: 10px;margin-left: 40px" />
+                                        <h:outputText id="prenom" value="#{userController.connectedUser.prenom}" class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="E-mail" style="margin: 10px;margin-left: 40px" />
+                                        <h:outputText id="email" value="#{userController.connectedUser.email}" class="form-control" style="margin-bottom: 10px"  />
+                                        <h:outputLabel value="Telephone" style="margin: 10px;margin-left: 40px" />
+                                        <h:outputText id="tel" value="#{userController.connectedUser.tel}" class="form-control" style="margin-bottom: 10px" />
+
+                                    </b:panelGrid>
+                                </b:panel>
+                            </h:form>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-lg-10">
-                        <div Class="ui-grid ui-grid-responsive" >
-                            <div Class="ui-grid-row" >
-                                <div Class="ui-grid-col-6 center-block">
-                                    <h:form id="changeAutreInfosForm">
-                                        <p:fieldset legend="changer mes information:" style="background: lightyellow; margin-top: 10%" class="center-block" rendered="#{userController.changerAutreInfos==true}" >
-                                            <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
+            <div class="col-lg-10">
+                <div Class="ui-grid ui-grid-responsive" >
+                    <div Class="ui-grid-row" >
+                        <div Class="ui-grid-col-6 center-block">
+                            <h:form id="changeAutreInfosForm">
+                                <b:panel title="changer mes information:" class="panel-primary" rendered="#{userController.changerAutreInfos==true}">
 
-                                                <h:outputLabel value="Nom"  style="margin: 10px;margin-left: 40px" />
-                                                <b:inputText id="nom"  value="#{userController.connectedUser.nom}" class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="Prenom"  style="margin: 10px;margin-left: 40px" />
-                                                <b:inputText id="prenom"  value="#{userController.connectedUser.prenom}" class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="E-mail"  style="margin: 10px;margin-left: 40px" />
-                                                <b:inputText id="email"  value="#{userController.connectedUser.email}" class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="Telephone"  style="margin: 10px;margin-left: 40px" />
-                                                <b:inputText id="tel"  value="#{userController.connectedUser.tel}" class="form-control" style="margin-bottom: 10px"  />
-                                            </b:panelGrid>
-                                            <div class="col-lg-8"/>
-                                            <div class="col-lg-4" >
-                                            <b:commandButton value="modifier" class="btn btn-warning form-control" actionListener="#{userController.changeInformation()}" update=":growl"  />
-                                            </div>
-                                        </p:fieldset>
-                                    </h:form>
-                                </div>
-                            </div>
+                                    <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
+
+                                        <h:outputLabel value="Nom"  style="margin: 10px;margin-left: 40px" />
+                                        <b:inputText id="nom"  value="#{userController.connectedUser.nom}" class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="Prenom"  style="margin: 10px;margin-left: 40px" />
+                                        <b:inputText id="prenom"  value="#{userController.connectedUser.prenom}" class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="E-mail"  style="margin: 10px;margin-left: 40px" />
+                                        <b:inputText id="email"  value="#{userController.connectedUser.email}" class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="Telephone"  style="margin: 10px;margin-left: 40px" />
+                                        <b:inputText id="tel"  value="#{userController.connectedUser.tel}" class="form-control" style="margin-bottom: 10px"  />
+                                    </b:panelGrid>
+                                    <div class="col-lg-8"/>
+                                    <div align="center"  >
+                                        <b:commandButton value="modifier"  icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" actionListener="#{userController.changeInformation()}" update=":growl"  />
+                                    </div>
+                                </b:panel>
+                            </h:form>
                         </div>
                     </div>
-                    <div class="col-lg-10">
-                        <div Class="ui-grid ui-grid-responsive" >
-                            <div Class="ui-grid-row" >
-                                <div Class="ui-grid-col-6 center-block">
-                                    <h:form id="changePWForm" >
-                                        <p:fieldset legend="changer Mot de passe:" style="background: lightyellow; margin-top: 10%" class="center-block" rendered="#{userController.changerPasswrd==true}"  >
-                                            <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
-                                                <h:outputLabel value="Mot de pass actuel"  style="margin: 10px;margin-left: 40px" />
-                                                <b:inputText id="oldPassword"  value="#{userController.oldPassword}"  type="password"  class="form-control" style="margin-bottom: 10px" />
-                                                <h:outputLabel value="Nouveau mot de passe" style="margin: 10px;margin-left: 40px"  />
-                                                <b:inputText id="newPassword"    type="password"  value="#{userController.changePassword}" class="form-control" style="margin-bottom: 10px"/>
-                                                <h:outputLabel value="Confirmer le mot de Passe" style="margin: 10px;margin-left: 40px"  />
-                                                <b:inputText id="newPasswordConfirmation"  type="password"  value="#{userController.changeRepetePassword}" class="form-control" style="margin-bottom: 10px"/>
-                                            </b:panelGrid>
-                                             <div class="col-lg-8"/>
-                                            <div class="col-lg-4" >
-                                            <b:commandButton value="Enregistrer" class="btn btn-danger form-control" actionListener="#{userController.changePass()}" update=":growl" style="margin-top:20%" />
-                                            </div>
-                                        </p:fieldset>
-                                    </h:form>
-                                </div>
-                            </div>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div Class="ui-grid ui-grid-responsive" >
+                    <div Class="ui-grid-row" >
+                        <div Class="ui-grid-col-6 center-block">
+                            <h:form id="changePWForm" >
+                                <b:panel title="changer Mot de passe:"  class="center-block panel-primary" rendered="#{userController.changerPasswrd==true}"  >
+
+                                    <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
+                                        <h:outputLabel value="Mot de pass actuel"  style="margin: 10px;margin-left: 40px" />
+                                        <b:inputText id="oldPassword"  value="#{userController.oldPassword}"  type="password"  class="form-control" style="margin-bottom: 10px" />
+                                        <h:outputLabel value="Nouveau mot de passe" style="margin: 10px;margin-left: 40px"  />
+                                        <b:inputText id="newPassword"    type="password"  value="#{userController.changePassword}" class="form-control" style="margin-bottom: 10px"/>
+                                        <h:outputLabel value="Confirmer le mot de Passe" style="margin: 10px;margin-left: 40px"  />
+                                        <b:inputText id="newPasswordConfirmation"  type="password"  value="#{userController.changeRepetePassword}" class="form-control" style="margin-bottom: 10px"/>
+                                    </b:panelGrid>
+                                    <div class="col-lg-8"/>
+                                    <div class="col-lg-4" >
+                                        <b:commandButton value="Enregistrer" class="btn btn-danger form-control" actionListener="#{userController.changePass()}" update=":growl" style="margin-top:20%" />
+                                    </div>
+                                    </b:panel>
+                            </h:form>
                         </div>
                     </div>
-
-                </b:tab>
-                <b:tab title="Changer mes infos">
-
-                    <div Class="ui-grid ui-grid-responsive">
-                        <div Class="ui-grid-row">
-                            <div Class="ui-grid-col-12">
-                                <h:form>
-                                    <p:fieldset legend="changer mes information:"  >
-                                        <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
-
-                                            <p:outputLabel value="#{bundle.CreateUserLabel_nom}" for="nom" />
-                                            <p:inputText id="nom" class="form-control" value="#{userController.connectedUser.nom}" style="margin-bottom: 10px" />
-                                            <p:outputLabel value="#{bundle.CreateUserLabel_prenom}" for="prenom" />
-                                            <p:inputText id="prenom" class="form-control" value="#{userController.connectedUser.prenom}" style="margin-bottom: 10px" />
-                                            <p:outputLabel value="#{bundle.CreateUserLabel_email}" for="email" />
-                                            <p:inputText id="email" class="form-control" value="#{userController.connectedUser.email}" style="margin-bottom: 10px"  />
-                                            <p:outputLabel value="#{bundle.CreateUserLabel_tel}" for="tel" />
-                                            <p:inputText id="tel" class="form-control" value="#{userController.connectedUser.tel}" style="margin-bottom: 10px"  />
-                                        </b:panelGrid>
-                                        <b:commandButton value="modifier" class="btn btn-warning form-control" actionListener="#{userController.changeInformation()}" update=":growl" />
-                                    </p:fieldset>
-                                </h:form>
-                            </div>
+                </div>
+            </div>
 
 
-                            <div Class="ui-grid-col-12">
-                                <h:form >
-                                    <p:fieldset legend="changer Mot de passe:"   >
-                                        <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
-
-                                            <p:outputLabel value="ancien mot de passe" for="oldPassword" />
-                                            <p:inputText id="oldPassword" class="form-control"  value="#{userController.oldPassword}"  type="password" style="margin-bottom: 10px" />
-                                            <p:outputLabel value="Nouveau mot de passe" for="newPassword" />
-                                            <p:inputText id="newPassword" class="form-control"   type="password"  value="#{userController.changePassword}" style="margin-bottom: 10px"/>
-                                            <p:outputLabel value="confirmation de mot de Passe" for="newPasswordConfirmation" />
-                                            <p:inputText id="newPasswordConfirmation" class="form-control"   type="password"  value="#{userController.changeRepetePassword}" style="margin-bottom: 10px"/>
-                                        </b:panelGrid>
-                                        <b:commandButton value="changer Mot de passe" class="btn btn-danger form-control" actionListener="#{userController.changePass()}" update=":growl" style="margin-top:6%" />
-                                    </p:fieldset>
-                                </h:form>
-                            </div>
-                        </div>
-                    </div>
-
-                </b:tab>
-            </b:tabView>
         </ui:define>
     </ui:composition>
 

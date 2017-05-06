@@ -7,17 +7,17 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-        <p:dialog id="TaxeTrimCreateDlg" widgetVar="TaxeTrimCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTaxeTrimTitle}">
+        <p:dialog id="TaxeTrimCreateDlg" widgetVar="TaxeTrimCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Nouveau taxe trimestrielle">
             <h:form id="TaxeTrimCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{taxeTrimController.selected != null}">
 
                         <p:outputLabel value="CIN"/>
-                        <p:inputText id="cin" value="#{taxeTrimController.cin}">
+                        <p:inputText id="cin" value="#{taxeTrimController.cin}"  placeholder="Entrer un Cin">
                             <p:commandButton actionListener="#{taxeTrimController.findRedevableByCin()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="RC"/>
-                        <p:inputText id="rc" value="#{taxeTrimController.rc}">
+                        <p:inputText id="rc" value="#{taxeTrimController.rc}"  placeholder="Entrer un Rc">
                             <p:commandButton actionListener="#{taxeTrimController.findRedevableByRc()}" icon="ui-icon-search" update="TaxeTrimCreateForm,:growl"/>
                         </p:inputText>
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_locale}" for="locale" />
@@ -45,14 +45,13 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Annee" />
-                        <p:inputText id="annee" value="#{taxeTrimController.annee}" maxlength="4" required="true" requiredMessage="Veuillez remplir le champ 'Année'" >
-                        </p:inputText>
+                        <p:inputText id="annee" maxlength="4"  placeholder="annee du trimestre..." value="#{taxeTrimController.annee}" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_nombreNuit}" for="nombreNuit" />
-                        <p:inputText id="nombreNuit" value="#{taxeTrimController.selected.nombreNuit}" title="#{bundle.CreateTaxeTrimTitle_nombreNuit}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de nuit'" />
+                        <p:inputText id="nombreNuit" value="#{taxeTrimController.selected.nombreNuit}" placeholder="Nombre de nuit" title="#{bundle.CreateTaxeTrimTitle_nombreNuit}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de nuit'" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_nombreClients}" for="nombreClients" />
-                        <p:inputText id="nombreClients" value="#{taxeTrimController.selected.nombreClients}" title="#{bundle.CreateTaxeTrimTitle_nombreClients}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de client'" />
+                        <p:inputText id="nombreClients" value="#{taxeTrimController.selected.nombreClients}" placeholder="Nombre de client" title="#{bundle.CreateTaxeTrimTitle_nombreClients}" required="true" requiredMessage="Veuillez remplir le champ 'Nbr de client'" />
 
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_datePaiement}" for="datePaiement" />
                         <p:calendar id="datePaiement" disabled="true" pattern="dd/MM/yyyy HH:mm" value="#{taxeTrimController.selected.datePaiement}" title="#{bundle.EditTaxeTrimTitle_datePaiement}" />
@@ -75,7 +74,7 @@
                         <h:outputText id="nbrMoisRetard"  value="#{taxeTrimController.selected.nbrMoisRetard}" rendered="#{taxeTrimController.rendred==true}" />
 
                     </p:panelGrid>
-                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}"  />
+                    <p:commandButton  id="simuler" value="simuler" actionListener="#{taxeTrimController.simuler()}" update="TaxeTrimCreateForm,:growl" disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}"  />
                     <p:commandButton id="save" actionListener="#{taxeTrimController.create}" value="#{bundle.Save}" update="display,:TaxeTrimListForm:datalist,:growl" 
                                      disabled="#{empty taxeTrimController.selected.locale.id or empty taxeTrimController.redevable.id}" oncomplete="handleSubmit(args,'TaxeTrimCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="TaxeTrimCreateDialog.hide()"/>

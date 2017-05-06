@@ -12,7 +12,7 @@
     <ui:composition template="../template.xhtml">
         <ui:define name="body">
             <h:form id="form">
-                <b:panel title=" Cretéres de recherch pour les graph " class="panel-primary" >
+                <b:panel title=" Critères de recherche pour les graphes " class="panel-primary" >
 
                     <b:panelGrid columns="6" >
                          <p:outputLabel value="1ere année" ></p:outputLabel>
@@ -37,7 +37,7 @@
                             <p:ajax process="annexAdministratif" listener="#{taxeTrimController.findQuartiers()}" update="quartier,rue" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="quartier" />
+                        <p:outputLabel value="Quartier" />
                         <p:selectOneMenu id="quartier"  value="#{taxeTrimController.quartier}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.annexeAdministratif.quartiers}"
@@ -54,7 +54,7 @@
                                            itemValue="#{rueItem}"/>
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="activite" for="activite" />
+                        <p:outputLabel value="Activite" for="activite" />
                         <p:selectOneMenu id="activite" value="#{taxeTrimController.activite}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.activities}"
@@ -62,14 +62,14 @@
                                            itemValue="#{activiteItem}"/>
                         </p:selectOneMenu>
                        
-                        <p:outputLabel value="catégorie" for="categorie" />
+                        <p:outputLabel value="Catégorie" for="categorie" />
                         <p:selectOneMenu id="categorie" value="#{taxeTrimController.categorie1}" filter="true" >
                             <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                             <f:selectItems value="#{taxeTrimController.categories}"
                                            var="categorieItem"
                                            itemValue="#{categorieItem}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="type de graphe" for="type" />
+                        <p:outputLabel value="Type de graphe" for="type" />
                         <p:selectOneMenu id="type" value="#{taxeTrimController.typeGraphe}" >
                             <f:selectItem itemValue="1" itemLabel="Bar"/>
                             <f:selectItem itemValue="2" itemLabel="Line"/>
@@ -83,7 +83,7 @@
                 </b:panel>
             </h:form>
             <h:form id="statistique" >
-                <b:panel title=" Results by charts " class="panel-primary" >
+                <b:panel title=" Graphe " class="panel-primary" >
 
                     <p:chart type="bar" id="graphe" model="#{taxeTrimController.modele}"  rendered="#{taxeTrimController.typeGraphe==1}"/>
                     <p:chart type="donut" id="donut" model="#{taxeTrimController.donutChartModel}"  rendered="#{taxeTrimController.typeGraphe==3}" />
