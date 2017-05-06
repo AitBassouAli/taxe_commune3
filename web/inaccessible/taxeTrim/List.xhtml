@@ -93,7 +93,9 @@
                     </div>
 
                 </b:panel>
-                <div align="center">
+              
+                                <b:panel title=" taxes " class="panel-primary"   >
+  <div align="center">
                     <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
                 </div >
                 <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
@@ -173,7 +175,7 @@
 
                 </b:dataTable>
 
-
+                                    </b:panel>
             </h:form>
 
 

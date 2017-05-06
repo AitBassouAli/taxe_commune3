@@ -120,20 +120,23 @@
                         <div Class="ui-grid-row">
                             <div Class="ui-grid-col-6 center-block">
                                 <h:form id="redevableCreateForm">
-                                    <p:fieldset style="background-color: lightyellow" >
-                                        <b:panelGrid columns="3" class="form-group-sm" rendered="#{localeController.selected != null}">
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" />
-                                            <b:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl" />
-                                            <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
-                                            <b:inputText id="gerant" value="#{localeController.gerantCinRc}" />
-                                            <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl"/>
-                                        </b:panelGrid>
-                                    </p:fieldset>
+                                    <b:panel title="Redevable" class="panel-primary"  >
+
+                                            <b:panelGrid columns="3" class="form-group-sm" rendered="#{localeController.selected != null}">
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire}" for="proprietaire" />
+                                                <b:inputText id="proprietaire" value="#{localeController.proprietaireCinRc}" />
+                                                <b:commandButton value="" actionListener="#{localeController.findProprietaireByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl" />
+                                                <h:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
+                                                <b:inputText id="gerant" value="#{localeController.gerantCinRc}" />
+                                                <b:commandButton value="" actionListener="#{localeController.findGerantByCinOrRc()}" icon="glyphicon glyphicon-search" update=":LocaleCreateForm,:growl"/>
+                                            </b:panelGrid>
+                                        </b:panel >
                                 </h:form>
                                 <br/>
                                 <h:form id="LocaleCreateForm">
-                                    <p:fieldset style="background-color: lightyellow">
+
+                                    <b:panel title="locale" class="panel-primary"  >
+
                                         <b:panelGrid columns="2" rendered="#{localeController.selected != null}">
                                             <h:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire} " for="proprietaire" />
                                             <h:outputText id="proprietaire" value="#{localeController.selected.proprietaire.nom}"/>
@@ -188,7 +191,7 @@
                                         </b:panelGrid>
                                         <b:commandButton id="save" action="#{localeController.create}" value="#{bundle.Save}" update=":growl"  
                                                          disabled="#{empty localeController.selected.gerant.id or empty localeController.selected.proprietaire.id or empty localeController.selected.rue.id}"/>
-                                    </p:fieldset>
+                                    </b:panel>
                                 </h:form>
                             </div>
                         </div>
