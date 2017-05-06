@@ -81,7 +81,7 @@
                     <div align="center">
                         <b:commandButton value="Rechecher"  style="color:lightseagreen" icon="glyphicon glyphicon-search"  actionListener="#{localeController.findByCreteria()}" update="reference,datalist"></b:commandButton>
 
-                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addItemsToMap()}"></b:commandButton>
+                        <b:commandButton value="Afficher dans Map"  icon="glyphicon glyphicon-maps" action="#{localeController.addLocalesMarkersToMap1()}"></b:commandButton>
                     </div>
 
                 </b:panel>
@@ -91,7 +91,7 @@
                                          class=" btn btn-primary" style="width:200px" />
                     </div>
                     <b:dataTable id="datalist" value="#{localeController.itemsRecherche}" var="item"
-                                 selectionMode="single" 
+                                 selectionMode="single"  
 
                                  >
 

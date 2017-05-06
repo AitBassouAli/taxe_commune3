@@ -74,6 +74,8 @@
                                 <h:outputText value="Action"/>
                             </f:facet>
                             <b:commandButton id="viewButton"   value=""  icon="glyphicon glyphicon-search" style="color: lightsteelblue"  actionListener="#{taxeAnnuelController.prepareView(item)}" update=":TaxeAnnuelViewForm" oncomplete="PF('TaxeAnnuelViewDialog').show()" />
+                            <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
+
                             <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeAnnuelController.destroy(item)}" update="TaxeAnnuelListForm,:growl" />
 
                         </b:dataTableColumn>

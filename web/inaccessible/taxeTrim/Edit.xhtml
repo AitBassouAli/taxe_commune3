@@ -14,15 +14,16 @@
                     <p:panelGrid columns="2" rendered="#{taxeTrimController.selected != null}">
 
                         <p:outputLabel value="CIN" rendered="#{ taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}"/>
-                        <p:commandButton actionListener="#{taxeTrimController.editRedevableCinjOfTaxe()}" icon="ui-icon-search" update="locale,redevable,save,rc" rendered="#{taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}">
+                        <p:commandButton actionListener="#{taxeTrimController.editRedevableCinjOfTaxe()}" icon="ui-icon-search" update="locale,redevable,save,rc,:growl" rendered="#{taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}">
                             <p:inputText id="cin" value="#{taxeTrimController.cin}" ></p:inputText>
                         </p:commandButton>
                         <p:outputLabel value="RC" rendered="#{ taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}"/>
-                        <p:commandButton actionListener="#{taxeTrimController.editRedevableRcjOfTaxe()}" icon="ui-icon-search" update="locale,redevable,save,cin" rendered="#{taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}">
+                        <p:commandButton actionListener="#{taxeTrimController.editRedevableRcjOfTaxe()}" icon="ui-icon-search" update="locale,redevable,save,cin,:growl" rendered="#{taxeTrimController.editRedevableBtn==true or empty taxeTrimController.selected.locale.id}">
                             <p:inputText id="rc" value="#{taxeTrimController.rc}" ></p:inputText>
                         </p:commandButton>
                         <p:outputLabel value="#{bundle.CreateTaxeTrimLabel_locale}" for="locale" />
                         <p:selectOneMenu id="locale" value="#{taxeTrimController.selected.locale}" >
+                            <f:selectItem itemLabel="---SELECT--" itemValue="#{null}" />
                             <f:selectItems value="#{taxeTrimController.selected.redevable.locales}"
                                            var="localeItem"
                                            itemValue="#{localeItem}"/>

@@ -39,6 +39,10 @@ public class JournalFacade extends AbstractFacade<Journal> {
         super(Journal.class);
     }
 
+    @Override
+    public List<Journal>findAll(){
+        return em.createQuery("SELECT j FROM Journal j ORDER BY j.dateAction DESC").getResultList();
+    }
     public void updateDevice(Device device) {
         String rqt = "UPDATE Journal j set j.device = " + null + " WHERE j.device.id =" + device.getId();
         System.out.println(rqt);
@@ -72,6 +76,7 @@ public class JournalFacade extends AbstractFacade<Journal> {
         if (type < 4 && type > 0) {
             requete += " AND jo.type=" + type;
         }
+        requete += " ORDER BY jo.dateAction DESC";
         return em.createQuery(requete).getResultList();
     }
 

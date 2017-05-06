@@ -10,16 +10,16 @@
     <ui:composition>
         <p:dialog id="UserCreateDlg" widgetVar="UserCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateUserTitle}" >
             <h:form id="UserCreateForm">
-                <h:panelGroup id="display">
+                <h:panelGroup id="display" >
                     <div class="col-lg-12">
                         <div class="col-lg-4" >
-                            <b:panel title=" Info Utilisateur: " class="panel-primary"  >
+                            <b:panel title=" Info Utilisateur: " class="panel-primary" style="height: 285px;background-color: #eee6ff" >
 
                                 <b:panelGrid columns="2" rendered="#{userController.selected != null}"  style="height: 285px">
                                     <p:outputLabel value="#{bundle.CreateUserLabel_login}" for="login"  />
                                     <b:inputText id="login" value="#{userController.selected.login}" title="#{bundle.CreateUserTitle_login}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_password}" for="password" />
-                                    <b:inputText id="password" value="#{userController.selected.password}" title="#{bundle.CreateUserTitle_password}"  />
+                                    <p:password id="password" value="#{userController.selected.password}" title="#{bundle.CreateUserTitle_password}"  />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_nom}" for="nom" />
                                     <b:inputText id="nom" value="#{userController.selected.nom}" title="#{bundle.CreateUserTitle_nom}" />
                                     <p:outputLabel value="#{bundle.CreateUserLabel_prenom}" for="prenom" />
@@ -32,53 +32,61 @@
                             </b:panel>
                         </div>
                         <div class="col-lg-7" >
-                            <b:panel title=" Privileges:" class="panel-primary"  >
+                            <b:panel title=" Privileges: " class="panel-primary" style=" background-color: #eee6ff;margin-bottom:20px"   >
 
                                 <div class="col-lg-12" >
                                     <div class="col-lg-6" >
-                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}">
+                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -30px">
                                             <p:outputLabel value="admin :" />
                                             <p:selectBooleanCheckbox id="isAdmin" value="#{userController.selected.admine}" >
                                                 <p:ajax update="UserCreateForm"/>
                                             </p:selectBooleanCheckbox>
                                             <p:outputLabel value="Utilisateurs:" />
-                                            <p:fieldset style="width: 70px">
                                                 <p:selectBooleanCheckbox id="isCreateUser" value="#{userController.selected.createUser}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
                                             <p:outputLabel value="Taxes :" />
-                                            <p:fieldset style="width: 70px">
                                                 <p:selectBooleanCheckbox id="isCreateTaxes" value="#{userController.selected.createTaxes}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
-                                            <p:outputLabel value="Redevable :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:outputLabel value="Redevable:" />
                                                 <p:selectBooleanCheckbox id="isCreateRedevable" value="#{userController.selected.createRedevable}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
                                         </b:panelGrid>
                                     </div>
                                     <div class="col-lg-6" >
-                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}">
-                                           
+                                        <b:panelGrid columns="2" rendered="#{userController.selected != null}" style="margin-left: -50px" >
                                             <p:outputLabel value="Locales :" />
-                                            <p:fieldset style="width: 70px">
                                                 <p:selectBooleanCheckbox id="isCreateLocale" value="#{userController.selected.createLocale}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
                                             <p:outputLabel value="Taux :" />
-                                            <p:fieldset style="width: 70px">
                                                 <p:selectBooleanCheckbox id="isCreateCtegorieTaux" value="#{userController.selected.createCtegorieTaux}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
-                                            <p:outputLabel value="Adressage :" />
-                                            <p:fieldset style="width: 70px">
+                                            <p:outputLabel value="Adressage:" />
                                                 <p:selectBooleanCheckbox id="CtegorieAdresse" value="#{userController.selected.createAdresse}" disabled="#{userController.selected.admine==true}"/>
-                                            </p:fieldset>
+
+                                            <p:outputLabel value="secteur" rendered="#{userController.selected.admine==true}" />
+                                            <p:selectOneMenu id="secteur"  value="#{userController.secteur}" filter="true" rendered="#{userController.selected.admine==true}" >
+                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                <f:selectItems value="#{secteurController.items}"
+                                                               var="secteurItem" 
+                                                               itemValue="#{secteurItem}"/>
+                                                <p:ajax process="secteur" listener="#{userController.findAnnexs()}" update="annexAdministratif" />
+                                            </p:selectOneMenu>
+
+                                            <p:outputLabel value="AnnexeAdministrative :" rendered="#{userController.selected.admine==true}" />
+                                            <p:selectOneMenu id="annexAdministratif"  value="#{userController.selected.annexeAdministratif}" filter="true" rendered="#{userController.selected.admine==true}" >
+                                                <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
+                                                <f:selectItems value="#{userController.secteur.annexeAdministratifs}"
+                                                               var="annexAdministratifItem" 
+                                                               itemValue="#{annexAdministratifItem}"/>
+                                                <p:ajax update="save" />
+                                            </p:selectOneMenu>
                                         </b:panelGrid>
                                     </div>
                                 </div>
                             </b:panel>
+
                         </div>
                     </div>
                     <div align="center">
-                        <b:commandButton actionListener="#{userController.create}" class="btn-primary" value="#{bundle.Save}" update="display,:UserListForm:datalist,:growl" oncomplete="handleSubmit(args,'UserCreateDialog');"/>
-                    <b:commandButton value="#{bundle.Cancel}" class="btn-primary" onclick="UserCreateDialog.hide()"/>
+                        <b:growl id="gr" />
+                        <p:commandButton id="save" actionListener="#{userController.create}" value="#{bundle.Save}" update="display,:UserListForm:datalist,gr"
+                                         disabled="#{empty userController.selected.annexeAdministratif.id and userController.selected.admine}" oncomplete="handleSubmit(args,'UserCreateDialog');"/>
+                        <p:commandButton value="#{bundle.Cancel}" onclick="UserCreateDialog.hide()"/>
                     </div>
                 </h:panelGroup>
             </h:form>

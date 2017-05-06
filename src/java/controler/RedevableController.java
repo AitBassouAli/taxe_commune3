@@ -7,6 +7,8 @@ import service.RedevableFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -87,11 +89,33 @@ public class RedevableController implements Serializable {
         return selected;
     }
 
-    public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("RedevableCreated"));
-        if (!JsfUtil.isValidationFailed()) {
-            items.add(ejbFacade.clone(selected));    // Invalidate list of items to trigger re-query.
+    public int showError() {
+
+        if (selected.getPrenom().equals("")) {
+            JsfUtil.addErrorMessage("Inserer le prenom");
+            return 1;
         }
+        if (selected.getNom().equals("")) {
+            JsfUtil.addErrorMessage("Inserer le nom");
+            return 2;
+        }
+        if (selected.getPattente().equals("")) {
+            JsfUtil.addErrorMessage("Inserer la pattente");
+            return 3;
+        }
+        return 0;
+    }
+
+    public void create() {
+        int x = showError();
+        if (x == 0) {
+            persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("RedevableCreated"));
+        }
+        if (!JsfUtil.isValidationFailed()) {
+            items = null;    // Invalidate list of items to trigger re-query.
+
+        }
+
     }
 
     public void preparUpdate(Redevable redevable) {
@@ -148,6 +172,10 @@ public class RedevableController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
+    }
+
+    public void setItems(List<Redevable> items) {
+        this.items = items;
     }
 
     public int getTypeEntite() {

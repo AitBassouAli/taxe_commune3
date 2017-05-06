@@ -31,6 +31,10 @@ public class HistoriqueFacade extends AbstractFacade<Historique> {
         return em;
     }
 
+    @Override
+    public List<Historique>findAll(){
+        return em.createQuery("SELECT h FROM Historique h ORDER BY h.dateAction DESC").getResultList();
+    }
     public void updateDevice(Device device) {
         String rqt = "UPDATE Historique h set h.device = " + null + " WHERE h.device.id =" + device.getId();
         System.out.println(rqt);
@@ -46,6 +50,7 @@ public class HistoriqueFacade extends AbstractFacade<Historique> {
         if (user != null) {
             requette += SearchUtil.addConstraint("h", "user.login", "=", user.getLogin());
         }
+        requette+=" ORDER BY h.dateAction DESC";
         System.out.println(requette);
         return em.createQuery(requette).getResultList();
 

@@ -17,14 +17,9 @@
         <ui:define name="title">
             <h:outputText value="#{bundle.ListRedevableTitle}"></h:outputText>
         </ui:define>
-
-        <script type="text/javaScript" >
-            $(function(){
-            $("#viewButton").click(function(){
-            alert("event click");
-            });
-            });
-        </script>
+        <f:metadata >
+            <f:viewAction action="#{redevableController.setItems(null)}" />
+        </f:metadata>
 
         <ui:define name="body">
             <h:form id="RedevableListForm">
@@ -116,7 +111,6 @@
                         </f:facet>
                         <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  style="color: lightsteelblue" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableViewForm" oncomplete="PF('RedevableViewDialog').show()" />
                         <b:commandButton id="editButton"  value="" tooltip="Modifier"  icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" actionListener="#{redevableController.preparUpdate(item)}" update=":RedevableEditForm" oncomplete="PF('RedevableEditDialog').show()"  />
-                        <p:growl id="message" showDetail="true" />
                     </b:dataTableColumn>
 
                 </b:dataTable>

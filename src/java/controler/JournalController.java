@@ -23,7 +23,7 @@ import javax.faces.convert.FacesConverter;
 @Named("journalController")
 @SessionScoped
 public class JournalController implements Serializable {
-    
+
     @EJB
     private service.JournalFacade journalFacade;
     @EJB
@@ -34,49 +34,59 @@ public class JournalController implements Serializable {
     private Date dateMax;
     private int typee;
     private String beanName;
-    
+
     public void searche() {
         items = ejbFacade.journaleSearch(dateMin, dateMax, typee, beanName);
     }
-    
+
+     public String typeOfJournal(Journal journal) {
+        switch (journal.getType()) {
+            case 1:
+               return "Création";
+            case 2:
+                return "Modification";
+            default:
+                return "Suppression";
+        }
+    }
     public JournalController() {
     }
-    
+
     public Journal getSelected() {
         return selected;
     }
-    
+
     public void setSelected(Journal selected) {
         this.selected = selected;
     }
-    
+
     protected void setEmbeddableKeys() {
     }
-    
+
     protected void initializeEmbeddableKey() {
     }
-    
+
     private JournalFacade getFacade() {
         return ejbFacade;
     }
-    
+
     public Journal prepareCreate() {
         selected = new Journal();
         initializeEmbeddableKey();
         return selected;
     }
-    
+
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("JournalCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-    
+
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("JournalUpdated"));
     }
-    
+
     public void destroy(Journal journal) {
         selected = journal;
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("JournalDeleted"));
@@ -85,7 +95,7 @@ public class JournalController implements Serializable {
             items.remove(journal);    // Invalidate list of items to trigger re-query.
         }
     }
-    
+
     public List<Journal> getItems() {
         if (items == null) {
             items = getFacade().findAll();
@@ -96,33 +106,26 @@ public class JournalController implements Serializable {
     public void setItems(List<Journal> items) {
         this.items = items;
     }
-    
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                Journal oldvalue = new Journal();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Journal", 1, null, selected);
                         JsfUtil.addSuccessMessage("Journal bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Journal", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Journal", 3, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }
-                
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
@@ -140,54 +143,54 @@ public class JournalController implements Serializable {
             }
         }
     }
-    
+
     public Journal getJournal(java.lang.Long id) {
         return getFacade().find(id);
     }
-    
+
     public Date getDateMin() {
         return dateMin;
     }
-    
+
     public void setDateMin(Date dateMin) {
         this.dateMin = dateMin;
     }
-    
+
     public Date getDateMax() {
         return dateMax;
     }
-    
+
     public void setDateMax(Date dateMax) {
         this.dateMax = dateMax;
     }
-    
+
     public int getTypee() {
         return typee;
     }
-    
+
     public void setTypee(int typee) {
         this.typee = typee;
     }
-    
+
     public String getBeanName() {
         return beanName;
     }
-    
+
     public void setBeanName(String beanName) {
         this.beanName = beanName;
     }
-    
+
     public List<Journal> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
-    
+
     public List<Journal> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-    
+
     @FacesConverter(forClass = Journal.class)
     public static class JournalControllerConverter implements Converter {
-        
+
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -197,19 +200,19 @@ public class JournalController implements Serializable {
                     getValue(facesContext.getELContext(), null, "journalController");
             return controller.getJournal(getKey(value));
         }
-        
+
         java.lang.Long getKey(String value) {
             java.lang.Long key;
             key = Long.valueOf(value);
             return key;
         }
-        
+
         String getStringKey(java.lang.Long value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
-        
+
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -223,7 +226,7 @@ public class JournalController implements Serializable {
                 return null;
             }
         }
-        
+
     }
-    
+
 }

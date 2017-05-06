@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author ayoub
  */
-    @Stateless
+@Stateless
 public class DeviceFacade extends AbstractFacade<Device> {
 
     @PersistenceContext(unitName = "projet_java_taxPU")
@@ -27,6 +27,11 @@ public class DeviceFacade extends AbstractFacade<Device> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    @Override
+    public List<Device> findAll() {
+        return em.createQuery("SELECT d FROM Device d ORDER BY d.dateCreation DESC").getResultList();
     }
 
     public Device curentDevice(User user, Device device) {
@@ -56,6 +61,7 @@ public class DeviceFacade extends AbstractFacade<Device> {
         if (!categorie.equals("-")) {
             rqt += SearchUtil.addConstraint("d", "deviceCategorie", "=", categorie);
         }
+        rqt += " ORDER BY d.dateCreation DESC";
         System.out.println(rqt);
         return em.createQuery(rqt).getResultList();
     }

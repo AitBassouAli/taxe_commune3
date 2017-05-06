@@ -78,7 +78,7 @@ public class TauxTaxe implements Serializable {
 
     @Override
     public String toString() {
-        return "bean.TauxTaxe[ id=" + id + " ]";
+        return taux+"";
     }
     
 }

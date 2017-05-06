@@ -90,24 +90,18 @@ public class SecteurController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                Secteur oldvalue = new Secteur();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
+               
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Secteur", 1, oldvalue, selected);
                         JsfUtil.addSuccessMessage("Secteur bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Secteur", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Secteur", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

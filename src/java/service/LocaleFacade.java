@@ -42,6 +42,16 @@ public class LocaleFacade extends AbstractFacade<Locale> {
     @PersistenceContext(unitName = "projet_java_taxPU")
     private EntityManager em;
 
+    public String getPropGerant(Redevable redevable, Locale locale) {
+        if (Objects.equals(redevable.getId(), locale.getProprietaire().getId())) {
+            return "propriétaire";
+        }
+        if (Objects.equals(redevable.getId(), locale.getGerant().getId())) {
+            return "gerant";
+        }
+        return "";
+    }
+
     public void updateRue(Rue rue) {
         String rqt = "UPDATE Locale l set l.rue = " + null + " WHERE l.rue.id =" + rue.getId();
         System.out.println(rqt);

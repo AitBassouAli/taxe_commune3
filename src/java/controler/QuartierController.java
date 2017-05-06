@@ -128,24 +128,17 @@ public class QuartierController implements Serializable {
         if (selected != null) {
             setEmbeddableKeys();
             try {
-                Quartier oldvalue = new Quartier();
-                if (persistAction != PersistAction.CREATE) {
-                    oldvalue = getFacade().find(selected.getId());
-                }
                 switch (persistAction) {
                     case CREATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Quartier", 1, null, selected);
                         JsfUtil.addSuccessMessage("Quartier bien crée");
                         break;
                     case UPDATE:
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("Quartier", 2, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Quartier", 3, oldvalue, selected);
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }

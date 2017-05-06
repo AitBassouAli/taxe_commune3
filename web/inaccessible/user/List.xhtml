@@ -108,10 +108,10 @@
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{userController.preparUpdate(item)}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" style="color: lightsteelblue"  />
-                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{userController.preparUpdate(item)}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" style="color: lightsalmon"  />
+                            <b:commandButton id="viewButton" value="" tooltip="Detail" icon="glyphicon glyphicon-search"  actionListener="#{userController.preparUpdate(item)}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" style="color: lightsteelblue" disabled="#{userController.connectedUser.annexeAdministratif.id!=item.annexeAdministratif.id}" />
+                            <b:commandButton id="editButton"  value="" tooltip="Modifier" icon="glyphicon glyphicon-pencil" actionListener="#{userController.preparUpdate(item)}" update=":UserEditForm" oncomplete="PF('UserEditDialog').show()" style="color: lightsalmon" disabled="#{item.admine==true or userController.connectedUser.annexeAdministratif.id!=item.annexeAdministratif.id}"  />
                             <b:commandButton id="bloqueButton" value="" tooltip="#{item.blocked==0?'Bloquer':'Debloquer'}" icon="glyphicon glyphicon-minus-sign" actionListener="#{userController.bloquer(item)}" update="UserListForm,:growl"
-                                             style="color:#d9534f" >
+                                             rendered="#{item.admine==false or userController.connectedUser.annexeAdministratif.id!=item.annexeAdministratif.id}" disabled="#{item.login==userController.connectedUser.login}"        style="color:#d9534f" >
                             </b:commandButton>
                         </b:dataTableColumn>
 

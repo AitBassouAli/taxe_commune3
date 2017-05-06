@@ -173,7 +173,7 @@ public class CategorieController implements Serializable {
                         break;
                     default:
                         getFacade().remove(selected);
-                        journalFacade.journalUpdate("Categorie", 3, oldvalue.toString(), selected.toString());
+                        journalFacade.journalUpdate("Categorie", 3, oldvalue.toString(),"");
                         JsfUtil.addSuccessMessage(successMessage);
                         break;
                 }
