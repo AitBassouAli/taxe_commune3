@@ -98,7 +98,11 @@ public class UserController implements Serializable {
 
     public void changePass() {
         int res = ejbFacade.changePassword(getConnectedUser().getLogin(), oldPassword, changePassword, changeRepetePassword);
-        showMessage(res);
+        if (res == 1) {
+            items = null;
+        } else {
+            showMessage(res);
+        }
     }
 
     public void changeInformation() {

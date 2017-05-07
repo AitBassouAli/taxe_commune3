@@ -81,13 +81,13 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     }
 
     //update taxeTrim   ali
-    public TaxeTrim update(TaxeTrim taxeTrim) {
+    public Object[] update(TaxeTrim taxeTrim) {
         System.out.println("updating...");
         TaxeTrim loadedTaxe = findTaxeByTaxeAnnuel(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
         if (loadedTaxe != null) {
             if (!Objects.equals(loadedTaxe.getId(), taxeTrim.getId())) {
                 System.out.println("nulll  2");
-                return null;
+                return new Object[]{-1, null};
             }
         } else {
             System.out.println("switch ...");
@@ -95,18 +95,14 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
             int mois = DateUtil.calculerMois(taxeTrim, taxeTrim.getTaxeAnnuel().getAnnee());
             taxeTrim = calculerRetard(taxeTrim, mois);
             if (taxeTrim == null) {
-                return null;//impossible de payer trimester nest pas encore terminee!!
+                return new Object[]{-4, null};//impossible de payer trimester nest pas encore terminee!!
             }
-            System.out.println("setters ...");
-            taxeTrim.setMontantTotal(taxeTrim.getMontant() + taxeTrim.getMontantRetard());
-            taxeTrim.setNbrMoisRetard(mois - 1);
-
             taxeAnnuelFacade.create(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//si il n'existe une taxeAnnuel avec ce locale et l'annee il va le creer 
             TaxeAnnuel taxeAnnuel = taxeAnnuelFacade.findByLocaleAndAnnee(taxeTrim.getLocale(), taxeTrim.getTaxeAnnuel().getAnnee());//100% taxeTrim existe dans la base de donnees
             if (!Objects.equals(taxeAnnuel.getId(), oldTaxeTrim.getTaxeAnnuel().getId())) {
                 if (taxeAnnuel.getNbrTrimesterPaye() >= 4) {//tous les taxeTrim sont paye pour cette annee e ce locale
                     System.out.println("3ndha kter mn 3 deja mkhlsinn");
-                    return null;
+                    return new Object[]{-2, null};
                 } else {
                     System.out.println("incrementation");
                     taxeAnnuel.setNbrTrimesterPaye(taxeAnnuel.getNbrTrimesterPaye() + 1);
@@ -125,7 +121,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
                 //2 b7ql b7qll
             }
         }
-        return taxeTrim;
+        return new Object[]{1, taxeTrim};
     }
     //creation d'une taxeTrim  ali
 
@@ -204,7 +200,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
 
         Rue r = t.getLocale().getRue();
         String cinRc;
-        if (t.getLocale().getProprietaire().getCin().equals("")) {
+        if (t.getRedevable().getCin().equals("")) {
             cinRc = t.getRedevable().getRc();
         } else {
             cinRc = t.getRedevable().getCin();
@@ -216,7 +212,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         params.put("exploitant", localeFacade.getPropGerant(t.getRedevable(), t.getLocale()));
         params.put("annee", t.getTaxeAnnuel().getAnnee());
         params.put("numTrim", t.getNumeroTrim());
-        params.put("datePaiement", t.getDatePaiement());
+        params.put("datePaiement", new Date());
         params.put("somme", t.getMontantTotal());
         params.put("user", user.getNom() + " " + user.getPrenom());
         params.put("tel", t.getRedevable().getFax());
@@ -224,7 +220,7 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         params.put("numDeclarat", t.getId());
         System.out.println(params);
         System.out.println(t);
-        PdfUtil.generatePdf(myList, params, "recu" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");
+        PdfUtil.generatePdf(myList, params, "recu_Trimestre" + t.getId() + ".pdf", "/jasper/taxPaiement.jasper");
     }
 
 //la recherche d'une taxeTrim avec TaxeAnnuel,locale,numero
@@ -247,10 +243,13 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
     }
 
     // recherche des taxes pour extraire un graphe
-    public List<TaxeTrim> findTaxByCritere(String activite, int firstYear, int secondYear, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
+    public List<TaxeTrim> findTaxByCritere(Categorie categorie, String activite, int firstYear, int secondYear, Rue rue, Quartier quartier, AnnexeAdministratif annex, Secteur secteur) {
         String rqt = "SELECT tax FROM TaxeTrim tax where 1=1 ";
         if (activite != null) {
             rqt += SearchUtil.addConstraint("tax.locale", "activite", "=", activite);
+        }
+        if (categorie != null) {
+            rqt += SearchUtil.addConstraint("tax.locale", "categorie.id", "=", categorie.getId());
         }
         if (firstYear > 0 && secondYear > 0) {
             rqt += "AND tax.taxeAnnuel.annee in (" + firstYear + "," + secondYear + ")";
@@ -270,7 +269,6 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
         } else {
             rqt += SearchUtil.addConstraint("tax.locale", "rue.id", "=", rue.getId());
         }
-        rqt += " ORDER BY tax.datePaiement DESC";
         System.out.println(rqt);
         return em.createQuery(rqt).getResultList();
     }
@@ -442,14 +440,14 @@ public class TaxeTrimFacade extends AbstractFacade<TaxeTrim> {
                 if (!Objects.equals(nouveau.getTaxeAnnuel().getId(), auncienne.getTaxeAnnuel().getId())) {
                     TaxeAnnuel newAnnee = taxeAnnuelFacade.find(nouveau.getTaxeAnnuel().getId());
                     TaxeAnnuel oldAnnee = taxeAnnuelFacade.find(auncienne.getTaxeAnnuel().getId());
-                    oldVal += " , Annee => : " + newAnnee.getAnnee();
-                    newVal += " , Annee => : " + oldAnnee.getAnnee();
+                    oldVal += " , Annee => : " + oldAnnee.getAnnee();
+                    newVal += " , Annee => : " + newAnnee.getAnnee();
                 }
                 if (!Objects.equals(nouveau.getLocale().getId(), auncienne.getLocale().getId())) {
                     Locale newloc = localeFacade.find(nouveau.getLocale().getId());
                     Locale oldLoc = localeFacade.find(auncienne.getLocale().getId());
-                    oldVal += " , Locale => : " + newloc.getNom();
-                    newVal += " , Locale => : " + oldLoc.getNom();
+                    oldVal += " , Locale => : " + oldLoc.getNom();
+                    newVal += " , Locale => : " + newloc.getNom();
                 }
 
                 if (nouveau.getNombreNuit() != auncienne.getNombreNuit()) {

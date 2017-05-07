@@ -14,6 +14,7 @@ import controler.util.SessionUtil;
 import java.io.IOException;
 import service.TaxeTrimFacade;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import service.AnnexeAdministratifFacade;
+import service.CategorieFacade;
 import service.LocaleFacade;
 import service.QuartierFacade;
 import service.RedevableFacade;
@@ -67,6 +69,8 @@ public class TaxeTrimController implements Serializable {
     @EJB
     private UserFacade userFacade;
     @EJB
+    private CategorieFacade categorieFacade;
+    @EJB
     private service.JournalFacade journalFacade;
     private User connectedUser;
 
@@ -81,7 +85,7 @@ public class TaxeTrimController implements Serializable {
     private String cin;
     private String rc;
     private Redevable redevable;
-    private int annee;
+    private int annee = 2017;
     private boolean rendred;
     //attribut de recherche taxeTrim souhail
     private Date dateMin;
@@ -95,9 +99,11 @@ public class TaxeTrimController implements Serializable {
     private Categorie categorie;
     //recherche pour le graph de fatima
     private List<String> activities;
+    private List<Categorie> categories;
     private String activite;
-    private int firstYear;
-    private int secondYear;
+    private int firstYear = 2016;
+    private int secondYear = 2017;
+    private Categorie categorie1;
     private BarChartModel modele = null;
     private LineChartModel lineModel;
     private DonutChartModel donutChartModel;
@@ -106,7 +112,6 @@ public class TaxeTrimController implements Serializable {
     private boolean editRedevableBtn;
 
     // jasper
-    
     public void generatPdf(TaxeTrim taxeTrim) throws JRException, IOException {
         ejbFacade.printPdf(taxeTrim);
         FacesContext.getCurrentInstance().responseComplete();
@@ -164,7 +169,7 @@ public class TaxeTrimController implements Serializable {
 
     //apl au methode de recherches destaxTrm par criter pour construire un graphe
     public void createBarModel() {
-        taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
+        taxes = ejbFacade.findTaxByCritere(categorie1, activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
         modele = ejbFacade.initBarModel(taxes, firstYear, secondYear);
         modele.setTitle("Statistique");
         modele.setLegendPosition("ne");
@@ -178,7 +183,7 @@ public class TaxeTrimController implements Serializable {
 
     // bar de graphe
     public void createModel() {
-        taxes = ejbFacade.findTaxByCritere(activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
+        taxes = ejbFacade.findTaxByCritere(categorie1, activite, firstYear, secondYear, rue, quartier, annexeAdministratif, secteur);
         switch (typeGraphe) {
             case 3:
                 donutChartModel = ejbFacade.initDonuModel(taxes, firstYear, secondYear);
@@ -254,7 +259,6 @@ public class TaxeTrimController implements Serializable {
 
     public void findRedevableByCin() {
         selected.setLocale(null);
-        // redevable.setLocales(localeFacade.findByRedevableCin(cin));
         rc = "";
         redevable = findRedevable();
         if (redevable != null) {
@@ -265,7 +269,6 @@ public class TaxeTrimController implements Serializable {
 
     public void findRedevableByRc() {
         selected.setLocale(null);
-        //redevable.setLocales(localeFacade.findByRedevableRc(rc));
         cin = "";
         redevable = findRedevable();
         if (redevable != null) {
@@ -281,11 +284,11 @@ public class TaxeTrimController implements Serializable {
             if (lst != null && !lst.isEmpty()) {
                 return lst.get(0);
             } else {
-                JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
+                JsfUtil.addErrorMessage("Aucun Redevable trouvé avec ces données");
                 return null;
             }
         } else {
-            JsfUtil.addErrorMessage("Aucun Redevable trouvée aves ces donnéés");
+            JsfUtil.addErrorMessage("Aucun Redevable trouvé avec ces données");
             return null;
         }
     }
@@ -317,6 +320,10 @@ public class TaxeTrimController implements Serializable {
     public TaxeTrim prepareCreate() {
         rendred = false;
         selected = new TaxeTrim();
+        redevable = new Redevable();
+        rc = "";
+        cin = "";
+        annee = 2017;
         initializeEmbeddableKey();
         return selected;
     }
@@ -341,52 +348,69 @@ public class TaxeTrimController implements Serializable {
     }
 
     public void simuler() {
-        Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, true);
-        if ((int) res[0] == 1) {
-            rendred = true;
-            System.out.println("simulation ...");
-            selected = ejbFacade.clone((TaxeTrim) res[1]);
-        } else {
-            erorMessage((int) res[0]);
+        if (eroors() > 0) {
+            Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, true);
+            if ((int) res[0] == 1) {
+                rendred = true;
+                System.out.println("simulation ...");
+                selected = ejbFacade.clone((TaxeTrim) res[1]);
+            } else {
+                erorMessage((int) res[0]);
+            }
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+    }
+
+    public int eroors() {
+        if (annee > 1990 && annee <= LocalDate.now().getYear()) {
+            return 1;
+        }
+        JsfUtil.addErrorMessage("La valeur indiqué de l'année est invalide");
+        return -1;
     }
 
     public void create() throws JRException, IOException {
-        Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, false);
-        if ((int) res[0] == 1) {
-            System.out.println("persiting...");
-            selected = ejbFacade.clone((TaxeTrim) res[1]);
-            selected.setRedevable(redevable);
-            selected.setUser(getConnectedUser());
-            persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
-        } else {
-            erorMessage((int) res[0]);
+        if (eroors() > 0) {
+            Object[] res = ejbFacade.create(ejbFacade.clone(selected), annee, false);
+            if ((int) res[0] == 1) {
+                System.out.println("persiting...");
+                selected = ejbFacade.clone((TaxeTrim) res[1]);
+                selected.setRedevable(redevable);
+                selected.setUser(getConnectedUser());
+                persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimCreated"));
+            } else {
+                erorMessage((int) res[0]);
+            }
         }
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+
     }
 
     public void update() {
-        selected = ejbFacade.update(selected);
-        if (selected != null) {
-            TaxeTrim oldTaxeTrim = ejbFacade.find(selected.getId());
-            persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimUpdated"));
-            if (oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() == 0 && oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() == 0.0) {
-                taxeAnnuelFacade.delete(oldTaxeTrim.getTaxeAnnuel());
+        annee = selected.getTaxeAnnuel().getAnnee();
+        if (eroors() > 0) {
+            Object[] res = ejbFacade.update(selected);
+            if ((int) res[0] == 1) {
+                selected = (TaxeTrim) res[1];
+                TaxeTrim oldTaxeTrim = ejbFacade.find(selected.getId());
+                persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrim Modifié avec succses"));
+                if (oldTaxeTrim.getTaxeAnnuel().getNbrTrimesterPaye() == 0 && oldTaxeTrim.getTaxeAnnuel().getTaxeTotale() == 0.0) {
+                    taxeAnnuelFacade.delete(oldTaxeTrim.getTaxeAnnuel());
+                }
+            } else {
+                erorMessage((int) res[0]);
             }
-            items = null;
-        } else {
-            JsfUtil.addErrorMessage("TaxeTrim erroor !!");
         }
+        items = null;
     }
 
     public void destroy(TaxeTrim taxeTrim) {
         selected = taxeTrim;
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrimDeleted"));
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TaxeTrim Supprimé avec succses"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items.remove(taxeTrim);    // Invalidate list of items to trigger re-query.
@@ -416,8 +440,8 @@ public class TaxeTrimController implements Serializable {
                     case CREATE:
                         Object[] newOldCreate = ejbFacade.compare(selected, oldvalue, 1);
                         getFacade().edit(selected);
-                        journalFacade.journalUpdate("TaxeTrim", 1, newOldCreate[1], newOldCreate[1]);
-                        JsfUtil.addSuccessMessage("TaxeTrim bien crée");
+                        journalFacade.journalUpdate("TaxeTrim", 1, newOldCreate[1], newOldCreate[0]);
+                        JsfUtil.addSuccessMessage("TaxeTrim creé avec succses");
                         break;
                     case UPDATE:
                         Object[] newOldUpdate = ejbFacade.compare(selected, oldvalue, 2);
@@ -817,6 +841,25 @@ public class TaxeTrimController implements Serializable {
 
     public void setEditRedevableBtn(boolean editRedevableBtn) {
         this.editRedevableBtn = editRedevableBtn;
+    }
+
+    public Categorie getCategorie1() {
+        if (categorie1 == null) {
+            categorie1 = new Categorie();
+        }
+        return categorie1;
+    }
+
+    public void setCategorie1(Categorie categorie1) {
+        this.categorie1 = categorie1;
+    }
+
+    public List<Categorie> getCategories() {
+        return categories = categorieFacade.findAll();
+    }
+
+    public void setCategories(List<Categorie> categories) {
+        this.categories = categories;
     }
 
 }

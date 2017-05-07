@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.validator.constraints.Email;
 
 /**
  *
@@ -26,6 +27,7 @@ public class User implements Serializable {
     private String password;
     private String nom;
     private String prenom;
+    @Email
     private String email;
     private String tel;
     private int blocked;

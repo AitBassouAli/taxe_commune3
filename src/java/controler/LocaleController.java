@@ -116,7 +116,7 @@ public class LocaleController implements Serializable {
             }
         }
         setEmptyModel(localsModel);
-        return "MapByCretere?redirect=true";
+        return "MapByCretere?faces-redirect=true";
     }
 
     public String addOneLocaleMarkersToMap(Locale item) {
@@ -135,7 +135,7 @@ public class LocaleController implements Serializable {
         lat = 0D;
         lng = 0D;
         setEmptyModel(localsModel);
-        return "Search?redirect=true";
+        return "Search?faces-redirect=true";
     }
 
     public MapModel getEmptyModel() {
@@ -288,7 +288,12 @@ public class LocaleController implements Serializable {
     }
 
     public void findtaxes(Locale locale) {
-        setTaxeTrims(taxeTrimFacade.findTaxesByLocale(locale));
+        List<TaxeTrim> taxes = taxeTrimFacade.findTaxesByLocale(locale);
+        if (taxes.isEmpty() == true) {
+            JsfUtil.addErrorMessage("aucune taxe trimestrielle trouvé pour ce local");
+        } else {
+            setTaxeTrims(taxeTrimFacade.findTaxesByLocale(locale));
+        }
     }
 
     public void findAnnexs() {

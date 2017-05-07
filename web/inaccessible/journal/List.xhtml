@@ -11,7 +11,7 @@
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListJournalTitle}"></h:outputText>
+            <h:outputText value="Journale D'actions"></h:outputText>
         </ui:define>
 
         <f:metadata>
@@ -51,7 +51,7 @@
                             <f:facet name="header">
                                 <h:outputText value="beanName"/>
                             </f:facet>
-                            <h:outputText value="#{item.beanName}"/>
+                            <h:outputText value="Entité"/>
                         </b:dataTableColumn>
                         <b:dataTableColumn>
                             <f:facet name="header">
@@ -81,7 +81,7 @@
                         </b:dataTableColumn>
                         <b:dataTableColumn>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListJournalTitle_user}"/>
+                                <h:outputText value="Utilisateur"/>
                             </f:facet>
                             <h:outputText value="#{item.user}"/>
                         </b:dataTableColumn>

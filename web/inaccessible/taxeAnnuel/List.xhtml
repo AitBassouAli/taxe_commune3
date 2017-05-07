@@ -19,30 +19,29 @@
             <h:form id="TaxeAnnuelListForm" >
 
                 <b:panel title="Rechercher des taxeAnnuelle par différents critères" class="panel-primary"   >
-
-
                     <b:panelGrid columns="6" >
-                        <h:outputLabel value="montantMin:" for="montantMin" />
+                        <h:outputLabel value="Montant min:" for="montantMin" />
                         <b:inputText id="montantMin" value="#{taxeAnnuelController.montantMin}"  />
-                        <h:outputLabel value="montantMax:" for="montantMax" />
+                        <h:outputLabel value="Montant max:" for="montantMax" />
                         <b:inputText id="montantMax" value="#{taxeAnnuelController.montantMax}"  />
                         <h:outputLabel value="Locale Référence:" for="localeName" />
                         <b:inputText id="localeName" value="#{taxeAnnuelController.localeName}"  />
-                        <h:outputLabel value="TrimPayeMin:" for="tMin" />
+                        <h:outputLabel value="Nbr des TaxeTrimsMin" for="tMin" />
                         <b:inputText id="tMin" value="#{taxeAnnuelController.nombreTaxeMin}"  />
-                        <h:outputLabel value="TrimPayeMax:" for="tMax" />
+                        <h:outputLabel value="Nbr des TaxeTrimsMax" for="tMax" />
                         <b:inputText id="tMax" value="#{taxeAnnuelController.nombreTaxetMax}"  />
                         <h:outputLabel value="Annee:" for="a" />
                         <b:inputText id="a" value="#{taxeAnnuelController.annee}"  />
                     </b:panelGrid>
+                    <div align="center" >
+                        <b:commandButton value="Rechecher" style="color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
+                    </div>
                 </b:panel>
-                <div align="center" >
-                    <b:commandButton value="Rechecher" style="color:lightskyblue" icon="glyphicon glyphicon-search" actionListener="#{taxeAnnuelController.findByCreteria()}" update="TaxeAnnuelListForm:datalist"></b:commandButton>
-                </div>
+
 
                 <b:panel title=" taxeAnnuelle " class="panel-primary"   >
                     <b:dataTable id="datalist" value="#{taxeAnnuelController.items}" var="item"
-                                 selectionMode="single" 
+                                 selectionMode="single"  style="text-align: center"
                                  >
 
                         <b:dataTableColumn>
@@ -67,17 +66,13 @@
                             <f:facet name="header">
                                 <h:outputText value="Nombre des trimistres paye"/>
                             </f:facet>
-                            <h:outputText value="#{item.nbrTrimesterPaye}"/>
+                            <h:outputText value="#{item.nbrTrimesterPaye}&nbsp; &nbsp;(#{item.nbrTrimesterPaye==4?'Complete':'Incomplete'})" style="color :#{item.nbrTrimesterPaye==4?'green':'red'}; font-weight: bold"/>
                         </b:dataTableColumn>
                         <b:dataTableColumn>
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
-                            <b:commandButton id="viewButton"   value=""  icon="glyphicon glyphicon-search" style="color: lightsteelblue"  actionListener="#{taxeAnnuelController.prepareView(item)}" update=":TaxeAnnuelViewForm" oncomplete="PF('TaxeAnnuelViewDialog').show()" />
-                            <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
-
-                            <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeAnnuelController.destroy(item)}" update="TaxeAnnuelListForm,:growl" />
-
+                            <b:commandButton id="printButton" tooltip="Imprimer" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
                         </b:dataTableColumn>
 
                     </b:dataTable>

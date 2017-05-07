@@ -78,7 +78,7 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink   action="/inaccessible/search/Adrressage?faces-redirect=true" >
+                                <p:commandLink   action="/inaccessible/search/Adrressage?faces-redirect=true"  disabled="#{userController.connectedUser.createAdresse==false}" >
                                     <img src="images/adres.jpg"  height="200" width="200"></img>
                                 </p:commandLink>
                                 <h3>Adressage</h3>
@@ -89,7 +89,7 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink   action="/inaccessible/taxeTrim/List?faces-redirect=true" >
+                                <p:commandLink   action="/inaccessible/taxeTrim/List?faces-redirect=true" disabled="#{userController.connectedUser.createTaxes==false}" >
                                     <img src="images/paie.jpg"  height="200" width="200"></img>
                                 </p:commandLink>
                                 <h3>paiement</h3>
@@ -100,7 +100,7 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink   action="/inaccessible/locale/List?faces-redirect=true" >
+                                <p:commandLink   action="/inaccessible/locale/List?faces-redirect=true" disabled="#{userController.connectedUser.createLocale==false and userController.connectedUser.createRedevable==false}" >
                                     <img src="images/locales.png" height="200" width="200"></img>
                                 </p:commandLink>
                                 <h3>Locales</h3>
@@ -110,7 +110,7 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" >
+                                <p:commandLink  action="/inaccessible/redevable/List?faces-redirect=true" disabled="#{userController.connectedUser.createRedevable==false}" >
                                     <img src="images/redev.png"  height="200" width="200"></img>
                                 </p:commandLink>
                                 <h3>Redevables</h3>
@@ -120,7 +120,7 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink  action="/inaccessible/categorie/List?faces-redirect=true" >
+                                <p:commandLink  action="/inaccessible/categorie/Category_Taux?faces-redirect=true" disabled="#{userController.connectedUser.createCtegorieTaux==false}" >
                                     <img src="images/cats.png" height="200" width="200"></img>
                                 </p:commandLink>
                                 <h3>Tarifs des taxes</h3>
@@ -130,20 +130,20 @@
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink  action="/inaccessible/search/SearchRedevable?faces-redirect=true" >
+                                <p:commandLink  action="/inaccessible/user/List?faces-redirect=true" disabled="#{userController.connectedUser.createUser==false}" >
                                     <img src="images/search_redevale.png" height="200" width="200"></img>
                                 </p:commandLink>
-                                <h3>search redevable</h3>
+                                <h3>Utilisateurs</h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="thumbnail">
                             <div class="caption">
-                                <p:commandLink  action="/inaccessible/search/SearchTaxeTrim?faces-redirect=true" > 
+                                <p:commandLink  action="/inaccessible/search/Annuel_Trim?faces-redirect=true"  disabled="#{userController.connectedUser.createTaxes==false}" > 
                                     <img src="images/search_taxe.jpg" height="200" width="200"></img>
                                 </p:commandLink> 
-                                <h3>search taxes</h3>
+                                <h3>Recherche taxes</h3>
                             </div>
                         </div>
                     </div>

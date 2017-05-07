@@ -30,9 +30,9 @@
 
                 <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="lat,lng,save,growl" />
 
-                <h:inputText id="lat" value="#{localeController.lat}" />
-                <h:inputText id="lng" value="#{localeController.lng}" />
-                <p:commandButton id="save" value="Positionner Ici" actionListener="#{localeController.attachPositionToLocale()}" update="growl" 
+                <h:inputHidden id="lat" value="#{localeController.lat}" />
+                <h:inputHidden id="lng" value="#{localeController.lng}" />
+                <p:commandButton id="save" value="Positionner Ici" actionListener="#{localeController.attachPositionToLocale()}" update="growl" style="margin-top: 15px"
                                  class="form-control" disabled="#{empty localeController.selected or localeController.lat==0 or localeController.lng==0}" />
             </h:form></div>
         <div class="col-lg-1"/>

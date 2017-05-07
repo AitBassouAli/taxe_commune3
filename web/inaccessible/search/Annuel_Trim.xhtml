@@ -11,7 +11,7 @@
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListTaxeAnnuelTitle}"></h:outputText>
+            <h:outputText value="taxes Rcherche"></h:outputText>
         </ui:define>
         <f:metadata>
             <f:viewAction action="#{taxeAnnuelController.setItems(null)}"/>
@@ -48,7 +48,7 @@
                     <div class="col-md-6" >
                         <b:panel title=" taxeAnnuelle " class="panel-primary"   >
                             <b:dataTable id="datalist" value="#{taxeAnnuelController.items}" var="item"
-                                         selectionMode="single" 
+                                         selectionMode="single" pageLength="5"
                                          >
 
                                 <b:dataTableColumn>
@@ -73,15 +73,14 @@
                                     <f:facet name="header">
                                         <h:outputText value="Nombre des trimistres paye"/>
                                     </f:facet>
-                                    <h:outputText value="#{item.nbrTrimesterPaye}"/>
+                                    <h:outputText value="#{item.nbrTrimesterPaye}&nbsp; &nbsp;(#{item.nbrTrimesterPaye==4?'Complete':'Incomplete'})" style="color :#{item.nbrTrimesterPaye==4?'green':'red'}; font-weight: bold"/>
                                 </b:dataTableColumn>
                                 <b:dataTableColumn>
                                     <f:facet name="header">
                                         <h:outputText value="Action"/>
                                     </f:facet>
-                                    <b:commandButton id="detail" value=""  icon="glyphicon glyphicon-search" style="color: lightsteelblue" actionListener="#{taxeAnnuelController.findTaxTrim(item)}" update="TaxeAnnuelListForm:datalist2"/>
-                                    <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
-                                    <b:commandButton id="deleteButton" icon="glyphicon glyphicon-trash" style="color: lightcoral"  value="" actionListener="#{taxeAnnuelController.destroy(item)}" update="TaxeAnnuelListForm,:growl" />
+                                    <b:commandButton id="detail" value="" tooltip="Detail" icon="glyphicon glyphicon-search" style="color: lightcoral" actionListener="#{taxeAnnuelController.findTaxTrim(item)}" update="TaxeAnnuelListForm:datalist2"/>
+                                    <b:commandButton id="printButton" tooltip="Imprimer" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value=""  action="#{taxeAnnuelController.generatPdf(item)}" ajax="false"/>
 
                                 </b:dataTableColumn>
                             </b:dataTable>
@@ -97,7 +96,7 @@
                                          >
                                 <b:dataTableColumn>
                                     <f:facet name="header">
-                                        <h:outputText value="N° taxetrimestrielle"/>
+                                        <h:outputText value="N° "/>
                                     </f:facet>
                                     <h:outputText value="#{item.numeroTrim}"/>
                                 </b:dataTableColumn>
@@ -119,7 +118,7 @@
                                 </b:dataTableColumn>
                                 <b:dataTableColumn>
                                     <f:facet name="header">
-                                        <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
+                                        <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}(MAD)"/>
                                     </f:facet>
                                     <h:outputText value="#{item.montantTotal}"/>
                                 </b:dataTableColumn>
@@ -127,8 +126,8 @@
                                     <f:facet name="header">
                                         <h:outputText value="Action"/>
                                     </f:facet>
-                                    <b:commandButton id="viewButton" value=""  icon="glyphicon glyphicon-search"  actionListener="#{taxeAnnuelController.prepareView2(item)}" update=":TaxeTrimViewForm" oncomplete="PF('TaxeTrimViewDialog').show()" style="color: lightsteelblue" />
-                                    <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeAnnuelController.generatPdf2(item)}" ajax="false"/>
+                                    <b:commandButton id="viewButton"  tooltip="Detail" value=""  icon="glyphicon glyphicon-search"  actionListener="#{taxeAnnuelController.prepareView2(item)}" update=":TaxeTrimViewForm" oncomplete="PF('TaxeTrimViewDialog').show()" style="color: lightcoral" />
+                                    <b:commandButton id="printButton" tooltip="Imprimer" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeAnnuelController.generatPdf2(item)}" ajax="false"/>
 
                                 </b:dataTableColumn>
 

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b9b7cdfb-bf37-4317-9c39-fd9a7d3ea411">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="53"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="adresse" class="java.lang.String"/>
 	<parameter name="nomLocale" class="java.lang.String"/>
 	<parameter name="somme" class="java.lang.Double"/>
@@ -33,7 +33,7 @@
 				<text><![CDATA[A COMPTER PAR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="17" y="41" width="186" height="107"/>
+				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="17" y="31" width="186" height="107"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -50,9 +50,9 @@ DIVISION DE DEVELOPPEMENT
 DES RESSOURCES FINANCIERES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="23" y="10" width="174" height="20"/>
+				<reportElement uuid="864e0b03-d8f1-424d-bccb-20102b195c9d" x="211" y="119" width="162" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ROYAUME DU MAROC]]></text>
 			</staticText>
@@ -99,6 +99,10 @@ DES RESSOURCES FINANCIERES]]></text>
 			<line>
 				<reportElement uuid="bf7be476-a43c-42b4-bdc5-0173cf6ed406" x="553" y="31" width="1" height="106"/>
 			</line>
+			<image>
+				<reportElement uuid="71648a52-7403-4f91-b265-a193311e47c2" x="231" y="0" width="155" height="117"/>
+				<imageExpression><![CDATA["C:\\Users\\HP\\Documents\\NetBeansProjects\\taxe_communev1\\taxe_commune1\\web\\logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -176,7 +180,7 @@ DE L'ANNEE :]]></text>
 				<text><![CDATA[- Adresse :]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="91d0fffb-23be-44da-a25e-66a307546d05" x="206" y="159" width="304" height="20"/>
+				<reportElement uuid="91d0fffb-23be-44da-a25e-66a307546d05" x="215" y="159" width="304" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
@@ -342,35 +346,39 @@ DE L'ANNEE :]]></text>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="43" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="270" y="20" width="100" height="20"/>
+				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="286" y="40" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[A Marrakech le :]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="7395ca10-202a-466b-8100-f8a6a222fd17" x="361" y="20" width="191" height="20"/>
+				<reportElement uuid="7395ca10-202a-466b-8100-f8a6a222fd17" x="386" y="40" width="191" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{datSystem}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="3161b4db-6956-4f7f-ad57-32e3f3b5bd28" x="351" y="0" width="201" height="20"/>
+				<reportElement uuid="3161b4db-6956-4f7f-ad57-32e3f3b5bd28" x="368" y="20" width="201" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{user}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="270" y="0" width="100" height="20"/>
+				<reportElement uuid="caf82268-bbb5-483d-8d76-9fac8edbf392" x="286" y="20" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Le déclarant :]]></text>
 			</staticText>
+			<image>
+				<reportElement uuid="b4665b8e-117b-44f3-a25c-d57774885cd3" x="40" y="7" width="95" height="63"/>
+				<imageExpression><![CDATA["C:\\Users\\HP\\Pictures\\Feedback\\{948EB284-3A2B-481F-B144-31B38BA3FBF5}\\qr.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 	<summary>

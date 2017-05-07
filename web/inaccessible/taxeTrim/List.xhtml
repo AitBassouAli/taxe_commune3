@@ -11,7 +11,7 @@
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListTaxeTrimTitle}"></h:outputText>
+            <h:outputText value="Liste des taxes trimestrielles"></h:outputText>
         </ui:define>
         <f:metadata>
             <f:viewAction action="#{taxeTrimController.setItems(null)}"/>
@@ -93,87 +93,76 @@
                     </div>
 
                 </b:panel>
-                <div align="center">
-                    <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update="datalist,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
-                </div >
-                <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
-                             selectionMode="single" 
-                             >
+
+                <b:panel title=" taxes " class="panel-primary"   >
+                    <div align="center">
+                        <b:commandButton  style="width: 200px" class="btn-primary" icon="glyphicon glyphicon-plus"   value="Create" actionListener="#{taxeTrimController.prepareCreate}" update=":TaxeTrimCreateForm,:growl" oncomplete="PF('TaxeTrimCreateDialog').show()"/>
+                    </div >
+                    <b:dataTable id="datalist" value="#{taxeTrimController.items}" var="item"
+                                 selectionMode="single" style="text-align:center"
+                                 >
+
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="N°"/>
+                            </f:facet>
+                            <h:outputText value="#{item.numeroTrim}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Année"/>
+                            </f:facet>
+                            <h:outputText value="#{item.taxeAnnuel.annee}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.locale.reference}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Redevable"/>
+                            </f:facet>
+                            <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Montant Totale (MAD)"/>
+                            </f:facet>
+                            <h:outputText value="#{item.montantTotal}" style="font-weight: 800;text-align: center"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Date paiement"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datePaiement}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Nbr mois retard"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nbrMoisRetard}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn>
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+
+                            <b:commandButton id="viewButton" tooltip="Detail" value=""  icon="glyphicon glyphicon-search"  actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimViewForm" oncomplete="PF('TaxeTrimViewDialog').show()" style="color: lightsteelblue" />
+                            <b:commandButton id="editButton"  tooltip="Modifier"  icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" value="" actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimEditForm" oncomplete="PF('TaxeTrimEditDialog').show()" />
+                            <b:commandButton id="printButton" tooltip="Imprimer" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeTrimController.generatPdf(item)}" ajax="false"/>
+
+                        </b:dataTableColumn>
 
 
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantTotal}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.montantTotal}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_locale}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.locale.toString()}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_redevable}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.redevable.cin==''?item.redevable.rc:item.redevable.cin}" />
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="Numero"/>
-                        </f:facet>
-                        <h:outputText value="#{item.numeroTrim}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_taxeAnnuel}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.taxeAnnuel.annee}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montantRetard}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.montantRetard}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_montant}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.montant}"/>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_datePaiement}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.datePaiement}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                        </h:outputText>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListTaxeTrimTitle_nombreNuit}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nombreNuit}"/>
-                    </b:dataTableColumn>
 
-                    <b:dataTableColumn>
-                        <f:facet name="header">
-                            <h:outputText value="Action"/>
-                        </f:facet>
+                    </b:dataTable>
 
-                        <b:commandButton id="viewButton" value=""  icon="glyphicon glyphicon-search"  actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimViewForm" oncomplete="PF('TaxeTrimViewDialog').show()" style="color: lightsteelblue" />
-                        <b:commandButton id="editButton"   icon="glyphicon glyphicon-pencil"  style="color: lightsalmon" value="" actionListener="#{taxeTrimController.prepareEdit(item)}" update=":TaxeTrimEditForm" oncomplete="PF('TaxeTrimEditDialog').show()" />
-                        <b:commandButton id="printButton" icon="glyphicon glyphicon-print"  style="color: lightslategrey" value="" action="#{taxeTrimController.generatPdf(item)}" ajax="false"/>
-
-                    </b:dataTableColumn>
-                    
-                    
-
-                </b:dataTable>
-
-
+                </b:panel>
             </h:form>
 
 

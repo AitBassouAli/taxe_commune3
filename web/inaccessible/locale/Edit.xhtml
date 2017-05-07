@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="LocaleEditDlg" widgetVar="LocaleEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditLocaleTitle}">
+        <p:dialog id="LocaleEditDlg" widgetVar="LocaleEditDialog" modal="true" resizable="false" appendTo="@(body)" >
            
             <h:form id="redevableEditForm">
                 <h:panelGroup id="display">
@@ -37,12 +37,12 @@
                     <p:panelGrid columns="2" rendered="#{localeController.selected != null}">
                         
                         <p:outputLabel value="#{bundle.CreateLocaleLabel_proprietaire} " for="proprietaire" />
-                        <p:commandButton icon="ui-icon-refresh" actionListener="#{localeController.editProprietaire()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
+                        <p:commandButton icon="ui-icon-pencil" actionListener="#{localeController.editProprietaire()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
                             <h:outputText id="proprietaire" value="#{localeController.selected.proprietaire.nom}"/>
                         </p:commandButton>
 
                         <p:outputLabel value="#{bundle.CreateLocaleLabel_gerant}" for="gerant" />
-                        <p:commandButton icon="ui-icon-refresh" actionListener="#{localeController.editGerant()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
+                        <p:commandButton icon="ui-icon-pencil" actionListener="#{localeController.editGerant()}" update="LocaleEditForm,:redevableEditForm"  style="float:right">
                             <h:outputText id="gerant" value="#{localeController.selected.gerant.nom}" />
                         </p:commandButton>
                         <p:outputLabel value="#{bundle.CreateLocaleLabel_activite}" for="activite" />

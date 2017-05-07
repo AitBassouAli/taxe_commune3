@@ -72,7 +72,7 @@ public class TaxeAnnuelFacade extends AbstractFacade<TaxeAnnuel> {
         params.put("annee", t.getAnnee());
         System.out.println(params);
         System.out.println(t);
-        PdfUtil.generatePdf(taxeTrimFacade.findByTaxAnnuel(t), params, "recu" + t.getId() + ".pdf", "/jasper/taxAnnuel_detail.jasper");
+        PdfUtil.generatePdf(taxeTrimFacade.findByTaxAnnuel(t), params, "taxAnnuel_detail" + t.getId() + ".pdf", "/jasper/taxAnnuel_detail.jasper");
     }
 
     public void create(Locale locale, int annee) {

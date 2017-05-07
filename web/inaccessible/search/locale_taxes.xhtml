@@ -30,7 +30,7 @@
                                         <f:selectItems value="#{categorieController.items}" itemValue="#{item}" var="item"/>
                                     </p:selectOneMenu>
 
-                                    <p:outputLabel value="secteur" />
+                                    <p:outputLabel value="Secteur" />
                                     <p:selectOneMenu id="secteur"  value="#{localeController.secteur}" filter="true" class="form-control" >
                                         <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                         <f:selectItems value="#{secteurController.items}"
@@ -39,7 +39,7 @@
                                         <p:ajax process="secteur" listener="#{localeController.findAnnexs()}" update="annexAdministratif,quartier,rue" />
                                     </p:selectOneMenu>
 
-                                    <p:outputLabel value="annexAdministratif" />
+                                    <p:outputLabel value="Annexe administratif" />
                                     <p:selectOneMenu id="annexAdministratif"  value="#{localeController.annexeAdministratif}" filter="true" class="form-control" >
                                         <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                         <f:selectItems value="#{localeController.secteur.annexeAdministratifs}"
@@ -48,7 +48,7 @@
                                         <p:ajax process="annexAdministratif" listener="#{localeController.findQuartiers()}" update="quartier,rue" />
                                     </p:selectOneMenu>
 
-                                    <p:outputLabel value="quartier" />
+                                    <p:outputLabel value="Quartier" />
                                     <p:selectOneMenu id="quartier"  value="#{localeController.quartier}" filter="true" class="form-control" >
                                         <f:selectItem itemValue="#{null}" itemLabel="--SELECT--"/>
                                         <f:selectItems value="#{localeController.annexeAdministratif.quartiers}"
@@ -119,7 +119,7 @@
                                         <f:facet name="header">
                                             <h:outputText value="Action"/>
                                         </f:facet>
-                                        <b:commandButton actionListener="#{localeController.findtaxes(item)}"  icon="glyphicon glyphicon-search" value="" style="color: lightsteelblue" update="form:taxedatalist" />
+                                        <b:commandButton actionListener="#{localeController.findtaxes(item)}"  icon="glyphicon glyphicon-search" value="" style="color: lightsteelblue" update="form:taxedatalist,:growl" />
                                     </b:dataTableColumn>
 
 

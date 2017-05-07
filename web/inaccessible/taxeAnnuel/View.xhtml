@@ -14,8 +14,7 @@
                     <p:panelGrid columns="2" rendered="#{taxeAnnuelController.selected != null}">
                         <h:outputText value="#{bundle.ViewTaxeAnnuelLabel_taxeTotale}"/>
                         <h:outputText value="#{taxeAnnuelController.selected.taxeTotale}" title="#{bundle.ViewTaxeAnnuelTitle_taxeTotale}"/>
-                        <h:outputText value="#{bundle.ViewTaxeAnnuelLabel_id}"/>
-                        <h:outputText value="#{taxeAnnuelController.selected.id}" title="#{bundle.ViewTaxeAnnuelTitle_id}"/>
+                        
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="TaxeAnnuelViewDialog.hide()"/>
                 </h:panelGroup>

@@ -81,8 +81,8 @@
                     </p:gmap> 
                     <p:remoteCommand name="onPoint" actionListener="#{localeController.onPointSelect}" update="messages,lat,lng" />
 
-                    <h:inputText id="lat" value="#{localeController.lat}" />
-                    <h:inputText id="lng" value="#{localeController.lng}" />
+                    <h:inputHidden id="lat" value="#{localeController.lat}" />
+                    <h:inputHidden id="lng" value="#{localeController.lng}" />
                 </div>
             </h:form>
         </div>

@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="TaxeTrimEditDlg" widgetVar="TaxeTrimEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTaxeTrimTitle}">
+        <p:dialog id="TaxeTrimEditDlg" widgetVar="TaxeTrimEditDialog" modal="true" resizable="false" appendTo="@(body)" >
             <h:form id="TaxeTrimEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{taxeTrimController.selected != null}">
@@ -32,7 +32,7 @@
 
 
                         <p:outputLabel value="Redevable" for="redevable" />
-                        <p:commandButton icon="ui-icon-refresh" actionListener="#{taxeTrimController.editRedevableBtnClicked()}" update=":TaxeTrimEditForm"  style="float:right">
+                        <p:commandButton icon="ui-icon-pencil" actionListener="#{taxeTrimController.editRedevableBtnClicked()}" update=":TaxeTrimEditForm"  style="float:right">
                             <h:outputText id="redevable" value="#{taxeTrimController.selected.redevable.nom}" />
                         </p:commandButton>
                         <p:outputLabel value="categorie" />

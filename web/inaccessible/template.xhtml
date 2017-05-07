@@ -41,8 +41,8 @@
                         <b:navbarLinks>
                             <b:navLink value="Adressage" icon-awesome="fa-thumb-tack" icon-size="lg" href="../search/Adrressage.xhtml" rendered="#{userController.connectedUser.createAdresse==true}"></b:navLink>
                             <b:dropMenu value="Locales/Redevables"  icon-awesome="fa-list"  icon-size="lg" rendered="#{userController.connectedUser.createLocale==true or userController.connectedUser.createRedevable==true}" >
-                                <b:navLink value="Redevables" href="../redevable/List.xhtml"></b:navLink>
-                                <b:navLink value="Locales" href="../locale/List.xhtml"></b:navLink>
+                                <b:navLink value="Redevables" href="../redevable/List.xhtml" rendered="#{userController.connectedUser.createRedevable==true }"></b:navLink>
+                                <b:navLink value="Locales" href="../locale/List.xhtml" rendered="#{userController.connectedUser.createLocale==true }"></b:navLink>
                             </b:dropMenu>
                             <b:dropMenu value="Services de Paiement"  icon-awesome="fa-money" icon-size="lg" rendered="#{userController.connectedUser.createCtegorieTaux==true or userController.connectedUser.createTaxes==true}">
                                 <b:dropMenu value="Taxe" rendered="#{userController.connectedUser.createTaxes==true}" >
@@ -62,8 +62,7 @@
                                 <b:navLink value="Journal" icon-awesome="fa-list-alt" href="../journal/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
                                 <b:navLink value="Device" icon-awesome="fa-desktop" href="../device/List.xhtml" rendered="#{userController.connectedUser.admine==true}"></b:navLink>
                             </b:dropMenu>
-                            <b:dropMenu value="Recherches" icon-awesome="fa-search" icon-size="lg" >
-                                <b:navLink value="Taxes " href="../search/SearchTaxeTrim.xhtml"></b:navLink>
+                            <b:dropMenu value="Recherches" icon-awesome="fa-search" icon-size="lg" rendered="#{userController.connectedUser.createTaxes==true}" >
                                 <b:navLink value="Txes/Locales" href="../search/locale_taxes.xhtml"></b:navLink>
                                 <b:navLink value="Annuel/Trimistre" href="../search/Annuel_Trim.xhtml"></b:navLink>
 

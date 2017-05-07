@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="TaxeTrimViewDlg" widgetVar="TaxeTrimViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTaxeTrimTitle}">
+        <p:dialog id="TaxeTrimViewDlg" widgetVar="TaxeTrimViewDialog" modal="true" resizable="false" appendTo="@(body)" >
             <h:form id="TaxeTrimViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{taxeAnnuelController.taxeTrim != null}">
@@ -16,20 +16,19 @@
                         <h:outputText value="Numero de trimister"/>
                         <h:outputText value="#{taxeAnnuelController.taxeTrim.numeroTrim}" />
 
-                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_redevable}"/>
-                        <h:outputText value="#{taxeAnnuelController.taxeTrim.redevable}" title="#{bundle.ViewTaxeTrimTitle_redevable}"/>
-
                         <h:outputText value="#{bundle.ViewTaxeTrimLabel_locale}"/>
-                        <h:outputText value="#{taxeAnnuelController.taxeTrim.locale}" title="#{bundle.ViewTaxeTrimTitle_locale}"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.locale.nom}" title="#{bundle.ViewTaxeTrimTitle_locale}"/>
 
-                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantTotal}"/>
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantTotal}(MAD)"/>
                         <h:outputText value="#{taxeAnnuelController.taxeTrim.montantTotal}" title="#{bundle.ViewTaxeTrimTitle_montantTotal}"/>
 
-                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montant}"/>
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montant} (MAD)"/>
                         <h:outputText value="#{taxeAnnuelController.taxeTrim.montant}" title="#{bundle.ViewTaxeTrimTitle_montant}"/>
 
-                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantRetard}"/>
+                        <h:outputText value="#{bundle.ViewTaxeTrimLabel_montantRetard}(MAD)"/>
                         <h:outputText value="#{taxeAnnuelController.taxeTrim.montantRetard}" title="#{bundle.ViewTaxeTrimTitle_montantRetard}"/>
+                        <h:outputText value="Mois de retarrd"/>
+                        <h:outputText value="#{taxeAnnuelController.taxeTrim.nbrMoisRetard}" title="#{bundle.ViewTaxeTrimTitle_montantRetard}"/>
 
                         <h:outputText value="#{bundle.ViewTaxeTrimLabel_datePaiement}"/>
                         <h:outputText value="#{taxeAnnuelController.taxeTrim.datePaiement}" title="#{bundle.ViewTaxeTrimTitle_datePaiement}">

@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="RedevableCreateDlg" widgetVar="RedevableCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateRedevableTitle}">
+        <p:dialog id="RedevableCreateDlg" widgetVar="RedevableCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Nouveau redevable">
             <h:form id="RedevableCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{redevableController.selected != null}">
@@ -21,41 +21,43 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_rc}" for="rc" rendered="#{redevableController.typeEntite==2}" />
-                        <p:inputText id="rc" value="#{redevableController.selected.rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{redevableController.typeEntite==2}"/>
+                        <p:inputText id="rc" value="#{redevableController.selected.rc}" title="#{bundle.CreateRedevableTitle_rc}" rendered="#{redevableController.typeEntite==2}" required="true" requiredMessage="Veuillez remplir le champs 'RC'" placeholder="Entrer un RC"/>
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_cin}" for="cin" rendered="#{redevableController.typeEntite==1}" />
-                        <p:inputText id="cin" value="#{redevableController.selected.cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{redevableController.typeEntite==1}"/>
+                        <p:inputText id="cin" value="#{redevableController.selected.cin}" title="#{bundle.CreateRedevableTitle_cin}" rendered="#{redevableController.typeEntite==1}" required="true" requiredMessage="Veuillez remplir le champs 'CIN'" placeholder="Entrer un CIN" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_nom}" for="nom"  />
-                        <p:inputText id="nom" value="#{redevableController.selected.nom}" required="true"
-                                     requiredMessage="Please enter your Name." validatorMessage="Invalid name format" >
+                        <p:inputText id="nom" value="#{redevableController.selected.nom}" required="true" placeholder="Entrer un nom"
+                                     validatorMessage="Format de 'NOM' est invalide" requiredMessage="Veuillez remplir le champs 'NOM'">
                             <f:validateRegex pattern="^[_A-Za-z-\+]+(\.[_A-Za-z-]+)*" />
                         </p:inputText>
+
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_prenom}" for="prenom" rendered="#{redevableController.typeEntite==1}" />
-                        <p:inputText id="prenom" value="#{redevableController.selected.prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{redevableController.typeEntite==1}" />
+                        <p:inputText id="prenom" value="#{redevableController.selected.prenom}" title="#{bundle.CreateRedevableTitle_prenom}" rendered="#{redevableController.typeEntite==1}" required="true"
+                                     requiredMessage="Veuillez remplir le champs 'PRENOM" placeholder="Entrer un prenom" validatorMessage="Format de 'prenom' est invalide" >
+                            <f:validateRegex pattern="^[_A-Za-z-\+]+(\.[_A-Za-z-]+)*" />
+                        </p:inputText>
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_nature}" for="nature" />
                         <p:selectOneMenu id="nature" value="#{redevableController.selected.nature}" >
                             <f:selectItem itemValue="1" itemLabel="#{bundle.Gerant}"/>
                             <f:selectItem itemValue="2" itemLabel="#{bundle.Proprietaire}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_adresse}" for="adresse" />
-                        <p:inputText id="adresse" value="#{redevableController.selected.adresse}" title="#{bundle.CreateRedevableTitle_adresse}" />
+                        <p:inputText id="adresse" value="#{redevableController.selected.adresse}" placeholder="Entrer une adresse" title="#{bundle.CreateRedevableTitle_adresse}" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_email}" for="email" />
 
-                        <p:inputText id="email" required="true" label="email"
-                                     requiredMessage="Please enter your email address."
-                                     validatorMessage="Invalid email format"
+                        <p:inputText id="email" required="true" label="email" placeholder="exemple@gmail.com"
+                                     requiredMessage="Veuillez remplir le champs 'EMAIL'"
+                                     validatorMessage="Format d'email invalide"
                                      value="#{redevableController.selected.email}">
 
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 
                         </p:inputText>
-                        <p:watermark for="email" value="Email Address *" />
-                        <p:message for="email" />
 
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_fax}" for="fax" />
-                        <p:inputText id="fax" value="#{redevableController.selected.fax}" title="#{bundle.CreateRedevableTitle_fax}" />
+                        <p:inputText id="fax" value="#{redevableController.selected.fax}" required="true" requiredMessage="Veuillez remplir le champs 'Fax'" placeholder="Entrer un fax" title="#{bundle.CreateRedevableTitle_fax}" />
                         <p:outputLabel value="#{bundle.CreateRedevableLabel_pattente}" for="pattente" />
-                        <p:inputText id="pattente" value="#{redevableController.selected.pattente}" title="#{bundle.CreateRedevableTitle_pattente}" />
+                        <p:inputText id="pattente" value="#{redevableController.selected.pattente}" required="true" requiredMessage="Veuillez remplir le champs 'Pattente" placeholder="Entrer une pattente" title="#{bundle.CreateRedevableTitle_pattente}" />
                     </p:panelGrid>
                     <p:commandButton actionListener="#{redevableController.create}" value="#{bundle.Save}" update="display,:RedevableListForm:datalist,:growl" oncomplete="handleSubmit(args,'RedevableCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="RedevableCreateDialog.hide()"/>
