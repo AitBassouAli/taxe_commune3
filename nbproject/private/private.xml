@@ -4,15 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
         <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/SearchTaxeTrim.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/createLocaleAndRedevable.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/locale_taxes.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/List.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/RedevableFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/List.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/LocaleController.java</file>
+            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/locale_taxes.xhtml</file>
+            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/Annuel_Trim.xhtml</file>
+            <file>file:/C:/Users/BlackAngel-user/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeAnnuel/List.xhtml</file>
         </group>
         <group/>
         <group>
@@ -29,42 +23,6 @@
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/View.xhtml</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/redevable/Create.xhtml</file>
-        <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/SearchTaxeTrim.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/createLocaleAndRedevable.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeTrimFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/locale_taxes.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/List.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/RedevableFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/List.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/LocaleController.java</file>
-        </group>
-        <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/user/Create.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/charts/grapheCritere.xhtml</file>
-        </group>
-        <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/locale/createLocaleAndRedevable.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeTrim/Create.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeTrimFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/bean/PositionLocale.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/bean/Redevable.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/RedevableController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/redevable/List.xhtml</file>
-        </group>
-        <group>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/search/Annuel_Trim.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeTrimController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/TaxeAnnuelController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/service/TaxeTrimFacade.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/web/inaccessible/taxeAnnuel/List.xhtml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/controler/RedevableController.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/jasper/taxPaiement.jrxml</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/taxe_communev1/taxe_commune1/src/java/jasper/taxAnnuel_detail.jrxml</file>
         </group>
     </open-files>
 </project-private>
