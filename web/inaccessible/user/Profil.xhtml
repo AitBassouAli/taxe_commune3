@@ -30,7 +30,7 @@
                     <div Class="ui-grid-row" >
                         <div Class="ui-grid-col-6 center-block">
                             <h:form id="profileForm"  >
-                                <b:panel title="profile de '#{userController.connectedUser.login}'" class="panel-primary center-block"  rendered="#{userController.afficheProfile==true}" >
+                                <b:panel title="profile de '#{userController.connectedUser.login}'" class="panel-primary center-block"  style="margin-top: 70px" rendered="#{userController.afficheProfile==true}" >
 
                                     <b:panelGrid columns="2" rendered="#{userController.selected != null}">
 
@@ -56,7 +56,7 @@
                     <div Class="ui-grid-row" >
                         <div Class="ui-grid-col-6 center-block">
                             <h:form id="changeAutreInfosForm">
-                                <b:panel title="changer mes information:" class="panel-primary" rendered="#{userController.changerAutreInfos==true}">
+                                <b:panel title="changer mes information:" class="panel-primary" style="margin-top: 70px"  rendered="#{userController.changerAutreInfos==true}">
 
                                     <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
 
@@ -84,7 +84,7 @@
                     <div Class="ui-grid-row" >
                         <div Class="ui-grid-col-6 center-block">
                             <h:form id="changePWForm" >
-                                <b:panel title="changer Mot de passe:"  class="center-block panel-primary" rendered="#{userController.changerPasswrd==true}"  >
+                                <b:panel title="changer Mot de passe:"  class="center-block panel-primary" style="margin-top: 70px"  rendered="#{userController.changerPasswrd==true}"  >
 
                                     <b:panelGrid columns="2" class="form-group-sm" rendered="#{userController.selected != null}">
                                         <h:outputLabel value="Mot de pass actuel"  style="margin: 10px;margin-left: 40px" />

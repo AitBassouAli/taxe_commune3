@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6209b96a-4f8f-41b1-a3f1-4f272cff40a2">
 	<property name="ireport.zoom" value="1.1000000000000003"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="408"/>
 	<parameter name="nomLocale" class="java.lang.String"/>
 	<parameter name="adresse" class="java.lang.String"/>
 	<parameter name="cin" class="java.lang.String"/>
@@ -387,8 +387,8 @@ DES RESSOURCES FINANCIERES]]></text>
 				<textFieldExpression><![CDATA[$P{exploitant}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement uuid="8994041a-91f4-4467-b530-ef4a8ebce445" x="26" y="139" width="92" height="63"/>
-				<imageExpression><![CDATA["C:\\Users\\HP\\Pictures\\Feedback\\{948EB284-3A2B-481F-B144-31B38BA3FBF5}\\qr.png"]]></imageExpression>
+				<reportElement uuid="2ccf3b62-177f-424b-bd15-1aa27a1021c1" x="12" y="138" width="75" height="64"/>
+				<imageExpression><![CDATA["C:\\Users\\HP\\Documents\\NetBeansProjects\\taxe_communev1\\taxe_commune1\\web\\resources\\img\\qr.png"]]></imageExpression>
 			</image>
 		</band>
 	</detail>
